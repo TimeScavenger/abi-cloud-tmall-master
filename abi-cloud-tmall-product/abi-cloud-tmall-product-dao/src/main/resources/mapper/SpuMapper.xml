@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.SpuMapper">
+    <update id="updateSpuStatus">
+        UPDATE `pms_spu_info`
+        SET publish_status = #{code},
+            modify_by      = NOW()
+        WHERE spu_id = #{spuId}
+    </update>
+</mapper>

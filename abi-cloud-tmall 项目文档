@@ -1,0 +1,19 @@
+-- 测试服务
+18888   abi-cloud-middle-platform-test
+-- 开放平台
+66      abi-cloud-middle-platform-open
+-- 网关服务
+88      abi-cloud-middle-platform-gateway
+
+
+-- 业务服务
+10030   abi-cloud-tmall-auth
+10031   abi-cloud-tmall-product
+10032   abi-cloud-tmall-ware
+10033   abi-cloud-tmall-coupon
+10034   abi-cloud-tmall-member
+
+
+-- 人人服务
+10090   abi-cloud-tmall-renren
+10091   abi-cloud-tmall-search

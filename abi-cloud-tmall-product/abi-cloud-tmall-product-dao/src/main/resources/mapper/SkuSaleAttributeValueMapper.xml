@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.SkuSaleAttributeValueMapper">
+    <select id="getSaleAttrBySpuCode1">
+        SELECT attr.attribute_code,
+               attr.attribute_name,
+               group_concat(DISTINCT attr.attribute_value) sku_ids
+        FROM pms_sku sku
+                     LEFT JOIN pms_sku_sale_attribute_value attr ON attr.sku_code = sku.sku_code
+        WHERE sku.spu_code = #{spuId}
+        GROUP BY attr.attribute_code,
+                 attr.attribute_name
+    </select>
+
+    <select id="getSaleAttrBySpuCode2">
+        SELECT attr.attribute_code,
+               attr.attribute_name,
+               attr.attribute_value,
+               group_concat(DISTINCT sku.attribute_value) sku_ids
+        FROM pms_sku sku
+                     LEFT JOIN pms_sku_sale_attribute_value attr ON attr.sku_code = sku.sku_code
+        WHERE sku.spu_code = #{spuId}
+        GROUP BY attr.attribute_code,
+                 attr.attribute_name,
+                 attr.attribute_value
+    </select>
+
+    <select id="getSkuSaleAttrValuesAsStringList" resultType="java.lang.String">
+        SELECT CONCAT(attribute_name, "：", attribute_value)
+        FROM pms_sku_sale_attribute_value
+        WHERE sku_code = #{skuCode}
+    </select>
+</mapper>

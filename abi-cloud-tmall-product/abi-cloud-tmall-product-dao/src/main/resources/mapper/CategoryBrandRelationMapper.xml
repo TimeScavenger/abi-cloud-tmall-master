@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.CategoryBrandRelationMapper">
+    <select id="selectBrandListByCategoryId" resultType="java.lang.Long">
+        select brand_id
+        from pms_brand_category_relation
+        <where>
+            <if test="categoryId != null and categoryId != ''">
+                category_id = #{categoryId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCategoryListByBrandId" resultType="com.abi.tmall.product.dao.entity.CategoryBrandRelation">
+        select id,
+               brand_id,
+               brand_name,
+               category_id,
+               category_name
+        from pms_brand_category_relation
+        <where>
+            <if test="brandId != null and brandId != ''">
+                brand_id = #{brandId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+</mapper>

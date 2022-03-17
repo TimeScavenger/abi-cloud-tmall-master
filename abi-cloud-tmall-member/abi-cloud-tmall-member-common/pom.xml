@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>abi.cloud.tmall.member</groupId>
+        <artifactId>abi-cloud-tmall-member</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>abi.cloud.tmall.member</groupId>
+    <artifactId>abi-cloud-tmall-member-common</artifactId>
+    <version>${revision}</version>
+    <name>abi-cloud-tmall-member-common</name>
+    <description>abi common project</description>
+
+    <dependencies>
+        <!-- 基础服务依赖 -->
+        <dependency>
+            <groupId>abi.cloud.middle.platform.infrastructure</groupId>
+            <artifactId>abi-cloud-middle-platform-infrastructure-core</artifactId>
+        </dependency>
+
+        <!-- 基础服务依赖 -->
+        <dependency>
+            <groupId>abi.cloud.middle.platform.infrastructure</groupId>
+            <artifactId>abi-cloud-middle-platform-infrastructure-dao</artifactId>
+        </dependency>
+
+        <!-- 基础服务依赖 -->
+        <dependency>
+            <groupId>abi.cloud.middle.platform.infrastructure</groupId>
+            <artifactId>abi-cloud-middle-platform-infrastructure-web</artifactId>
+        </dependency>
+
+
+        <!-- hibernate 参数验证 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

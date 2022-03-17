@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.SpuBaseAttributeValueMapper">
+    <!-- 可以查询出所有的数据，然后在业务代码中进行按group进行分组，返回给前端 -->
+    <select id="getAttrGroupWithAttrsBySpuCode">
+        SELECT attr.spu_code,
+               gro.group_code,
+               gro.group_name,
+               attr.attribute_code,
+               attr.attribute_name,
+               attr.attribute_value
+        FROM pms_spu_base_attribute_value attr
+                     LEFT JOIN pms_group_attribute_relation gar ON attr.attribute_code = gar.attribute_code
+                     LEFT JOIN pms_group gro ON gar.group_code = gro.group_code
+        WHERE attr.spu_code = #{spuId}
+          AND gro.category_code = #{categoryCode}
+    </select>
+</mapper>

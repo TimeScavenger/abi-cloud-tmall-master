@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.GroupAttributeRelationMapper">
+    <!-- 发送批量删除语句 -->
+    <delete id="deleteBatchRelation">
+        DELETE
+        FROM `pms_group_attribute_relation` WHERE
+        <foreach collection="entities" item="item" separator=" OR ">
+            (attribute_id = #{item.attributeId} AND group_id = #{item.groupId})
+        </foreach>
+    </delete>
+</mapper>

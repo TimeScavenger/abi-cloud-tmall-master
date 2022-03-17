@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.ware.dao.mapper.PurchaseDetailMapper">
+    <update id="updateBatchByCodesSelective">
+        <!--@mbg.generated-->
+        update wms_purchase_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="purchase_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.purchaseCode != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.purchaseCode,jdbcType=BIGINT}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sku_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.skuCode != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.skuCode,jdbcType=BIGINT}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sku_num = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.skuNum != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.skuNum,jdbcType=TINYINT}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sku_price = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.skuPrice != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.skuPrice,jdbcType=DECIMAL}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ware_code = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.wareCode != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.wareCode,jdbcType=BIGINT}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="`status` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.status != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.status,jdbcType=TINYINT}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reason = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.reason != null">
+                        when purchase_detail_code = #{item.purchaseDetailCode,jdbcType=BIGINT} then #{item.reason,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where purchase_detail_code in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.purchaseDetailCode,jdbcType=BIGINT}
+        </foreach>
+    </update>
+</mapper>

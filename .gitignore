@@ -1,0 +1,38 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+target/
+build/
+
+!.mvn/wrapper/maven-wrapper.jar
+
+.DS_Store
+
+app-*
+
+rebel-remote.xml
+rebel.xml
+
+version.txt
+
+.flattened-pom.xml

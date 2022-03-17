@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.product.dao.mapper.CategoryMapper">
+    <select id="selectCategoryListByIds" resultType="com.abi.tmall.product.dao.entity.Category">
+        SELECT category_id,
+               category_name,
+               parent_id,
+               `level`,
+               sort,
+               icon,
+               product_unit,
+               product_count
+        FROM pms_category
+        <where>
+            deleted = 0
+            <if test="categoryIds != null and categoryIds.size() != 0">
+                and category_id in
+                <foreach close=")" collection="categoryIds" item="item" open="(" separator=", ">
+                    #{item,jdbcType=BIGINT}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="initCategoryDataTest">
+        update `pms_category` set parent_code = (SELECT category_code FROM pms_category_copy1 WHERE id = #{id} ) where parent_code = #{parentCode}
+    </update>
+</mapper>

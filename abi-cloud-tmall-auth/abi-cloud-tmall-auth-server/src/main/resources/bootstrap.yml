@@ -1,0 +1,111 @@
+# bootstrap.yml 由SoringBoot中规定的,会优先于application.yml加载
+server:
+  port: 10030 # 端口号
+  servlet:
+    context-path: /abi-cloud-tmall-auth # 访问前缀
+
+spring:
+  application:
+    name: abi-cloud-tmall-auth # 应用名称，注册中心中使用
+  cloud:
+    nacos: # nacos注册中心配置
+      discovery: # 服务注册发现
+        server-addr: 127.0.0.1:8848
+      config: # 服务注册配置
+        server-addr: 127.0.0.1:8848
+        namespace: 5a5b41bd-09d0-4731-940c-69b01c163196
+        group: dev
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 40MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss # jackson日期格式
+    time-zone: GMT+8 # jackson时间区间
+  shardingsphere:
+    datasource:
+      names: master,slave1,slave2 # 数据源名称，多数据源以逗号分隔
+      ## Mysql 阿里云使用数据库代理做读写分离  slave0可以去掉
+      ## SqlServer 使用MasterSlave模式
+      ## jdbc-url username password 请配置到保密字典
+      master:
+        driver-class-name: org.mariadb.jdbc.Driver
+        username: root
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/tmall_cloud_mms?characterEncoding=utf8
+        maximum-pool-size: 50
+        minimum-idle: 10
+      slave1:
+        driver-class-name: org.mariadb.jdbc.Driver
+        username: root
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/tmall_cloud_mms?characterEncoding=utf8
+        maximum-pool-size: 100
+        minimum-idle: 20
+      slave2:
+        driver-class-name: org.mariadb.jdbc.Driver
+        username: root
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/tmall_cloud_mms?characterEncoding=utf8
+        maximum-pool-size: 100
+        minimum-idle: 20
+    masterslave:
+      load-balance-algorithm-type: ROUND_ROBIN #从库负载均衡算法类型，可选值：ROUND_ROBIN，RANDOM。若`load-balance-algorithm-class-name`存在则忽略该配置
+      master-data-source-name: master
+      name: master
+      slave-data-source-names: slave1
+    props:
+      sql:
+        show: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml # mybatis-plus扫包
+  ## 打印sql日志
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  ## mybatis-plus逻辑删除
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  # 日志打印等级
+  level:
+    root: INFO
+    com:
+      zaxxer:
+        hikari: INFO
+    com.tmall: DEBUG
+
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      show-details: ALWAYS
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  health:
+    db:
+      enabled: false

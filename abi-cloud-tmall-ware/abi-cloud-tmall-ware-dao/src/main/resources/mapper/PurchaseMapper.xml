@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abi.tmall.ware.dao.mapper.PurchaseMapper">
+    <update id="updateInfoByCodeSelective">
+        <!--@mbg.generated-->
+        update wms_purchase
+        <set>
+            <if test="purchase.purchaseName != null">
+                purchase_name = #{purchase.purchaseName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchase.assigneeCode != null">
+                assignee_code = #{purchase.assigneeCode,jdbcType=BIGINT},
+            </if>
+            <if test="purchase.assigneeName != null">
+                assignee_name = #{purchase.assigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchase.assigneePhone != null">
+                assignee_phone = #{purchase.assigneePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="purchase.status != null">
+                `status` = #{purchase.status,jdbcType=TINYINT},
+            </if>
+            <if test="purchase.reason != null">
+                reason = #{purchase.reason,jdbcType=VARCHAR},
+            </if>
+            <if test="purchase.wareCode != null">
+                ware_code = #{purchase.wareCode,jdbcType=BIGINT},
+            </if>
+            <if test="purchase.allAmount != null">
+                all_amount = #{purchase.allAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="purchase.priority != null">
+                priority = #{purchase.priority,jdbcType=TINYINT},
+            </if>
+        </set>
+        where purchase_code = #{purchase.purchaseCode,jdbcType=BIGINT}
+    </update>
+</mapper>

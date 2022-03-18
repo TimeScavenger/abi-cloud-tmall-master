@@ -1,6 +1,6 @@
 package com.abi.tmall.auth.server.service;
 
-import com.abi.base.foundation.exception.BusinessException;
+import com.abi.infrastructure.core.exception.BusinessException;
 
 import java.awt.image.BufferedImage;
 

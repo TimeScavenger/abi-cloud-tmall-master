@@ -1,6 +1,6 @@
 package com.abi.tmall.auth.dao.entity;
 
-import com.abi.base.foundation.entity.BaseEntity;
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;

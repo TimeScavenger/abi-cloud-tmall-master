@@ -1,7 +1,7 @@
 package com.abi.tmall.auth.server.service.impl;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.exception.BusinessException;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.tmall.auth.dao.entity.LoginCaptcha;
 import com.abi.tmall.auth.dao.service.LoginCaptchaDao;
 import com.abi.tmall.auth.server.service.LoginCaptchaService;

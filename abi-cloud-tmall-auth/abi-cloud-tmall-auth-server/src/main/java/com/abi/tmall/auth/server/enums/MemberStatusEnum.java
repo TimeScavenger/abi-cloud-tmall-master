@@ -1,9 +1,9 @@
 package com.abi.tmall.auth.server.enums;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.entity.BaseEnumEntity;
-import com.abi.base.foundation.enums.EnabledEnum;
-import com.abi.base.foundation.exception.BusinessException;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.exception.BusinessException;
+import com.abi.infrastructure.dao.enums.EnabledEnum;
+import com.abi.infrastructure.dao.enums.EnumEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -62,10 +62,10 @@ public enum MemberStatusEnum {
      *
      * @return
      */
-    public static List<BaseEnumEntity> toList() {
+    public static List<EnumEntity> toList() {
         return ALL.stream()
                 .map(item -> {
-                    BaseEnumEntity codeLabel = new BaseEnumEntity();
+                    EnumEntity codeLabel = new EnumEntity();
                     codeLabel.setCode(item.getCode());
                     codeLabel.setLabel(item.getLabel());
                     return codeLabel;

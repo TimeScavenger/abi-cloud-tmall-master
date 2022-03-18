@@ -1,9 +1,9 @@
-package com.abi.tmall.auth.api.util;
+package com.abi.tmall.auth.client.util;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.abi.base.foundation.utils.JacksonUtils;
-import com.abi.tmall.auth.common.constant.SessionConstant;
+import com.abi.infrastructure.web.util.JacksonUtils;
+import com.abi.tmall.auth.common.constant.SessionConstants;
 import com.abi.tmall.auth.common.response.member.MemberInfoVoResp;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -62,7 +62,7 @@ public class MemberAuthUtils {
      */
     public static MemberInfoVoResp getMemberInfo(String loginMemberCode) {
         SaSession sessionByLoginId = StpUtil.getSessionByLoginId(loginMemberCode);
-        MemberInfoVoResp mpMemberInfo = (MemberInfoVoResp) sessionByLoginId.getDataMap().get(SessionConstant.SATOKEN_LOGIN_SESSION_MEMBER_INFO);
+        MemberInfoVoResp mpMemberInfo = (MemberInfoVoResp) sessionByLoginId.getDataMap().get(SessionConstants.SATOKEN_LOGIN_SESSION_MEMBER_INFO);
         return mpMemberInfo;
     }
 
@@ -87,7 +87,7 @@ public class MemberAuthUtils {
      */
     public static List<String> getRoles(String loginMemberCode) {
         SaSession sessionByLoginId = StpUtil.getSessionByLoginId(loginMemberCode);
-        List<String> roleList = (List<String>) sessionByLoginId.getDataMap().get(SessionConstant.SATOKEN_LOGIN_SESSION_MEMBER_ROLE_LIST);
+        List<String> roleList = (List<String>) sessionByLoginId.getDataMap().get(SessionConstants.SATOKEN_LOGIN_SESSION_MEMBER_ROLE_LIST);
         return roleList;
     }
 

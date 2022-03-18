@@ -3,8 +3,8 @@ package com.abi.tmall.auth.server.service.impl;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.tmall.auth.common.constant.SessionConstant;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.tmall.auth.common.constant.SessionConstants;
 import com.abi.tmall.auth.common.response.login.LoginResult;
 import com.abi.tmall.auth.dao.entity.LoginToken;
 import com.abi.tmall.auth.dao.entity.Member;
@@ -80,11 +80,11 @@ public class LoginTokenServiceImpl implements LoginTokenService {
         StpUtil.login(member.getMemberCode(), device == null || StringUtils.isBlank(device) ? MemberLoginEunm.PC.name() : device);
 
         // 3、缓存用户信息
-        StpUtil.getSession().set(SessionConstant.SATOKEN_LOGIN_SESSION_MEMBER_INFO, member);
+        StpUtil.getSession().set(SessionConstants.SATOKEN_LOGIN_SESSION_MEMBER_INFO, member);
 
         // 4、缓存角色信息
         List<Object> roleCodes = new ArrayList<>();
-        StpUtil.getSession().set(SessionConstant.SATOKEN_LOGIN_SESSION_MEMBER_ROLE_LIST, roleCodes);
+        StpUtil.getSession().set(SessionConstants.SATOKEN_LOGIN_SESSION_MEMBER_ROLE_LIST, roleCodes);
 
         // 5、封装token返给前端
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();

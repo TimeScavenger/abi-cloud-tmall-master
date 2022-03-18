@@ -1,6 +1,6 @@
 package com.abi.tmall.auth.server.utils;
 
-import com.abi.base.foundation.exception.BusinessException;
+import com.abi.infrastructure.core.exception.BusinessException;
 
 import java.security.MessageDigest;
 import java.util.UUID;

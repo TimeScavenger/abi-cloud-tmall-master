@@ -9,10 +9,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>abi.cloud.tmall.auth</groupId>
-    <artifactId>abi-cloud-tmall-auth-dao</artifactId>
+    <artifactId>abi-cloud-tmall-auth-client</artifactId>
     <version>${revision}</version>
-    <name>abi-cloud-tmall-auth-dao</name>
-    <description>abi dao project</description>
+    <name>abi-cloud-tmall-auth-client</name>
+    <description>abi api project</description>
 
     <dependencies>
         <!-- 权限服务依赖包 - common -->
@@ -23,13 +23,22 @@
 
 
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>1.28.0</version>
         </dependency>
     </dependencies>
 

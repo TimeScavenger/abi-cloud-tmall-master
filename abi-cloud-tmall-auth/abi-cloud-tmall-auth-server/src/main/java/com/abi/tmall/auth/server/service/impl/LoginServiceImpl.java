@@ -1,8 +1,11 @@
 package com.abi.tmall.auth.server.service.impl;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.exception.BusinessException;
-import com.abi.base.foundation.response.ApiResponse;
+import com.abi.communication.client.client.SmsCommunicationClient;
+import com.abi.communication.common.request.sms.CheckSmsVerificationCodeReq;
+import com.abi.communication.common.response.verification.CheckVerificationCodeRes;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.exception.BusinessException;
+import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.tmall.auth.common.constant.AuthErrorCode;
 import com.abi.tmall.auth.common.request.login.*;
 import com.abi.tmall.auth.common.response.login.LoginResult;
@@ -12,9 +15,6 @@ import com.abi.tmall.auth.server.enums.MemberStatusEnum;
 import com.abi.tmall.auth.server.service.LoginCaptchaService;
 import com.abi.tmall.auth.server.service.LoginService;
 import com.abi.tmall.auth.server.service.LoginTokenService;
-import com.abi.tmall.communication.api.client.SmsCommunicationApi;
-import com.abi.tmall.communication.common.request.sms.CheckSmsVerificationCodeReq;
-import com.abi.tmall.communication.common.response.verification.CheckVerificationCodeRes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class LoginServiceImpl implements LoginService {
     private MemberDao memberDao;
 
     @Autowired
-    private SmsCommunicationApi smsCommunicationApi;
+    private SmsCommunicationClient smsCommunicationClient;
 
     @Value("${login.sms.sign-name:百威中国}")
     private String signName;
@@ -187,7 +187,7 @@ public class LoginServiceImpl implements LoginService {
         // 4、短信签名名称
         checkSmsVerificationCodeReq.setSignName(signName);
         // 5、调用接口，返回校验结果（ture：成功，false：失败）
-        ApiResponse<CheckVerificationCodeRes> checkVerificationCodeResApiResponse = smsCommunicationApi.checkSmsVerificationCode(checkSmsVerificationCodeReq);
+        ApiResponse<CheckVerificationCodeRes> checkVerificationCodeResApiResponse = smsCommunicationClient.checkSmsVerificationCode(checkSmsVerificationCodeReq);
         boolean checkStatus = checkVerificationCodeResApiResponse.getData().isCheckStatus();
         if (!checkStatus) {
             throw new BusinessException(AuthErrorCode.CHECK_VERIFICATIONCODERE_FAIL.code(), AuthErrorCode.CHECK_VERIFICATIONCODERE_FAIL.message());

@@ -1,5 +1,6 @@
 package com.abi.tmall.product.dao.entity;
 
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -22,13 +23,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_group_attribute_relation")
-public class GroupAttributeRelation implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "自增Id")
-    private Long id;
+public class GroupAttributeRelation  extends BaseEntity implements Serializable {
 
     /**
      * 分组Code
@@ -66,8 +61,6 @@ public class GroupAttributeRelation implements Serializable {
     private Integer sort;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_GROUP_CODE = "group_code";
 

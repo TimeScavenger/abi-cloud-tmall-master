@@ -1,5 +1,6 @@
 package com.abi.tmall.product.dao.entity;
 
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -22,13 +23,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_category_brand_relation")
-public class CategoryBrandRelation implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "自增Id")
-    private Long id;
+public class CategoryBrandRelation extends BaseEntity implements Serializable {
 
     /**
      * 分类Code
@@ -59,8 +54,6 @@ public class CategoryBrandRelation implements Serializable {
     private String brandName;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_CATEGORY_CODE = "category_code";
 

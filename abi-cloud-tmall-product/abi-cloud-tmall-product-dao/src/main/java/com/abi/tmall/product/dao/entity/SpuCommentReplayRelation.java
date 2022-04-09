@@ -1,5 +1,6 @@
 package com.abi.tmall.product.dao.entity;
 
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -22,13 +23,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_spu_comment_replay_relation")
-public class SpuCommentReplayRelation implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "自增Id")
-    private Long id;
+public class SpuCommentReplayRelation extends BaseEntity implements Serializable {
 
     /**
      * 评论Code
@@ -45,8 +40,6 @@ public class SpuCommentReplayRelation implements Serializable {
     private Long replyCode;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_COMMENT_CODE = "comment_code";
 

@@ -1,18 +1,18 @@
-package com.abi.tmall.ware.server.client;
+package com.abi.tmall.product.client;
 
-import com.abi.base.foundation.response.ApiResponse;
-import com.abi.tmall.ware.server.client.fallback.ProductFeignClientFallback;
-import com.abi.tmall.ware.server.client.request.SkuListByCodeReq;
-import com.abi.tmall.ware.server.client.request.SkuListByNameReq;
-import com.abi.tmall.ware.server.client.response.SkuListResp;
+import com.abi.infrastructure.core.response.ApiResponse;
+import com.abi.tmall.product.client.fallback.SkuFeignClientFallback;
+import com.abi.tmall.product.common.request.sku.SkuListByCodeReq;
+import com.abi.tmall.product.common.request.sku.SkuListByNameReq;
+import com.abi.tmall.product.common.response.sku.SkuListResp;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "abi-cloud-tmall-product", fallbackFactory = ProductFeignClientFallback.class)
-public interface ProductFeignClient {
+@FeignClient(name = "abi-cloud-tmall-product", fallbackFactory = SkuFeignClientFallback.class)
+public interface SkuFeignClient {
 
     /**
      * SpringCloud远程调用原理：CouponFeignService.saveSpuBounds(spuBoundsTo);
@@ -21,6 +21,7 @@ public interface ProductFeignClient {
      * 3、对方服务收到请求。请求体里有json数据。(@RequestBody SpuBoundsEntity spuBounds)；将请求体的json转为SpuBoundsEntity；
      * 总结：只要json数据模型是兼容的。双方服务无需使用同一个to
      */
+
     @PostMapping("/product/console/sku-info/list/by/code")
     public ApiResponse<List<SkuListResp>> querySkuListByCodes(@RequestBody SkuListByCodeReq skuListByCodeReq);
 

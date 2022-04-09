@@ -13,10 +13,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * Swagger 配置文件
+ *
  * @ClassName: SwaggerConfig
  * @Author: illidan
  * @CreateDate: 2021/2/10
- * @Description: Swagger 接口文档配置文件
+ * @Description:
  */
 @Configuration
 @EnableSwagger2
@@ -55,7 +57,7 @@ public class SwaggerConfig {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("abi-cloud-tmall-ware接口文档")
+                .title("abi-cloud-tmall-ware")
                 .description("abi-cloud-tmall-ware接口文档")
                 .termsOfServiceUrl("")
                 .contact(new Contact("", "", ""))

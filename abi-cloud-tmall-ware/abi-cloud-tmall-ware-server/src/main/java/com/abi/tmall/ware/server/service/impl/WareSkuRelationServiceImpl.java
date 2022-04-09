@@ -1,19 +1,19 @@
 package com.abi.tmall.ware.server.service.impl;
 
-import com.abi.base.foundation.page.PageResponse;
-import com.abi.base.foundation.response.ApiResponse;
-import com.abi.tmall.ware.common.request.ware.WareStockDto;
-import com.abi.tmall.ware.common.request.waresku.WareSkuRelationPageDto;
+import com.abi.infrastructure.core.response.ApiResponse;
+import com.abi.infrastructure.dao.page.PageResponse;
+import com.abi.tmall.product.client.SkuFeignClient;
+import com.abi.tmall.product.common.request.sku.SkuListByCodeReq;
+import com.abi.tmall.product.common.request.sku.SkuListByNameReq;
+import com.abi.tmall.product.common.response.sku.SkuListResp;
+import com.abi.tmall.ware.common.request.ware.WareStockReq;
+import com.abi.tmall.ware.common.request.waresku.WareSkuRelationPageReq;
 import com.abi.tmall.ware.common.response.waresku.WareSkuRelationPageVo;
 import com.abi.tmall.ware.common.response.waresku.WareSkuRelationStockVo;
 import com.abi.tmall.ware.dao.entity.WareSkuRelation;
 import com.abi.tmall.ware.dao.mapper.WareSkuRelationMapper;
 import com.abi.tmall.ware.dao.service.WareDao;
 import com.abi.tmall.ware.dao.service.WareSkuRelationDao;
-import com.abi.tmall.ware.server.client.ProductFeignClient;
-import com.abi.tmall.ware.server.client.request.SkuListByCodeReq;
-import com.abi.tmall.ware.server.client.request.SkuListByNameReq;
-import com.abi.tmall.ware.server.client.response.SkuListResp;
 import com.abi.tmall.ware.server.service.WareService;
 import com.abi.tmall.ware.server.service.WareSkuRelationService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,10 +32,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 商品库存 服务实现类
+ *
  * @ClassName: WareSkuRelationServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/11/18
- * @Description: 库存信息
+ * @Description:
  */
 @Service
 public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMapper, WareSkuRelation> implements WareSkuRelationService {
@@ -47,13 +49,13 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
     private WareSkuRelationDao wareSkuRelationDao;
 
     @Autowired
-    private ProductFeignClient productFeignClient;
+    private SkuFeignClient skuFeignClient;
 
     @Autowired
     private WareDao wareDao;
 
     @Override
-    public PageResponse<WareSkuRelationPageVo> queryWareSkuRelationPageByCondition(WareSkuRelationPageDto dto) {
+    public PageResponse<WareSkuRelationPageVo> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq dto) {
         // 1、新建用于返回的分页对象
         PageResponse<WareSkuRelationPageVo> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
@@ -64,7 +66,7 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
         if (StringUtils.isNotBlank(dto.getSkuName())) {
             SkuListByNameReq skuListByNameReq = new SkuListByNameReq();
             skuListByNameReq.setSkuName(dto.getSkuName());
-            ApiResponse<List<SkuListResp>> apiResponse = productFeignClient.querySkuListByName(skuListByNameReq);
+            ApiResponse<List<SkuListResp>> apiResponse = skuFeignClient.querySkuListByName(skuListByNameReq);
             if (apiResponse != null && CollectionUtils.isNotEmpty(apiResponse.getData())) {
                 skuCodeList = apiResponse.getData().stream().map(SkuListResp::getSkuCode).collect(Collectors.toList());
             }
@@ -86,7 +88,7 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
                     .collect(Collectors.toList());
             SkuListByCodeReq skuListByCodeReq = new SkuListByCodeReq();
             skuListByCodeReq.setSkuCodes(skuCodes);
-            ApiResponse<List<SkuListResp>> apiResponse = productFeignClient.querySkuListByCodes(skuListByCodeReq);
+            ApiResponse<List<SkuListResp>> apiResponse = skuFeignClient.querySkuListByCodes(skuListByCodeReq);
             Map<Long, String> skuCodeAndSkuNameMap = new HashMap<>();
             if (apiResponse != null && CollectionUtils.isNotEmpty(apiResponse.getData())) {
                 skuCodeAndSkuNameMap = apiResponse.getData().stream()
@@ -126,7 +128,7 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
     }
 
     @Override
-    public List<WareSkuRelationStockVo> querySkuHasStock(WareStockDto dto) {
+    public List<WareSkuRelationStockVo> querySkuHasStock(WareStockReq dto) {
         return dto.getSkuCodes().stream()
                 .map(item -> {
                     Integer count = baseMapper.getSkuStock(item);

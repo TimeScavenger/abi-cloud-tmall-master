@@ -1,14 +1,16 @@
 package com.abi.tmall.ware.server.config;
 
-import com.abi.base.foundation.snowflake.SnowflakeIdWorker;
+import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Snowflake 配置文件
+ *
  * @ClassName: SnowflakeIdConfig
  * @Author: illidan
  * @CreateDate: 2021/11/18
- * @Description: 雪花算法配置文件
+ * @Description:
  */
 @Configuration
 public class SnowflakeIdConfig {

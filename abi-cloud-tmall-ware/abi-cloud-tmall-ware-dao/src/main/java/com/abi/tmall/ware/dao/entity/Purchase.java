@@ -1,6 +1,8 @@
 package com.abi.tmall.ware.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.abi.infrastructure.dao.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,24 +12,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
- * 采购单信息
+ * 采购单
  */
-@ApiModel(value = "采购单信息")
+@ApiModel(value = "采购单")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "wms_purchase")
-public class Purchase implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "自增Id")
-    private Long id;
+public class Purchase extends BaseEntity implements Serializable {
 
     /**
      * 采购单Code
@@ -99,45 +94,7 @@ public class Purchase implements Serializable {
     @ApiModelProperty(value = "优先级 1-5的优先级")
     private Integer priority;
 
-    /**
-     * 是否删除 0-未删除，1-删除
-     */
-    @TableLogic
-    @TableField(value = "deleted")
-    @ApiModelProperty(value = "是否删除 0-未删除，1-删除")
-    private Integer deleted;
-
-    /**
-     * 创建人Code
-     */
-    @TableField(value = "create_by")
-    @ApiModelProperty(value = "创建人Code")
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    @TableField(value = "create_time")
-    @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
-
-    /**
-     * 最近一次修改人Code
-     */
-    @TableField(value = "modify_by")
-    @ApiModelProperty(value = "最近一次修改人Code")
-    private String modifyBy;
-
-    /**
-     * 最近一次修改时间
-     */
-    @TableField(value = "modify_time")
-    @ApiModelProperty(value = "最近一次修改时间")
-    private LocalDateTime modifyTime;
-
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_PURCHASE_CODE = "purchase_code";
 
@@ -159,13 +116,4 @@ public class Purchase implements Serializable {
 
     public static final String COL_PRIORITY = "priority";
 
-    public static final String COL_DELETED = "deleted";
-
-    public static final String COL_CREATE_BY = "create_by";
-
-    public static final String COL_CREATE_TIME = "create_time";
-
-    public static final String COL_MODIFY_BY = "modify_by";
-
-    public static final String COL_MODIFY_TIME = "modify_time";
 }

@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @ClassName: WareDao
+ * 仓库 持久服务类
+ *
+ * @ClassName: WareMapper
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 仓库
+ * @Description:
  */
 @Repository
 public class WareDao extends ServiceImpl<WareMapper, Ware> {

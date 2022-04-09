@@ -36,6 +36,7 @@
 
         <!-- 业务依赖包 -->
         <abi-cloud-middle-platform-infrastructure.version>1.0-SNAPSHOT</abi-cloud-middle-platform-infrastructure.version>
+        <abi-cloud-tmall-product-client.version>1.0-SNAPSHOT</abi-cloud-tmall-product-client.version>
 
         <!-- 拓展依赖包 -->
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
@@ -74,6 +75,7 @@
                 <version>${project.version}</version>
             </dependency>
 
+
             <!-- 基础服务依赖 -->
             <dependency>
                 <groupId>abi.cloud.middle.platform.infrastructure</groupId>
@@ -93,6 +95,14 @@
                 <groupId>abi.cloud.middle.platform.infrastructure</groupId>
                 <artifactId>abi-cloud-middle-platform-infrastructure-web</artifactId>
                 <version>${abi-cloud-middle-platform-infrastructure.version}</version>
+            </dependency>
+
+
+            <!-- 商品服务依赖包 - client -->
+            <dependency>
+                <groupId>abi.cloud.tmall.product</groupId>
+                <artifactId>abi-cloud-tmall-product-client</artifactId>
+                <version>${abi-cloud-tmall-product-client.version}</version>
             </dependency>
 
 

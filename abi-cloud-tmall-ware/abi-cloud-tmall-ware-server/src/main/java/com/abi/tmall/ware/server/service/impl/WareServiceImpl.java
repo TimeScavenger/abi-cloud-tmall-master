@@ -1,9 +1,9 @@
 package com.abi.tmall.ware.server.service.impl;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.exception.BusinessException;
-import com.abi.base.foundation.page.PageResponse;
-import com.abi.base.foundation.snowflake.SnowflakeIdWorker;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.exception.BusinessException;
+import com.abi.infrastructure.dao.page.PageResponse;
+import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import com.abi.tmall.ware.common.request.ware.*;
 import com.abi.tmall.ware.common.response.ware.WarePageVo;
 import com.abi.tmall.ware.dao.entity.Ware;
@@ -21,10 +21,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 仓库 服务实现类
+ *
  * @ClassName: WareServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/11/18
- * @Description: 仓库信息
+ * @Description:
  */
 @Service
 public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements WareService {
@@ -36,7 +38,7 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     private WareDao wareDao;
 
     @Override
-    public PageResponse<WarePageVo> queryWarePageByCondition(WarePageDto dto) {
+    public PageResponse<WarePageVo> queryWarePageByCondition(WarePageReq dto) {
         // 1、新建用于返回的分页对象
         PageResponse<WarePageVo> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
@@ -64,7 +66,7 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     }
 
     @Override
-    public List<Ware> queryWareListByCondition(WareListDto dto) {
+    public List<Ware> queryWareListByCondition(WareListReq dto) {
         // 1、查询列表信息
         List<Ware> wareList = wareDao.queryListByCondition(dto.getWareName());
         // 2、返回数据
@@ -72,7 +74,7 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     }
 
     @Override
-    public boolean saveWare(WareAddDto dto) {
+    public boolean saveWare(WareAddReq dto) {
         // 1、判断是否为重复添加
         Ware result = wareDao.queryInfoByWareNameAndAreaCode(dto.getWareName(), dto.getAreaCode());
         // 2、判断是否为重复添加数据
@@ -87,14 +89,14 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     }
 
     @Override
-    public boolean removeWare(WareDelDto dto) {
+    public boolean removeWare(WareDelReq dto) {
         // 1、TODO 拓展：检查当前删除的仓库, 是否被别的地方引用，例如仓库和分销单的关联关系
         // 2、逻辑删除
         return wareDao.removeByWareCodes(dto.getWareCodes());
     }
 
     @Override
-    public boolean modifyWare(WareEditDto dto) {
+    public boolean modifyWare(WareEditReq dto) {
         // 1、查询校验分类是否合法
         Ware wareOld = wareDao.queryInfoByWareCode(dto.getWareCode());
         if (wareOld != null) {
@@ -110,7 +112,7 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     }
 
     @Override
-    public Ware findWareByCode(WareInfoDto dto) {
+    public Ware findWareByCode(WareInfoReq dto) {
         // 1、查询数据
         Ware ware = wareDao.queryInfoByWareCode(dto.getWareCode());
         // 2、返回数据

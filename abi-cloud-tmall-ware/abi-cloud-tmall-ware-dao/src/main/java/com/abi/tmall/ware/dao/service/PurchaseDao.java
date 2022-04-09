@@ -13,10 +13,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 采购单 持久服务类
+ *
  * @ClassName: PurchaseDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 采购单
+ * @Description:
  */
 @Repository
 public class PurchaseDao extends ServiceImpl<PurchaseMapper, Purchase> {

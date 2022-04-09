@@ -62,6 +62,10 @@ spring:
     props:
       sql:
         show: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml # mybatis-plus扫包

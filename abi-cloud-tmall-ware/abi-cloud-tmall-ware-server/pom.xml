@@ -33,6 +33,12 @@
             <artifactId>abi-cloud-tmall-ware-dao</artifactId>
         </dependency>
 
+        <!-- 商品服务依赖包 - client -->
+        <dependency>
+            <groupId>abi.cloud.tmall.product</groupId>
+            <artifactId>abi-cloud-tmall-product-client</artifactId>
+        </dependency>
+
 
         <!-- nacos 服务注册中心 负责注册/发现 -->
         <dependency>
@@ -125,11 +131,13 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
         </dependency>
+
     </dependencies>
 
     <build>

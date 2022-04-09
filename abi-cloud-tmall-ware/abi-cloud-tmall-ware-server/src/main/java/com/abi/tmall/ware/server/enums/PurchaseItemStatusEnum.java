@@ -10,24 +10,24 @@ import lombok.Getter;
 import java.util.*;
 
 /**
- * 采购单状态 枚举类
+ * 采购项状态 枚举类
  *
- * @ClassName: PurchaseStatusEnum
+ * @ClassName: PurchaseItemStatusEnum
  * @Author: illidan
  * @CreateDate: 2021/05/13
  * @Description:
  */
 @Getter
 @AllArgsConstructor
-public enum PurchaseStatusEnum {
+public enum PurchaseItemStatusEnum {
 
     CREATED(0, "新建"),
     ASSIGNED(1, "已分配"),
-    RECEIVE(2, "已领取"),
+    BUYING(2, "正在采购"),
     FINISH(3, "已完成"),
-    HASERROR(4, "有异常");
+    HASERROR(4, "采购失败");
 
-    private static final Set<PurchaseStatusEnum> ALL = EnumSet.allOf(PurchaseStatusEnum.class);
+    private static final Set<PurchaseItemStatusEnum> ALL = EnumSet.allOf(PurchaseItemStatusEnum.class);
     private final Integer code;
     private final String label;
 
@@ -39,7 +39,7 @@ public enum PurchaseStatusEnum {
      */
     public static String getLabelByCode(Integer code) {
         if (code != null) {
-            for (PurchaseStatusEnum enums : values()) {
+            for (PurchaseItemStatusEnum enums : values()) {
                 if (enums.getCode().intValue() == code.intValue()) {
                     return enums.label;
                 }
@@ -54,7 +54,7 @@ public enum PurchaseStatusEnum {
      * @param code
      * @return
      */
-    public static PurchaseStatusEnum getEnumByCode(Integer code) {
+    public static PurchaseItemStatusEnum getEnumByCode(Integer code) {
         return ALL.stream()
                 .filter(enums -> enums.code.equals(code))
                 .findAny()
@@ -70,7 +70,7 @@ public enum PurchaseStatusEnum {
      */
     public static List<EnumEntity> toList() {
         List<EnumEntity> codeLabelList = Lists.newArrayList();
-        for (PurchaseStatusEnum airlineTypeEnum : PurchaseStatusEnum.values()) {
+        for (PurchaseItemStatusEnum airlineTypeEnum : PurchaseItemStatusEnum.values()) {
             EnumEntity codeLabel = new EnumEntity();
             codeLabel.setCode(airlineTypeEnum.getCode());
             codeLabel.setLabel(airlineTypeEnum.getLabel());
@@ -86,7 +86,7 @@ public enum PurchaseStatusEnum {
      */
     public static Map<Integer, String> toMap() {
         Map<Integer, String> codeLabelMap = new HashMap<>();
-        for (PurchaseStatusEnum next : ALL) {
+        for (PurchaseItemStatusEnum next : ALL) {
             codeLabelMap.put(next.code, next.label);
         }
         return codeLabelMap;

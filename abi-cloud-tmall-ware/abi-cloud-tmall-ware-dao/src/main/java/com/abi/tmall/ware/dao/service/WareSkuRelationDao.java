@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品库存 持久服务类
+ *
  * @ClassName: WareSkuRelationDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 仓库-商品库存
+ * @Description:
  */
 @Repository
 public class WareSkuRelationDao extends ServiceImpl<WareSkuRelationMapper, WareSkuRelation> {

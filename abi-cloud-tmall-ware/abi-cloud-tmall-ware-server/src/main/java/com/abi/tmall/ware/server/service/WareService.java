@@ -1,7 +1,6 @@
 package com.abi.tmall.ware.server.service;
 
-import com.abi.base.foundation.page.PageResponse;
-import com.abi.base.foundation.response.ApiResponse;
+import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.ware.*;
 import com.abi.tmall.ware.common.response.ware.WarePageVo;
 import com.abi.tmall.ware.dao.entity.Ware;
@@ -10,6 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
+ * 仓库 服务类
+ *
  * @ClassName: WareService
  * @Author: illidan
  * @CreateDate: 2021/11/18
@@ -17,16 +18,16 @@ import java.util.List;
  */
 public interface WareService extends IService<Ware> {
 
-    PageResponse<WarePageVo> queryWarePageByCondition(WarePageDto warePageDto);
+    PageResponse<WarePageVo> queryWarePageByCondition(WarePageReq warePageReq);
 
-    List<Ware> queryWareListByCondition(WareListDto wareListDto);
+    List<Ware> queryWareListByCondition(WareListReq wareListReq);
 
-    boolean saveWare(WareAddDto wareAddDto);
+    boolean saveWare(WareAddReq wareAddReq);
 
-    boolean removeWare(WareDelDto wareDelDto);
+    boolean removeWare(WareDelReq wareDelReq);
 
-    boolean modifyWare(WareEditDto wareEditDto);
+    boolean modifyWare(WareEditReq wareEditReq);
 
-    Ware findWareByCode(WareInfoDto wareInfoDto);
+    Ware findWareByCode(WareInfoReq wareInfoReq);
 
 }

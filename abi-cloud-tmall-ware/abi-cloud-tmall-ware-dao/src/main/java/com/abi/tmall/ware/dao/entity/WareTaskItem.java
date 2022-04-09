@@ -13,22 +13,22 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 商品库存
+ * 库存工作单项
  */
-@ApiModel(value = "商品库存")
+@ApiModel(value = "库存工作单项")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "wms_ware_sku_relation")
-public class WareSkuRelation extends BaseEntity implements Serializable {
+@TableName(value = "wms_ware_task_sku_detail")
+public class WareTaskItem extends BaseEntity implements Serializable {
 
     /**
-     * 仓库Code
+     * 工作单Code
      */
-    @TableField(value = "ware_code")
-    @ApiModelProperty(value = "仓库Code")
-    private Long wareCode;
+    @TableField(value = "task_code")
+    @ApiModelProperty(value = "工作单Code")
+    private Long taskCode;
 
     /**
      * skuCode
@@ -38,27 +38,27 @@ public class WareSkuRelation extends BaseEntity implements Serializable {
     private Long skuCode;
 
     /**
-     * 库存数
+     * sku名字
      */
-    @TableField(value = "stock")
-    @ApiModelProperty(value = "库存数")
-    private Integer stock;
+    @TableField(value = "sku_name")
+    @ApiModelProperty(value = "sku名字")
+    private String skuName;
 
     /**
-     * 锁定库存
+     * 购买个数
      */
-    @TableField(value = "stock_locked")
-    @ApiModelProperty(value = "锁定库存")
-    private Integer stockLocked;
+    @TableField(value = "sku_num")
+    @ApiModelProperty(value = "购买个数")
+    private Integer skuNum;
 
     private static final long serialVersionUID = 1L;
 
-    public static final String COL_WARE_CODE = "ware_code";
+    public static final String COL_TASK_CODE = "task_code";
 
     public static final String COL_SKU_CODE = "sku_code";
 
-    public static final String COL_STOCK = "stock";
+    public static final String COL_SKU_NAME = "sku_name";
 
-    public static final String COL_STOCK_LOCKED = "stock_locked";
+    public static final String COL_SKU_NUM = "sku_num";
 
 }

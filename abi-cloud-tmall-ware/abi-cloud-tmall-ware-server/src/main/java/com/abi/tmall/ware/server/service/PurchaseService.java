@@ -1,6 +1,6 @@
 package com.abi.tmall.ware.server.service;
 
-import com.abi.base.foundation.page.PageResponse;
+import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.purchase.*;
 import com.abi.tmall.ware.common.response.purchase.PurchasePageVo;
 import com.abi.tmall.ware.dao.entity.Purchase;
@@ -9,25 +9,27 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
+ * 采购单 服务类
+ *
  * @ClassName: PurchaseService
  * @Author: illidan
  * @CreateDate: 2021/11/18
- * @Description: 采购单
+ * @Description:
  */
 public interface PurchaseService extends IService<Purchase> {
 
-    PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageDto purchasePageDto);
+    PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageReq purchasePageReq);
 
-    List<Purchase> queryPurchaseListByCondition(PurchaseListDto purchaseListDto);
+    List<Purchase> queryPurchaseListByCondition(PurchaseListReq purchaseListReq);
 
-    boolean addPurchase(PurchaseAddDto purchaseAddDto);
+    boolean addPurchase(PurchaseAddReq purchaseAddReq);
 
-    boolean modifyPurchase(PurchaseEditDto purchaseEditDto);
+    boolean modifyPurchase(PurchaseEditReq purchaseEditReq);
 
-    Purchase findPurchaseByCode(PurchaseInfoDto purchaseInfoDto);
+    Purchase findPurchaseByCode(PurchaseInfoReq purchaseInfoReq);
 
-    boolean receivePurchase(PurchaseReceiveDto purchaseReceiveDto);
+    boolean receivePurchase(PurchaseReceiveReq purchaseReceiveReq);
 
-    boolean donePurchase(PurchaseDoneDto purchaseDoneDto);
+    boolean donePurchase(PurchaseDoneReq purchaseDoneReq);
 
 }

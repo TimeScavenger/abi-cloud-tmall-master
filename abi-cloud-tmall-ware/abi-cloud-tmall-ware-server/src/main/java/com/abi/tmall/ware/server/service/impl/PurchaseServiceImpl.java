@@ -1,19 +1,19 @@
 package com.abi.tmall.ware.server.service.impl;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.exception.BusinessException;
-import com.abi.base.foundation.page.PageResponse;
-import com.abi.base.foundation.snowflake.SnowflakeIdWorker;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.exception.BusinessException;
+import com.abi.infrastructure.dao.page.PageResponse;
+import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import com.abi.tmall.ware.common.request.purchase.*;
 import com.abi.tmall.ware.common.response.purchase.PurchasePageVo;
 import com.abi.tmall.ware.dao.entity.Purchase;
-import com.abi.tmall.ware.dao.entity.PurchaseDetail;
+import com.abi.tmall.ware.dao.entity.PurchaseItem;
 import com.abi.tmall.ware.dao.entity.WareSkuRelation;
 import com.abi.tmall.ware.dao.mapper.PurchaseMapper;
 import com.abi.tmall.ware.dao.service.PurchaseDao;
-import com.abi.tmall.ware.dao.service.PurchaseDetailDao;
+import com.abi.tmall.ware.dao.service.PurchaseItemDao;
 import com.abi.tmall.ware.dao.service.WareSkuRelationDao;
-import com.abi.tmall.ware.server.enums.PurchaseDetailStatusEnum;
+import com.abi.tmall.ware.server.enums.PurchaseItemStatusEnum;
 import com.abi.tmall.ware.server.enums.PurchaseStatusEnum;
 import com.abi.tmall.ware.server.service.PurchaseService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,10 +31,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 采购单 服务实现类
+ *
  * @ClassName: PurchaseServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/11/18
- * @Description: 采购单
+ * @Description:
  */
 @Service
 public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> implements PurchaseService {
@@ -46,13 +48,13 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     private PurchaseDao purchaseDao;
 
     @Autowired
-    private PurchaseDetailDao purchaseDetailDao;
+    private PurchaseItemDao purchaseItemDao;
 
     @Autowired
     private WareSkuRelationDao wareSkuRelationDao;
 
     @Override
-    public PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageDto dto) {
+    public PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageReq dto) {
         // 1、新建用于返回的分页对象
         PageResponse<PurchasePageVo> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
@@ -67,9 +69,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
                     .map(Purchase::getPurchaseCode)
                     .collect(Collectors.toList());
             // 查询出采购单
-            List<PurchaseDetail> purchaseDetails = purchaseDetailDao.queryListByPurchaseCodes(purchaseCodes);
-            Map<Long, List<PurchaseDetail>> purchaseCodeMap = purchaseDetails.stream()
-                    .collect(Collectors.groupingBy(PurchaseDetail::getPurchaseCode));
+            List<PurchaseItem> purchaseItems = purchaseItemDao.queryListByPurchaseCodes(purchaseCodes);
+            Map<Long, List<PurchaseItem>> purchaseCodeMap = purchaseItems.stream()
+                    .collect(Collectors.groupingBy(PurchaseItem::getPurchaseCode));
 
             // 数据进行转换
             List<PurchasePageVo> purchasePageVoList = page.getRecords().stream()
@@ -77,9 +79,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
                         PurchasePageVo purchasePageVo = new PurchasePageVo();
                         BeanUtils.copyProperties(purchase, purchasePageVo);
                         if (MapUtils.isNotEmpty(purchaseCodeMap) && purchase.getPurchaseCode() != null) {
-                            List<PurchaseDetail> purchaseDetailList = purchaseCodeMap.get(purchase.getPurchaseCode());
-                            if (CollectionUtils.isNotEmpty(purchaseDetailList)) {
-                                purchasePageVo.setPurchaseDetailCount(purchaseDetailList.size());
+                            List<PurchaseItem> purchaseItemList = purchaseCodeMap.get(purchase.getPurchaseCode());
+                            if (CollectionUtils.isNotEmpty(purchaseItemList)) {
+                                purchasePageVo.setPurchaseDetailCount(purchaseItemList.size());
                             }
                         }
                         return purchasePageVo;
@@ -96,7 +98,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     @Override
-    public List<Purchase> queryPurchaseListByCondition(PurchaseListDto dto) {
+    public List<Purchase> queryPurchaseListByCondition(PurchaseListReq dto) {
         // 1、查询列表信息
         List<Purchase> purchaseList = this.lambdaQuery()
                 .eq(dto.getStatus() != null, Purchase::getStatus, dto.getStatus())
@@ -106,7 +108,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     @Override
-    public boolean addPurchase(PurchaseAddDto dto) {
+    public boolean addPurchase(PurchaseAddReq dto) {
         Purchase purchase = new Purchase();
         BeanUtils.copyProperties(dto, purchase);
         purchase.setPurchaseCode(snowflakeIdWorker.nextId());
@@ -114,7 +116,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     @Override
-    public boolean modifyPurchase(PurchaseEditDto dto) {
+    public boolean modifyPurchase(PurchaseEditReq dto) {
         // 1、查询校验分类是否合法
         Purchase purchaseOld = purchaseDao.queryInfoByPurchaseCode(dto.getPurchaseCode());
         if (purchaseOld != null) {
@@ -135,7 +137,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     @Override
-    public Purchase findPurchaseByCode(PurchaseInfoDto dto) {
+    public Purchase findPurchaseByCode(PurchaseInfoReq dto) {
         return purchaseDao.queryInfoByPurchaseCode(dto.getPurchaseCode());
     }
 
@@ -145,7 +147,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
      */
     @Override
     @Transactional
-    public boolean receivePurchase(PurchaseReceiveDto dto) {
+    public boolean receivePurchase(PurchaseReceiveReq dto) {
         // 1、获取当前登录用户的Code
         Long currentCode = 2L;
 
@@ -168,10 +170,10 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         List<Long> purchaseCodes = purchaseList.stream()
                 .map(Purchase::getPurchaseCode)
                 .collect(Collectors.toList());
-        List<PurchaseDetail> purchaseDetailList = purchaseDetailDao.queryListByPurchaseCodes(purchaseCodes);
+        List<PurchaseItem> purchaseItemList = purchaseItemDao.queryListByPurchaseCodes(purchaseCodes);
 
-        purchaseDetailList.forEach(item -> item.setStatus(PurchaseDetailStatusEnum.BUYING.getCode()));
-        purchaseDetailDao.updateBatchById(purchaseDetailList);
+        purchaseItemList.forEach(item -> item.setStatus(PurchaseItemStatusEnum.BUYING.getCode()));
+        purchaseItemDao.updateBatchById(purchaseItemList);
         return true;
     }
 
@@ -181,41 +183,41 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
      */
     @Override
     @Transactional
-    public boolean donePurchase(PurchaseDoneDto dto) {
+    public boolean donePurchase(PurchaseDoneReq dto) {
         // 1、先处理采购项，全部采购项都完成，再去处理采购单
         Long purchaseCode = dto.getPurchaseCode();
 
         // 2、改变采购项的状态
         boolean flag = true;
-        List<PurchaseDoneDto.PurchaseDetailDoneReq> purchaseDetailDoneReqList = dto.getPurchaseDetailDoneReqList();
+        List<PurchaseDoneReq.PurchaseDetailDoneReq> purchaseDetailDoneReqList = dto.getPurchaseDetailDoneReqList();
         // 采购项列表
-        List<PurchaseDetail> allPurchaseDetails = new ArrayList<>();
+        List<PurchaseItem> allPurchaseItems = new ArrayList<>();
         // 采购项成功列表
         List<Long> successPurchaseDetailCodes = new ArrayList<>();
-        for (PurchaseDoneDto.PurchaseDetailDoneReq item : purchaseDetailDoneReqList) {
-            PurchaseDetail purchaseDetail = new PurchaseDetail();
+        for (PurchaseDoneReq.PurchaseDetailDoneReq item : purchaseDetailDoneReqList) {
+            PurchaseItem purchaseItem = new PurchaseItem();
             // 判断采购项是否采购成功
-            if (PurchaseDetailStatusEnum.HASERROR.getCode().equals(item.getStatus())) {
+            if (PurchaseItemStatusEnum.HASERROR.getCode().equals(item.getStatus())) {
                 flag = false;
-                purchaseDetail.setStatus(item.getStatus());
-            } else if (PurchaseDetailStatusEnum.FINISH.getCode().equals(item.getStatus())) {
-                purchaseDetail.setStatus(item.getStatus());
+                purchaseItem.setStatus(item.getStatus());
+            } else if (PurchaseItemStatusEnum.FINISH.getCode().equals(item.getStatus())) {
+                purchaseItem.setStatus(item.getStatus());
                 successPurchaseDetailCodes.add(item.getPurchaseDetailCode());
             }
-            purchaseDetail.setPurchaseDetailCode(item.getPurchaseDetailCode());
-            allPurchaseDetails.add(purchaseDetail);
+            purchaseItem.setPurchaseDetailCode(item.getPurchaseDetailCode());
+            allPurchaseItems.add(purchaseItem);
         }
-        if (CollectionUtils.isNotEmpty(allPurchaseDetails)){
-            purchaseDetailDao.updateBatchByPurchaseDetailCodes(allPurchaseDetails);
+        if (CollectionUtils.isNotEmpty(allPurchaseItems)) {
+            purchaseItemDao.updateBatchByPurchaseDetailCodes(allPurchaseItems);
         }
 
         // 3、将成功采购的进行入库
         if (CollectionUtils.isNotEmpty(successPurchaseDetailCodes)) {
             // 根据采购项Code查询出采购项信息
-            List<PurchaseDetail> successPurchaseDetails = purchaseDetailDao.queryListByPurchaseDetailCodes(successPurchaseDetailCodes);
+            List<PurchaseItem> successPurchaseItems = purchaseItemDao.queryListByPurchaseDetailCodes(successPurchaseDetailCodes);
             // 过滤出仓库Code列表
-            List<Long> wareCodes = successPurchaseDetails.stream()
-                    .map(PurchaseDetail::getWareCode)
+            List<Long> wareCodes = successPurchaseItems.stream()
+                    .map(PurchaseItem::getWareCode)
                     .collect(Collectors.toList());
 
             // 根据仓库Code查询出该仓库下的所有商品信息
@@ -227,18 +229,18 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
 
             List<WareSkuRelation> wareSkuRelationAddList = new ArrayList<>();
             List<WareSkuRelation> wareSkuRelationUpdList = new ArrayList<>();
-            for (PurchaseDetail successPurchaseDetail : successPurchaseDetails) {
+            for (PurchaseItem successPurchaseItem : successPurchaseItems) {
                 // 判断仓库中是否有商品，没有商品新增，有商品在原有基础上追加商品数量
-                Integer stockOld = wareSkuCodeAndStockMap.get(successPurchaseDetail.getWareCode() + successPurchaseDetail.getSkuCode());
+                Integer stockOld = wareSkuCodeAndStockMap.get(successPurchaseItem.getWareCode() + successPurchaseItem.getSkuCode());
                 WareSkuRelation wareSkuRelation = new WareSkuRelation();
                 if (stockOld == null) {
-                    wareSkuRelation.setWareCode(successPurchaseDetail.getWareCode());
-                    wareSkuRelation.setSkuCode(successPurchaseDetail.getSkuCode());
-                    wareSkuRelation.setStock(successPurchaseDetail.getSkuNum());
+                    wareSkuRelation.setWareCode(successPurchaseItem.getWareCode());
+                    wareSkuRelation.setSkuCode(successPurchaseItem.getSkuCode());
+                    wareSkuRelation.setStock(successPurchaseItem.getSkuNum());
                     wareSkuRelationAddList.add(wareSkuRelation);
                 } else {
-                    wareSkuRelation.setId(wareSkuCodeAndIdMap.get(successPurchaseDetail.getWareCode() + successPurchaseDetail.getSkuCode()));
-                    wareSkuRelation.setStock(stockOld + successPurchaseDetail.getSkuNum());
+                    wareSkuRelation.setId(wareSkuCodeAndIdMap.get(successPurchaseItem.getWareCode() + successPurchaseItem.getSkuCode()));
+                    wareSkuRelation.setStock(stockOld + successPurchaseItem.getSkuNum());
                     wareSkuRelationUpdList.add(wareSkuRelation);
                 }
             }

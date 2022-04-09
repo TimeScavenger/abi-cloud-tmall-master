@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.time.LocalDateTime;
 
 /**
- * MyBatis 分页配置文件
+ * MyBatis分页 配置文件
  *
  * @ClassName: MyBatisConfig
  * @Author: illidan

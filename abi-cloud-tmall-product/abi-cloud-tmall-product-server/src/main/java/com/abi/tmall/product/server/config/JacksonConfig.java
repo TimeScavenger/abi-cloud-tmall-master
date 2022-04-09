@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
- * Jackson配置文件
+ * Jackson 配置文件
  *
  * @ClassName: JacksonConfig
  * @Author: illidan

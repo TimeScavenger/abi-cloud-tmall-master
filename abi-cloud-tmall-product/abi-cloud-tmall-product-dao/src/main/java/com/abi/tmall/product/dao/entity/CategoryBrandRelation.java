@@ -1,9 +1,7 @@
 package com.abi.tmall.product.dao.entity;
 
 import com.abi.infrastructure.dao.base.BaseEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -62,4 +60,5 @@ public class CategoryBrandRelation extends BaseEntity implements Serializable {
     public static final String COL_BRAND_CODE = "brand_code";
 
     public static final String COL_BRAND_NAME = "brand_name";
+
 }

@@ -1,9 +1,7 @@
 package com.abi.tmall.product.dao.entity;
 
 import com.abi.infrastructure.dao.base.BaseEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -44,4 +42,5 @@ public class SpuCommentReplayRelation extends BaseEntity implements Serializable
     public static final String COL_COMMENT_CODE = "comment_code";
 
     public static final String COL_REPLY_CODE = "reply_code";
+
 }

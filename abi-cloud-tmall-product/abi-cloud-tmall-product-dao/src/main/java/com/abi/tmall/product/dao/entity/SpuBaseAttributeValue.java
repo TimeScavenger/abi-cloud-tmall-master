@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_spu_base_attribute_value")
-public class SpuBaseAttributeValue  extends BaseEntity implements Serializable {
+public class SpuBaseAttributeValue extends BaseEntity implements Serializable {
 
     /**
      * spuCode

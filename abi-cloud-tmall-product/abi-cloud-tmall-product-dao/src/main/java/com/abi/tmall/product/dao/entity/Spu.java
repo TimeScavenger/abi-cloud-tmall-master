@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_spu")
-public class Spu  extends BaseEntity implements Serializable {
+public class Spu extends BaseEntity implements Serializable {
 
     /**
      * spuCode

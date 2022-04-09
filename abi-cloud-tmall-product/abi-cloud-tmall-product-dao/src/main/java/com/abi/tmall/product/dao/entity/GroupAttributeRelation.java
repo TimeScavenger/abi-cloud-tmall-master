@@ -1,9 +1,7 @@
 package com.abi.tmall.product.dao.entity;
 
 import com.abi.infrastructure.dao.base.BaseEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "pms_group_attribute_relation")
-public class GroupAttributeRelation  extends BaseEntity implements Serializable {
+public class GroupAttributeRelation extends BaseEntity implements Serializable {
 
     /**
      * 分组Code
@@ -71,4 +69,5 @@ public class GroupAttributeRelation  extends BaseEntity implements Serializable 
     public static final String COL_ATTRIBUTE_NAME = "attribute_name";
 
     public static final String COL_SORT = "sort";
+
 }

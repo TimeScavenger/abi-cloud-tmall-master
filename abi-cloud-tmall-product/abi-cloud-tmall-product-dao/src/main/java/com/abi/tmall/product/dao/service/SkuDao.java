@@ -11,10 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * Sku 持久业务类
+ *
  * @ClassName: SkuDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Sku信息
+ * @Description: Sku
  */
 @Repository
 public class SkuDao extends ServiceImpl<SkuMapper, Sku> {

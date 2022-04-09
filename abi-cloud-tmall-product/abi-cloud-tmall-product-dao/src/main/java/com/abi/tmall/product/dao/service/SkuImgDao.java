@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Sku图片 持久业务类
+ *
  * @ClassName: SkuImgDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Sku图片
+ * @Description:
  */
 @Repository
 public class SkuImgDao extends ServiceImpl<SkuImgMapper, SkuImg> {

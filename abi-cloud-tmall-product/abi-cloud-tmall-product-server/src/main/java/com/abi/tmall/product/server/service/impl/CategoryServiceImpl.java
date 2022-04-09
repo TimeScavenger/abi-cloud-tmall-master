@@ -6,17 +6,17 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.web.util.EmptyUtils;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
 import com.abi.infrastructure.web.util.JacksonUtils;
-import com.abi.tmall.product.common.request.category.CategoryAddDto;
-import com.abi.tmall.product.common.request.category.CategoryDelDto;
-import com.abi.tmall.product.common.request.category.CategoryEditDto;
-import com.abi.tmall.product.common.request.category.CategorySortDto;
-import com.abi.tmall.product.common.response.category.CategoryInfoVo;
-import com.abi.tmall.product.common.response.category.CategoryTreeVo;
+import com.abi.tmall.product.common.request.category.CategoryAddReq;
+import com.abi.tmall.product.common.request.category.CategoryDelReq;
+import com.abi.tmall.product.common.request.category.CategoryEditReq;
+import com.abi.tmall.product.common.request.category.CategorySortReq;
+import com.abi.tmall.product.common.response.category.CategoryInfoResp;
+import com.abi.tmall.product.common.response.category.CategoryTreeResp;
 import com.abi.tmall.product.dao.entity.Category;
 import com.abi.tmall.product.dao.mapper.CategoryMapper;
 import com.abi.tmall.product.dao.service.CategoryBrandRelationDao;
 import com.abi.tmall.product.dao.service.CategoryDao;
-import com.abi.tmall.product.server.constant.CategoryLevelConstant;
+import com.abi.tmall.product.server.constant.CategoryConstants;
 import com.abi.tmall.product.server.enums.ProductInitCodeEnum;
 import com.abi.tmall.product.server.service.CategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -37,10 +37,12 @@ import java.util.stream.Collectors;
 import static com.abi.infrastructure.core.constant.CollectionConstants.*;
 
 /**
+ * 商品分类 服务实现类
+ *
  * @ClassName: CategoryServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/05/13
- * @Description: 商品分类
+ * @Description:
  */
 @Slf4j
 @Service
@@ -65,30 +67,30 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 分类及其子分类
      */
     @Override
-    public List<CategoryTreeVo> queryCategoryListWithTree(Integer level) {
+    public List<CategoryTreeResp> queryCategoryListWithTree(Integer level) {
         // 1、定义一个临时的集合
         List<Integer> levelList = new ArrayList<>();
         String levleStr;
         switch (level) {
             case 1:
                 levelList = LIST_ONE_INT;
-                levleStr = CategoryLevelConstant.LEVEL_ONE;
+                levleStr = CategoryConstants.LEVEL_ONE;
                 break;
             case 2:
                 levelList = LIST_TWO_INT;
-                levleStr = CategoryLevelConstant.LEVEL_TWO;
+                levleStr = CategoryConstants.LEVEL_TWO;
                 break;
             case 3:
                 levelList = LIST_THREE_INT;
-                levleStr = CategoryLevelConstant.LEVEL_THREE;
+                levleStr = CategoryConstants.LEVEL_THREE;
                 break;
             case 4:
                 levelList = LIST_FOUR_INT;
-                levleStr = CategoryLevelConstant.LEVEL_FOUR;
+                levleStr = CategoryConstants.LEVEL_FOUR;
                 break;
             default:
                 levelList = LIST_ONE_INT;
-                levleStr = CategoryLevelConstant.LEVEL_ONE;
+                levleStr = CategoryConstants.LEVEL_ONE;
                 break;
         }
 
@@ -96,25 +98,25 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // JSON跨语言，跨平台兼容
         String str = redisTemplate.opsForValue().get("CategoryListWithTree" + levleStr);
 
-        List<CategoryTreeVo> levelMenus = new ArrayList<>();
+        List<CategoryTreeResp> levelMenus = new ArrayList<>();
         // 判断Redis中是否有缓存数据
         if (StringUtils.isBlank(str)) {
             // 缓存中没有，查询数据库
             // 2、查出所有分类, 没有查询条件就是查询所有
             List<Category> categorys = categoryDao.queryListByLevel(levelList);
-            List<CategoryTreeVo> categoryTreeVos = categorys.stream()
+            List<CategoryTreeResp> categoryTreeResps = categorys.stream()
                     .map(category -> {
-                        CategoryTreeVo categoryTreeVo = new CategoryTreeVo();
-                        BeanUtils.copyProperties(category, categoryTreeVo);
-                        return categoryTreeVo;
+                        CategoryTreeResp categoryTreeResp = new CategoryTreeResp();
+                        BeanUtils.copyProperties(category, categoryTreeResp);
+                        return categoryTreeResp;
                     })
                     .collect(Collectors.toList());
             // 3、组装成父子的树形结构
-            levelMenus = categoryTreeVos.stream()
+            levelMenus = categoryTreeResps.stream()
                     .filter(treeVo -> NumberConstants.ZERO_LONG.equals(treeVo.getParentCode())) // 简化形式：filter里面只有一行可以省略大括号
                     .map(treeVo -> {
                         // 1、找到子分类
-                        treeVo.setChildren(getChildrens(treeVo, categoryTreeVos));
+                        treeVo.setChildren(getChildrens(treeVo, categoryTreeResps));
                         return treeVo;
                     })
                     .sorted((menu1, menu2) -> {
@@ -127,7 +129,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             redisTemplate.opsForValue().set("CategoryListWithTree" + levleStr, JacksonUtils.toJson(levelMenus), 1, TimeUnit.DAYS);
 
         } else {
-            levelMenus = JacksonUtils.toList(str, CategoryTreeVo.class);
+            levelMenus = JacksonUtils.toList(str, CategoryTreeResp.class);
         }
         // 5、返回数据
         return levelMenus;
@@ -138,9 +140,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * （2）、设置过期时间（加随机值）：解决缓存雪崩
      * （3）、加锁：解决缓存击穿
      */
-    private List<CategoryTreeVo> queryCategoryListWithTreeWithRedisson(String levleStr, List<Integer> levelList) {
+    private List<CategoryTreeResp> queryCategoryListWithTreeWithRedisson(String levleStr, List<Integer> levelList) {
         // 1、设置返回结果集
-        List<CategoryTreeVo> levelMenus = new ArrayList<>();
+        List<CategoryTreeResp> levelMenus = new ArrayList<>();
 
         // 2、锁的名字。锁的粒度，越洗越快。
         // 锁的粒度：具体缓存的是某个数据，11号商品：product-11-lock，product-12-lock
@@ -160,7 +162,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 //（2）、设置过期时间（加随机值）：解决缓存雪崩
                 redisTemplate.opsForValue().set("CategoryListWithTree" + levleStr, JacksonUtils.toJson(levelMenus), 1, TimeUnit.DAYS);
             } else {
-                levelMenus = JacksonUtils.toList(redisStr, CategoryTreeVo.class);
+                levelMenus = JacksonUtils.toList(redisStr, CategoryTreeResp.class);
             }
         } finally {
             lock.unlock();
@@ -175,9 +177,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * （2）、设置过期时间（加随机值）：解决缓存雪崩
      * （3）、加锁：解决缓存击穿
      */
-    private List<CategoryTreeVo> queryCategoryListWithTreeWithRedis(String levleStr, List<Integer> levelList) {
+    private List<CategoryTreeResp> queryCategoryListWithTreeWithRedis(String levleStr, List<Integer> levelList) {
         // 1、设置返回结果集
-        List<CategoryTreeVo> levelMenus = new ArrayList<>();
+        List<CategoryTreeResp> levelMenus = new ArrayList<>();
 
         // 2、创建UUID给锁设置唯一的值，避免锁的时间是10秒，业务执行30秒，业务最后删了别人的锁
         String uuid = UUID.randomUUID().toString();
@@ -200,7 +202,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 //（2）、设置过期时间（加随机值）：解决缓存雪崩
                 redisTemplate.opsForValue().set("CategoryListWithTree" + levleStr, JacksonUtils.toJson(levelMenus), 1, TimeUnit.DAYS);
             } else {
-                levelMenus = JacksonUtils.toList(redisStr, CategoryTreeVo.class);
+                levelMenus = JacksonUtils.toList(redisStr, CategoryTreeResp.class);
             }
 
             String lockValue = redisTemplate.opsForValue().get("lock");
@@ -223,9 +225,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * （2）、设置过期时间（加随机值）：解决缓存雪崩
      * （3）、加锁：解决缓存击穿
      */
-    private List<CategoryTreeVo> queryCategoryListWithTreeWithSynchronized(String levleStr, List<Integer> levelList) {
+    private List<CategoryTreeResp> queryCategoryListWithTreeWithSynchronized(String levleStr, List<Integer> levelList) {
         // 1、设置返回结果集
-        List<CategoryTreeVo> levelMenus = new ArrayList<>();
+        List<CategoryTreeResp> levelMenus = new ArrayList<>();
         // 2、加入缓存逻辑，缓存中存的数据是json字符串
         String redisStr = redisTemplate.opsForValue().get("CategoryListWithTree" + levleStr); // JSON跨语言，跨平台兼容
 
@@ -242,11 +244,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                     //（2）、设置过期时间（加随机值）：解决缓存雪崩
                     redisTemplate.opsForValue().set("CategoryListWithTree" + levleStr, JacksonUtils.toJson(levelMenus), 1, TimeUnit.DAYS);
                 } else {
-                    levelMenus = JacksonUtils.toList(redisStr2, CategoryTreeVo.class);
+                    levelMenus = JacksonUtils.toList(redisStr2, CategoryTreeResp.class);
                 }
             }
         } else {
-            levelMenus = JacksonUtils.toList(redisStr, CategoryTreeVo.class);
+            levelMenus = JacksonUtils.toList(redisStr, CategoryTreeResp.class);
         }
         // 5、返回数据
         return levelMenus;
@@ -259,7 +261,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 默认返回结果
      */
     @Override
-    public boolean saveCategory(CategoryAddDto dto) {
+    public boolean saveCategory(CategoryAddReq dto) {
         // 1、判断是否为重复添加(名字一样、父级一样)
         Category result = categoryDao.queryInfoByCategoryNameAndParentCode(dto.getCategoryName(), dto.getParentCode());
         // 2、判断是否为重复添加数据
@@ -281,7 +283,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 默认返回结果
      */
     @Override
-    public boolean removeCategory(CategoryDelDto dto) {
+    public boolean removeCategory(CategoryDelReq dto) {
         // 1、TODO 拓展：检查当前删除的分类, 是否被别的地方引用，例如品牌和分组的关联关系
         // 2、逻辑删除
         return categoryDao.deleteByCategoryCodes(dto.getCategoryCodes());
@@ -295,7 +297,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      */
     @Override
     @Transactional
-    public boolean modifyCategory(CategoryEditDto dto) {
+    public boolean modifyCategory(CategoryEditReq dto) {
         // 1、查询校验分类是否合法
         Category categoryOld = categoryDao.queryInfoByCategoryCode(dto.getCategoryCode());
         if (categoryOld != null) {
@@ -319,17 +321,17 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 默认返回结果
      */
     @Override
-    public boolean modifyCategorySort(List<CategorySortDto> dtos) {
+    public boolean modifyCategorySort(List<CategorySortReq> dtos) {
         // 1、查询出全部的分类列表
         Map<Long, Long> categoryCodeAndIdMap = categoryDao.list()
                 .stream()
                 .collect(Collectors.toMap(Category::getCategoryCode, Category::getId));
         // 2、将dto对象拷贝成需要添加的对象
         List<Category> categories = dtos.stream()
-                .map(categorySortDto -> {
+                .map(categorySortReq -> {
                     Category category = new Category();
-                    BeanUtils.copyProperties(categorySortDto, category);
-                    category.setId(categoryCodeAndIdMap.get(categorySortDto.getCategoryCode()));
+                    BeanUtils.copyProperties(categorySortReq, category);
+                    category.setId(categoryCodeAndIdMap.get(categorySortReq.getCategoryCode()));
                     return category;
                 })
                 .collect(Collectors.toList());
@@ -344,7 +346,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 默认返回结果
      */
     @Override
-    public CategoryInfoVo findCategoryByCode(Long categoryCode) {
+    public CategoryInfoResp findCategoryByCode(Long categoryCode) {
         // 1、判断数据是否为空
         if (EmptyUtils.isNull(categoryCode)) {
             throw new BusinessException(ResultCode.PARAM_IS_ERROR.code(), ResultCode.PARAM_IS_ERROR.message());
@@ -353,9 +355,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         Category category = categoryDao.queryInfoByCategoryCode(categoryCode);
         // 3、返回数据
         if (category != null) {
-            CategoryInfoVo categoryInfoVo = new CategoryInfoVo();
-            BeanUtils.copyProperties(category, categoryInfoVo);
-            return categoryInfoVo;
+            CategoryInfoResp categoryInfoResp = new CategoryInfoResp();
+            BeanUtils.copyProperties(category, categoryInfoResp);
+            return categoryInfoResp;
         } else {
             throw new BusinessException(ResultCode.DATA_NOT_EXISTED.code(), ResultCode.DATA_NOT_EXISTED.message());
         }
@@ -408,16 +410,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * category.getParentCode().longValue() == root.getCategoryCode().longValue();
      * 或者直接使用equals进行判断也可以
      *
-     * @param root            当前分类
-     * @param categoryTreeVos 分类汇总
+     * @param root              当前分类
+     * @param categoryTreeResps 分类汇总
      * @return 分类及其子类
      */
-    private List<CategoryTreeVo> getChildrens(CategoryTreeVo root, List<CategoryTreeVo> categoryTreeVos) {
-        List<CategoryTreeVo> children = categoryTreeVos.stream()
+    private List<CategoryTreeResp> getChildrens(CategoryTreeResp root, List<CategoryTreeResp> categoryTreeResps) {
+        List<CategoryTreeResp> children = categoryTreeResps.stream()
                 .filter(treeVo -> root.getCategoryCode().equals(treeVo.getParentCode()))
                 .map(treeVo -> {
                     // 1、找到子分类
-                    treeVo.setChildren(getChildrens(treeVo, categoryTreeVos));
+                    treeVo.setChildren(getChildrens(treeVo, categoryTreeResps));
                     return treeVo;
                 })
                 .sorted((menu1, menu2) -> {

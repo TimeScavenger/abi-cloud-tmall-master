@@ -11,10 +11,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * ThreadPool线程池 配置文件
+ *
  * @ClassName: ThreadPoolConfig
  * @Author: illidan
  * @CreateDate: 2022/2/16
- * @Description: 线程池的配置
+ * @Description:
  */
 @EnableConfigurationProperties(ThreadPoolConfigProperties.class)
 @Configuration

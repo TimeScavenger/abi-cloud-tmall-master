@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品属性分组 持久业务类
+ *
  * @ClassName: GroupDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 属性分组
+ * @Description:
  */
 @Repository
 public class GroupDao extends ServiceImpl<GroupMapper, Group> {
@@ -69,7 +71,6 @@ public class GroupDao extends ServiceImpl<GroupMapper, Group> {
         }
         return false;
     }
-
 
 
 }

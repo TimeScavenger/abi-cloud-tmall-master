@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Spu商品介绍图片
+ * Spu介绍图片
  */
-@ApiModel(value = "Spu商品介绍图片")
+@ApiModel(value = "Spu介绍图片")
 @Data
 @Builder
 @AllArgsConstructor

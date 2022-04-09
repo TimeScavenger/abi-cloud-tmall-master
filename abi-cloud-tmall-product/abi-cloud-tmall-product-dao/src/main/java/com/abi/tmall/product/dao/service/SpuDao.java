@@ -9,10 +9,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Spu 持久业务类
+ *
  * @ClassName: SpuDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Spu信息
+ * @Description: Spu
  */
 @Repository
 public class SpuDao extends ServiceImpl<SpuMapper, Spu> {

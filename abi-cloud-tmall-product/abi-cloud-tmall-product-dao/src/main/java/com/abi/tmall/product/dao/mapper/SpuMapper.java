@@ -6,10 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
+ * Spu 持久类
+ *
  * @ClassName: SpuMapper
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu信息
+ * @Description:
  */
 @Mapper
 public interface SpuMapper extends BaseMapper<Spu> {

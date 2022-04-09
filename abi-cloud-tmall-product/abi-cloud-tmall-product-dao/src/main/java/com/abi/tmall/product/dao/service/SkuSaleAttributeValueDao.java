@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * Sku销售属性-属性值 持久业务类
+ *
  * @ClassName: SkuSaleAttributeValueDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Sku销售属性属性值
+ * @Description:
  */
 @Repository
 public class SkuSaleAttributeValueDao extends ServiceImpl<SkuSaleAttributeValueMapper, SkuSaleAttributeValue> {

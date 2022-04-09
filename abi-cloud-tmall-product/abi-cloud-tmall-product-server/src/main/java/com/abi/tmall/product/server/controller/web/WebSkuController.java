@@ -1,11 +1,10 @@
 package com.abi.tmall.product.server.controller.web;
 
 import com.abi.infrastructure.core.response.ApiResponse;
-import com.abi.tmall.product.common.response.sku.SkuItemVo;
+import com.abi.tmall.product.common.response.sku.SkuItemResp;
 import com.abi.tmall.product.server.service.SkuService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +14,14 @@ import javax.annotation.Resource;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * Sku Web模块
+ *
  * @ClassName: WebSkuController
  * @Author: illidan
  * @CreateDate: 2022/02/16
- * @Description: 商品SKU模块
+ * @Description:
  */
-@Api(tags = "商品SKU模块")
+@Api(tags = "Sku Web模块")
 @Slf4j
 @RestController
 @RequestMapping("/web/sku")
@@ -36,7 +37,7 @@ public class WebSkuController {
      * @return
      */
     @GetMapping("/{skuCode}.html")
-    public ApiResponse<SkuItemVo> querySkuItemBySkuCode(@PathVariable("skuCode") Long skuCode) throws ExecutionException, InterruptedException {
+    public ApiResponse<SkuItemResp> querySkuItemBySkuCode(@PathVariable("skuCode") Long skuCode) throws ExecutionException, InterruptedException {
         return ApiResponse.result(skuService.querySkuItemBySkuCode(skuCode));
     }
 }

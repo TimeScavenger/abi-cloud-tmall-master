@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Sku图片 Console模块
+ *
  * @ClassName: SkuImgController
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: Sku图片
+ * @Description:
  */
-@Api(tags = "Sku图片模块")
+@Api(tags = "Sku图片 Console模块")
 @Slf4j
 @RestController
 @RequestMapping("/console/sku-img")

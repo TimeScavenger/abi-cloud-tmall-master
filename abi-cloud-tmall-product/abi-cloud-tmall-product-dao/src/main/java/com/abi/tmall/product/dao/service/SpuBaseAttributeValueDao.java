@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * Spu规格参数-属性值 持久业务类
+ *
  * @ClassName: SpuImgDetailDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Spu规格参数属性值
+ * @Description:
  */
 @Repository
 public class SpuBaseAttributeValueDao extends ServiceImpl<SpuBaseAttributeValueMapper, SpuBaseAttributeValue> {

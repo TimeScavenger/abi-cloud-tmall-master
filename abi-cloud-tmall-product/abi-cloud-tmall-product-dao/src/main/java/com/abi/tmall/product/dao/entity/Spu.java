@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * Spu信息
+ * Spu
  */
-@ApiModel(value = "Spu信息")
+@ApiModel(value = "Spu")
 @Data
 @Builder
 @AllArgsConstructor

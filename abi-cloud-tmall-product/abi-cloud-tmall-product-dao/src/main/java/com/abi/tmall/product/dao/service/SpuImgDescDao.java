@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * Spu介绍图片 持久业务类
+ *
  * @ClassName: SpuImgDescDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: Spu商品介绍图片
+ * @Description:
  */
 @Repository
 public class SpuImgDescDao extends ServiceImpl<SpuImgDescMapper, SpuImgDesc> {

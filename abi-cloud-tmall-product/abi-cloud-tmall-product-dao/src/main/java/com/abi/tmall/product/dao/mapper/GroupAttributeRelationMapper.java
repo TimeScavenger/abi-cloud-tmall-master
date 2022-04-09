@@ -8,10 +8,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
+ * 商品属性分组-属性关系 持久类
+ *
  * @ClassName: GroupAttributeRelationMapper
  * @Author: illidan
  * @CreateDate: 2021/05/20
- * @Description: 属性分组-属性关系
+ * @Description:
  */
 @Mapper
 public interface GroupAttributeRelationMapper extends BaseMapper<GroupAttributeRelation> {

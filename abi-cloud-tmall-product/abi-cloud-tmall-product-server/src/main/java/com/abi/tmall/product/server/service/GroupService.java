@@ -1,35 +1,34 @@
 package com.abi.tmall.product.server.service;
 
 import com.abi.infrastructure.dao.page.PageResponse;
-import com.abi.infrastructure.core.response.ApiResponse;
-import com.abi.tmall.product.common.request.group.GroupAddDto;
-import com.abi.tmall.product.common.request.group.GroupDelDto;
-import com.abi.tmall.product.common.request.group.GroupEditDto;
-import com.abi.tmall.product.common.request.group.GroupPageDto;
-import com.abi.tmall.product.common.response.group.GroupInfoVo;
-import com.abi.tmall.product.common.response.group.GroupPageVo;
+import com.abi.tmall.product.common.request.group.GroupAddReq;
+import com.abi.tmall.product.common.request.group.GroupDelReq;
+import com.abi.tmall.product.common.request.group.GroupEditReq;
+import com.abi.tmall.product.common.request.group.GroupPageReq;
+import com.abi.tmall.product.common.response.group.GroupInfoResp;
+import com.abi.tmall.product.common.response.group.GroupPageResp;
 import com.abi.tmall.product.dao.entity.Group;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
+ * 商品属性分组 服务类
+ *
  * @ClassName: GroupService
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 属性分组
+ * @Description:
  */
 public interface GroupService extends IService<Group> {
 
-    PageResponse<GroupPageVo> queryGroupPageByCondition(GroupPageDto groupPageDto);
+    PageResponse<GroupPageResp> queryGroupPageByCondition(GroupPageReq groupPageReq);
 
-    boolean saveGroup(GroupAddDto groupAddDto);
+    boolean saveGroup(GroupAddReq groupAddReq);
 
-    boolean removeGroup(GroupDelDto groupDelDto);
+    boolean removeGroup(GroupDelReq groupDelReq);
 
-    boolean modifyGroup(GroupEditDto groupEditDto);
+    boolean modifyGroup(GroupEditReq groupEditReq);
 
-    GroupInfoVo findGroupByCode(Long groupCode);
+    GroupInfoResp findGroupByCode(Long groupCode);
 
 }
 

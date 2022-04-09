@@ -4,12 +4,12 @@ import com.abi.infrastructure.core.base.ResultCode;
 import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
-import com.abi.tmall.product.common.request.group.GroupAddDto;
-import com.abi.tmall.product.common.request.group.GroupDelDto;
-import com.abi.tmall.product.common.request.group.GroupEditDto;
-import com.abi.tmall.product.common.request.group.GroupPageDto;
-import com.abi.tmall.product.common.response.group.GroupInfoVo;
-import com.abi.tmall.product.common.response.group.GroupPageVo;
+import com.abi.tmall.product.common.request.group.GroupAddReq;
+import com.abi.tmall.product.common.request.group.GroupDelReq;
+import com.abi.tmall.product.common.request.group.GroupEditReq;
+import com.abi.tmall.product.common.request.group.GroupPageReq;
+import com.abi.tmall.product.common.response.group.GroupInfoResp;
+import com.abi.tmall.product.common.response.group.GroupPageResp;
 import com.abi.tmall.product.dao.entity.Group;
 import com.abi.tmall.product.dao.mapper.GroupMapper;
 import com.abi.tmall.product.dao.service.GroupAttributeRelationDao;
@@ -30,10 +30,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 商品属性分组 服务实现类
+ *
  * @ClassName: GroupServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 属性分组
+ * @Description:
  */
 @Slf4j
 @Service
@@ -55,9 +57,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
      * @return
      */
     @Override
-    public PageResponse<GroupPageVo> queryGroupPageByCondition(GroupPageDto dto) {
+    public PageResponse<GroupPageResp> queryGroupPageByCondition(GroupPageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<GroupPageVo> pageResponse = new PageResponse<>();
+        PageResponse<GroupPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -65,11 +67,11 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<GroupPageVo> pageVoList = page.getRecords().stream()
+            List<GroupPageResp> pageVoList = page.getRecords().stream()
                     .map(group -> {
-                        GroupPageVo groupPageVo = new GroupPageVo();
-                        BeanUtils.copyProperties(group, groupPageVo);
-                        return groupPageVo;
+                        GroupPageResp groupPageResp = new GroupPageResp();
+                        BeanUtils.copyProperties(group, groupPageResp);
+                        return groupPageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
@@ -89,7 +91,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
      * @return
      */
     @Override
-    public boolean saveGroup(GroupAddDto dto) {
+    public boolean saveGroup(GroupAddReq dto) {
         // 1、判断是否为重复添加
         Group result = groupDao.queryInfoByCategoryCodeAndGroupName(dto.getCategoryCode(), dto.getGroupName());
         // 2、判断是否为重复添加数据
@@ -110,7 +112,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
      * @return
      */
     @Override
-    public boolean removeGroup(GroupDelDto dto) {
+    public boolean removeGroup(GroupDelReq dto) {
         // 1、TODO 拓展：检查当前删除的分组, 是否被别的地方引用，例如分组和属性的关联关系
         // 2、逻辑删除
         return groupDao.deleteByGroupCodes(dto.getGroupCodes());
@@ -118,7 +120,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Override
     @Transactional
-    public boolean modifyGroup(GroupEditDto dto) {
+    public boolean modifyGroup(GroupEditReq dto) {
         // 1、查询校验分类是否合法
         Group groupOld = groupDao.queryInfoByGroupCode(dto.getGroupCode());
         if (groupOld != null) {
@@ -143,7 +145,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
      * @return
      */
     @Override
-    public GroupInfoVo findGroupByCode(Long groupCode) {
+    public GroupInfoResp findGroupByCode(Long groupCode) {
         // 1、判断数据是否为空
         if (groupCode == null) {
             throw new BusinessException(ResultCode.PARAM_IS_ERROR.code(), ResultCode.PARAM_IS_ERROR.message());
@@ -152,13 +154,13 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         Group group = groupDao.queryInfoByGroupCode(groupCode);
         // 3、返回数据
         if (group != null) {
-            GroupInfoVo groupInfoVo = new GroupInfoVo();
-            BeanUtils.copyProperties(group, groupInfoVo);
+            GroupInfoResp groupInfoResp = new GroupInfoResp();
+            BeanUtils.copyProperties(group, groupInfoResp);
             // 3.1、根据分类Code查询出分类的路径
             Long[] path = categoryService.findCategoryPath(group.getCategoryCode());
             // 3.2、设置分类路径
-            groupInfoVo.setCategoryPath(path);
-            return groupInfoVo;
+            groupInfoResp.setCategoryPath(path);
+            return groupInfoResp;
         } else {
             throw new BusinessException(ResultCode.DATA_NOT_EXISTED.code(), ResultCode.DATA_NOT_EXISTED.message());
         }

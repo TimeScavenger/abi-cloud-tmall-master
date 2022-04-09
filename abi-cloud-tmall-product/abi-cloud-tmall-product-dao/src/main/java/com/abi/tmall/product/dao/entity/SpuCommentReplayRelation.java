@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Spu商品评价回复关系
+ * Spu评价-回复关系
  */
-@ApiModel(value = "Spu商品评价回复关系")
+@ApiModel(value = "Spu评价-回复关系")
 @Data
 @Builder
 @AllArgsConstructor

@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 属性分组
+ * 商品属性分组
  */
-@ApiModel(value = "属性分组")
+@ApiModel(value = "商品属性分组")
 @Data
 @Builder
 @AllArgsConstructor

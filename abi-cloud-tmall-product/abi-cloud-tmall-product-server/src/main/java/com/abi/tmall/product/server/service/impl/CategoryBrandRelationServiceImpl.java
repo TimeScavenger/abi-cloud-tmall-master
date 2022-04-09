@@ -2,12 +2,12 @@ package com.abi.tmall.product.server.service.impl;
 
 import com.abi.infrastructure.core.base.ResultCode;
 import com.abi.infrastructure.core.exception.BusinessException;
-import com.abi.tmall.product.common.request.category.CbRelationAddDto;
-import com.abi.tmall.product.common.request.category.CbRelationDelDto;
-import com.abi.tmall.product.common.request.category.CbRelationListByBrandDto;
-import com.abi.tmall.product.common.request.category.CbRelationListByCategoryDto;
-import com.abi.tmall.product.common.response.category.CbRelationListByBrandVo;
-import com.abi.tmall.product.common.response.category.CbRelationListByCategoryVo;
+import com.abi.tmall.product.common.request.category.CbRelationAddReq;
+import com.abi.tmall.product.common.request.category.CbRelationDelReq;
+import com.abi.tmall.product.common.request.category.CbRelationListByBrandReq;
+import com.abi.tmall.product.common.request.category.CbRelationListByCategoryReq;
+import com.abi.tmall.product.common.response.category.CbRelationListByBrandResp;
+import com.abi.tmall.product.common.response.category.CbRelationListByCategoryResp;
 import com.abi.tmall.product.dao.entity.Brand;
 import com.abi.tmall.product.dao.entity.Category;
 import com.abi.tmall.product.dao.entity.CategoryBrandRelation;
@@ -30,10 +30,12 @@ import java.util.stream.Collectors;
 import static com.abi.infrastructure.core.constant.CommonConstants.LOG_PRE;
 
 /**
+ * 商品分类-品牌关系 服务实现类
+ *
  * @ClassName: CategoryBrandRelationServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/5/19
- * @Description: 商品分类-品牌关系
+ * @Description:
  */
 @Slf4j
 @Service
@@ -55,7 +57,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
      * @return 品牌分类关系返回列表
      */
     @Override
-    public List<CbRelationListByCategoryVo> queryCategoryListByBrandCode(CbRelationListByBrandDto dto) {
+    public List<CbRelationListByCategoryResp> queryCategoryListByBrandCode(CbRelationListByBrandReq dto) {
         // 1、查询品牌关联的分类列表
         List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryCategoryListByBrandCode(dto.getBrandCode());
         log.info(LOG_PRE + "查询品牌关联的分类列表，品牌ID: 【{}】，分类关联的品牌列表：【{}】", dto.getBrandCode(), categoryBrandRelations);
@@ -64,15 +66,15 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
             return Lists.newArrayList();
         }
         // 3、数据进行转换、组装返回数据
-        List<CbRelationListByCategoryVo> cbRelationListByCategoryVos = categoryBrandRelations.stream()
+        List<CbRelationListByCategoryResp> cbRelationListByCategoryResps = categoryBrandRelations.stream()
                 .map(categoryBrandRelation -> {
-                    CbRelationListByCategoryVo bcRelationBrandListVo = new CbRelationListByCategoryVo();
+                    CbRelationListByCategoryResp bcRelationBrandListVo = new CbRelationListByCategoryResp();
                     BeanUtils.copyProperties(categoryBrandRelation, bcRelationBrandListVo);
                     return bcRelationBrandListVo;
                 })
                 .collect(Collectors.toList());
         // 4、返回数据
-        return cbRelationListByCategoryVos;
+        return cbRelationListByCategoryResps;
     }
 
     /**
@@ -82,7 +84,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
      * @return 品牌分类关系返回列表
      */
     @Override
-    public List<CbRelationListByBrandVo> queryBrandListByCategoryCode(CbRelationListByCategoryDto dto) {
+    public List<CbRelationListByBrandResp> queryBrandListByCategoryCode(CbRelationListByCategoryReq dto) {
         // 1、查询分类关联的品牌列表
         List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryBrandListByCategoryCode(dto.getCategoryCode());
         log.info(LOG_PRE + "查询分类关联的品牌列表，分类ID: 【{}】，分类关联的品牌列表：【{}】", dto.getCategoryCode(), categoryBrandRelations);
@@ -91,11 +93,11 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
             return Lists.newArrayList();
         }
         // 3、组装需要返回的数据
-        List<CbRelationListByBrandVo> bcRelationCategoryListVos = categoryBrandRelations.stream()
+        List<CbRelationListByBrandResp> bcRelationCategoryListVos = categoryBrandRelations.stream()
                 .map(categoryBrandRelation -> {
-                    CbRelationListByBrandVo cbRelationListByBrandVo = new CbRelationListByBrandVo();
-                    BeanUtils.copyProperties(categoryBrandRelation, cbRelationListByBrandVo);
-                    return cbRelationListByBrandVo;
+                    CbRelationListByBrandResp cbRelationListByBrandResp = new CbRelationListByBrandResp();
+                    BeanUtils.copyProperties(categoryBrandRelation, cbRelationListByBrandResp);
+                    return cbRelationListByBrandResp;
                 })
                 .collect(Collectors.toList());
         // 4、返回数据
@@ -109,7 +111,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
      * @return 默认返回结果
      */
     @Override
-    public boolean saveBrandCategoryRelation(CbRelationAddDto dto) {
+    public boolean saveBrandCategoryRelation(CbRelationAddReq dto) {
         // 1、获取到品牌的名字和分类的名字
         Long brandCode = dto.getBrandCode();
         Long categoryCode = dto.getCategoryCode();
@@ -139,7 +141,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
      * @return 默认返回结果
      */
     @Override
-    public boolean removeBrandCategoryRelation(CbRelationDelDto dto) {
+    public boolean removeBrandCategoryRelation(CbRelationDelReq dto) {
         return categoryBrandRelationDao.removeByIds(dto.getIds());
     }
 

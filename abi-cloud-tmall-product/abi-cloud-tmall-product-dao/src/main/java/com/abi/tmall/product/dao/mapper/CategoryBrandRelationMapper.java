@@ -8,10 +8,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
+ * 商品分类-品牌关系 持久类
+ *
  * @ClassName: BrandCategoryRelationMapper
  * @Author: illidan
  * @CreateDate: 2021/5/19
- * @Description: 商品分类-品牌关系
+ * @Description:
  */
 @Mapper
 public interface CategoryBrandRelationMapper extends BaseMapper<CategoryBrandRelation> {

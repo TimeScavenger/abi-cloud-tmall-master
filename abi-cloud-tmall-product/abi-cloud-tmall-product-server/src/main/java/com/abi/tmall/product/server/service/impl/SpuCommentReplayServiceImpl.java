@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * Spu评价-回复关系 服务实现类
+ *
  * @ClassName: SpuCommentReplayServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu商品评价回复关系
+ * @Description:
  */
 @Slf4j
 @Service

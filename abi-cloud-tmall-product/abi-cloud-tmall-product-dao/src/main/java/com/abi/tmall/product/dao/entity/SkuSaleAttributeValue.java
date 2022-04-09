@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Sku销售属性属性值
+ * Sku销售属性-属性值
  */
-@ApiModel(value = "Sku销售属性属性值")
+@ApiModel(value = "Sku销售属性-属性值")
 @Data
 @Builder
 @AllArgsConstructor

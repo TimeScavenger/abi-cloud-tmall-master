@@ -5,11 +5,11 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
-import com.abi.tmall.product.common.request.sku.SkuAddDto;
-import com.abi.tmall.product.common.request.spu.SpuAddDto;
-import com.abi.tmall.product.common.request.spu.SpuPageDto;
-import com.abi.tmall.product.common.request.spu.SpuUpDto;
-import com.abi.tmall.product.common.response.spu.SpuPageVo;
+import com.abi.tmall.product.common.request.sku.SkuAddReq;
+import com.abi.tmall.product.common.request.spu.SpuAddReq;
+import com.abi.tmall.product.common.request.spu.SpuPageReq;
+import com.abi.tmall.product.common.request.spu.SpuUpReq;
+import com.abi.tmall.product.common.response.spu.SpuPageResp;
 import com.abi.tmall.product.dao.entity.*;
 import com.abi.tmall.product.dao.mapper.SpuMapper;
 import com.abi.tmall.product.dao.service.*;
@@ -94,9 +94,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     private SearchFeignClient searchFeignService;
 
     @Override
-    public PageResponse<SpuPageVo> querySpuPageByCondition(SpuPageDto dto) {
+    public PageResponse<SpuPageResp> querySpuPageByCondition(SpuPageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<SpuPageVo> pageResponse = new PageResponse<>();
+        PageResponse<SpuPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -120,13 +120,13 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
                     .collect(Collectors.toMap(Brand::getBrandCode, Brand::getBrandName));
 
             // 4.3、数据进行转换
-            List<SpuPageVo> pageVoList = page.getRecords().stream()
+            List<SpuPageResp> pageVoList = page.getRecords().stream()
                     .map(spu -> {
-                        SpuPageVo spuPageVo = new SpuPageVo();
-                        BeanUtils.copyProperties(spu, spuPageVo);
-                        spuPageVo.setCategoryName(categoryCodeAndCategoryNameMap.get(spu.getCategoryCode()));
-                        spuPageVo.setBrandName(brandCodeAndBrandNameMap.get(spu.getBrandCode()));
-                        return spuPageVo;
+                        SpuPageResp spuPageResp = new SpuPageResp();
+                        BeanUtils.copyProperties(spu, spuPageResp);
+                        spuPageResp.setCategoryName(categoryCodeAndCategoryNameMap.get(spu.getCategoryCode()));
+                        spuPageResp.setBrandName(brandCodeAndBrandNameMap.get(spu.getBrandCode()));
+                        return spuPageResp;
                     })
                     .collect(Collectors.toList());
 
@@ -143,7 +143,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
     @Override
     @Transactional
-    public boolean saveSpu(SpuAddDto dto) {
+    public boolean saveSpu(SpuAddReq dto) {
         // 1、保存SPU基本信息 -> pms_spu_info
         Spu spu = new Spu();
         BeanUtils.copyProperties(dto, spu);
@@ -173,7 +173,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         Map<Long, Attribute> idAttributeMap = attributes.stream()
                 .collect(Collectors.toMap(Attribute::getAttributeCode, attribute -> attribute));
         // 对前端传输过来的相关属性进行处理
-        List<SpuAddDto.SpuBaseAttribute> spuBaseAttributes = dto.getSpuBaseAttributes();
+        List<SpuAddReq.SpuBaseAttribute> spuBaseAttributes = dto.getSpuBaseAttributes();
         if (CollectionUtils.isNotEmpty(spuBaseAttributes)) {
             List<SpuBaseAttributeValue> spuBaseAttributeValues = spuBaseAttributes.stream()
                     .map(item -> {
@@ -191,7 +191,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         }
 
         // 5、保存Spu的积分信息 -> sms_spu_bounds
-        SpuAddDto.Bounds bounds = dto.getBounds();
+        SpuAddReq.Bounds bounds = dto.getBounds();
         SpuBoundsAddReq spuBoundsAddReq = new SpuBoundsAddReq();
         BeanUtils.copyProperties(bounds, spuBoundsAddReq);
         spuBoundsAddReq.setSpuCode(spuCode);
@@ -202,8 +202,8 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         }
 
         // 6、保存当前Spu对应的所有Sku信息
-        List<SkuAddDto> skuAddDtos = dto.getSkuAddDtos();
-        if (CollectionUtils.isEmpty(skuAddDtos)) {
+        List<SkuAddReq> skuAddReqs = dto.getSkuAddReqs();
+        if (CollectionUtils.isEmpty(skuAddReqs)) {
             log.error(LOG_PRE + "获取SKU信息异常");
             throw new BusinessException("获取SKU信息异常");
         }
@@ -215,16 +215,16 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         List<SkuFullReductionAddReq> skuFullReductionAddReqs = new ArrayList<>();
         List<SkuLadderAddReq> skuLadderAddReqs = new ArrayList<>();
 
-        for (SkuAddDto skuAddDto : skuAddDtos) {
+        for (SkuAddReq skuAddReq : skuAddReqs) {
             // 6.1、Sku的基本信息 -> pms_sku_info
             String defaultImg = "";
-            for (SkuAddDto.Images image : skuAddDto.getSkuDetailImgs()) {
+            for (SkuAddReq.Images image : skuAddReq.getSkuDetailImgs()) {
                 if (image.getDefaultImg() == 1) {
                     defaultImg = image.getImgUrl();
                 }
             }
             Sku sku = new Sku();
-            BeanUtils.copyProperties(skuAddDto, sku);
+            BeanUtils.copyProperties(skuAddReq, sku);
             sku.setSpuCode(spu.getSpuCode());
             sku.setCategoryCode(spu.getCategoryCode());
             sku.setBrandCode(spu.getBrandCode());
@@ -235,7 +235,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
             // 6.2、Sku的图片信息 -> pms_sku_img
             Long skuCode = sku.getSkuCode();
-            skuImgs = skuAddDto.getSkuDetailImgs().stream()
+            skuImgs = skuAddReq.getSkuDetailImgs().stream()
                     .map(img -> {
                         SkuImg skuImg = new SkuImg();
                         skuImg.setSkuCode(skuCode);
@@ -247,7 +247,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
                     .collect(Collectors.toList());
 
             // 6.3、Sku的属性 -> pms_sku_sale_attribute_value
-            List<SkuAddDto.Attribute> saleAttributeList = skuAddDto.getAttr();
+            List<SkuAddReq.Attribute> saleAttributeList = skuAddReq.getAttr();
             List<SkuSaleAttributeValue> saleAttributeValues = saleAttributeList.stream()
                     .map(attribute -> {
                         SkuSaleAttributeValue skuSaleAttributeValue = new SkuSaleAttributeValue();
@@ -263,17 +263,17 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
             // 6.4、Sku的满减信息 -> sms_sku_full_reduction
             SkuFullReductionAddReq skuFullReductionAddReq = new SkuFullReductionAddReq();
             skuFullReductionAddReq.setSkuCode(skuCode);
-            skuFullReductionAddReq.setFullPrice(skuAddDto.getFullPrice());
-            skuFullReductionAddReq.setReducePrice(skuAddDto.getReducePrice());
-            skuFullReductionAddReq.setAddOther(skuAddDto.getPriceStatus());
+            skuFullReductionAddReq.setFullPrice(skuAddReq.getFullPrice());
+            skuFullReductionAddReq.setReducePrice(skuAddReq.getReducePrice());
+            skuFullReductionAddReq.setAddOther(skuAddReq.getPriceStatus());
             skuFullReductionAddReqs.add(skuFullReductionAddReq);
 
             // 6.5、Sku的折扣信息 -> sms_sku_ladder
             SkuLadderAddReq skuLadderAddReq = new SkuLadderAddReq();
             skuLadderAddReq.setSkuCode(skuCode);
-            skuLadderAddReq.setFullCount(skuAddDto.getFullCount());
-            skuLadderAddReq.setDiscount(skuAddDto.getDiscount());
-            skuLadderAddReq.setAddOther(skuAddDto.getCountStatus());
+            skuLadderAddReq.setFullCount(skuAddReq.getFullCount());
+            skuLadderAddReq.setDiscount(skuAddReq.getDiscount());
+            skuLadderAddReq.setAddOther(skuAddReq.getCountStatus());
             skuLadderAddReqs.add(skuLadderAddReq);
 
             // 6.6、Sku的会员价格信息 -> sms_member_price
@@ -322,7 +322,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     // @GlobalTransactional(rollbackFor = Exception.class)
     // @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean upSpu(SpuUpDto dto) {
+    public boolean upSpu(SpuUpReq dto) {
         // 1、获取当前提交的SpuCode
         Long spuCode = dto.getSpuCode();
         Spu spu = spuDao.queryInfoBySpuCode(spuCode);

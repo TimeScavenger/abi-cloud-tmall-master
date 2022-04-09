@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品属性 持久业务类
+ *
  * @ClassName: AttributeDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 商品属性
+ * @Description:
  */
 @Repository
 public class AttributeDao extends ServiceImpl<AttributeMapper, Attribute> {

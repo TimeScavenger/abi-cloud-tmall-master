@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Spu规格参数属性值
+ * Spu规格参数-属性值
  */
-@ApiModel(value = "Spu规格参数属性值")
+@ApiModel(value = "Spu规格参数-属性值")
 @Data
 @Builder
 @AllArgsConstructor

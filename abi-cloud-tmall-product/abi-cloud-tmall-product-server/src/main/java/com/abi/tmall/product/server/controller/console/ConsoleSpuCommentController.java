@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Spu评价 Console模块
+ *
  * @ClassName: SpuCommentController
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: Spu商品评价
+ * @Description:
  */
-@Api(tags = "Spu商品评价模块")
+@Api(tags = "Spu评价 Console模块")
 @Slf4j
 @RestController
 @RequestMapping("/console/spu-comment")

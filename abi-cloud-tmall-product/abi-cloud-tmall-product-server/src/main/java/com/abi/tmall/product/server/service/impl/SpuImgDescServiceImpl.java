@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * Spu介绍图片 服务实现类
+ *
  * @ClassName: SpuImgDescServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu商品介绍图片
+ * @Description:
  */
 @Slf4j
 @Service

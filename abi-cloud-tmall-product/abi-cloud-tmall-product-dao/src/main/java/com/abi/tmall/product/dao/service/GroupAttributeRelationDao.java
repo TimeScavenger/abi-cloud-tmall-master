@@ -2,7 +2,6 @@ package com.abi.tmall.product.dao.service;
 
 import com.abi.tmall.product.dao.entity.GroupAttributeRelation;
 import com.abi.tmall.product.dao.mapper.GroupAttributeRelationMapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,10 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品属性分组-属性关系 持久业务类
+ *
  * @ClassName: GroupAttributeRelationDao
  * @Author: illidan
  * @CreateDate: 2021/5/19
- * @Description: 属性分组-属性关系
+ * @Description:
  */
 @Repository
 public class GroupAttributeRelationDao extends ServiceImpl<GroupAttributeRelationMapper, GroupAttributeRelation> {

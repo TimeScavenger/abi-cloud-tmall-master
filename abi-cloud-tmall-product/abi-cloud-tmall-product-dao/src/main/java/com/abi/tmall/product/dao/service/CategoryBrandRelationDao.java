@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品分类-品牌关系 持久业务类
+ *
  * @ClassName: BrandCategoryRelationDao
  * @Author: illidan
  * @CreateDate: 2021/5/19
- * @Description: 商品分类-品牌关系
+ * @Description:
  */
 @Repository
 public class CategoryBrandRelationDao extends ServiceImpl<CategoryBrandRelationMapper, CategoryBrandRelation> {

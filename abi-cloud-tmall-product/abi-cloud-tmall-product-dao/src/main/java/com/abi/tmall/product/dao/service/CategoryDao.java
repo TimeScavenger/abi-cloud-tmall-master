@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品分类 持久业务类
+ *
  * @ClassName: CategoryDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 商品分类
+ * @Description:
  */
 @Repository
 public class CategoryDao extends ServiceImpl<CategoryMapper, Category> {

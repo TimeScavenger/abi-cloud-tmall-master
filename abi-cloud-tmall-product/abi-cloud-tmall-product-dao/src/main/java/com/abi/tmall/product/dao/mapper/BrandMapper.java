@@ -8,10 +8,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
+ * 商品品牌 持久类
+ *
  * @ClassName: BrandMapper
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 商品品牌
+ * @Description: 商品品牌 持久类
  */
 @Mapper
 public interface BrandMapper extends BaseMapper<Brand> {

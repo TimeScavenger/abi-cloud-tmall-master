@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * Spu规格参数-属性值 服务实现类
+ *
  * @ClassName: SpuAttrValueServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu规格参数属性值
+ * @Description:
  */
 @Slf4j
 @Service

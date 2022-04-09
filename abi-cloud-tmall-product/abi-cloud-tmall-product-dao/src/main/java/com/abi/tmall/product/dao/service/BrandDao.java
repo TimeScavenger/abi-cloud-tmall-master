@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 商品品牌 持久业务类
+ *
  * @ClassName: BrandDao
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 商品品牌
+ * @Description:
  */
 @Repository
 public class BrandDao extends ServiceImpl<BrandMapper, Brand> {

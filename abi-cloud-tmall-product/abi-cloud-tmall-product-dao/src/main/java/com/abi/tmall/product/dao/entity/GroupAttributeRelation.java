@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 属性分组-属性关系
+ * 商品属性分组-属性关系
  */
-@ApiModel(value = "属性分组-属性关系")
+@ApiModel(value = "商品属性分组-属性关系")
 @Data
 @Builder
 @AllArgsConstructor

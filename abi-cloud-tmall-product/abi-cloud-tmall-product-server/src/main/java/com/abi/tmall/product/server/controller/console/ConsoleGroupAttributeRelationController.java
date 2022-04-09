@@ -1,11 +1,11 @@
 package com.abi.tmall.product.server.controller.console;
 
-import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.core.response.ApiResponse;
-import com.abi.tmall.product.common.request.group.GaRelationAddDto;
-import com.abi.tmall.product.common.request.group.GaRelationDelDto;
-import com.abi.tmall.product.common.request.group.GaRelationPageDto;
-import com.abi.tmall.product.common.response.attribute.AttributePageVo;
+import com.abi.infrastructure.dao.page.PageResponse;
+import com.abi.tmall.product.common.request.group.GaRelationAddReq;
+import com.abi.tmall.product.common.request.group.GaRelationDelReq;
+import com.abi.tmall.product.common.request.group.GaRelationPageReq;
+import com.abi.tmall.product.common.response.attribute.AttributePageResp;
 import com.abi.tmall.product.server.service.GroupAttributeRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 商品属性分组-属性关系 Console模块
+ *
  * @ClassName: GroupAttributeRelationController
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 属性分组-属性关系
+ * @Description:
  */
-@Api(tags = "属性分组-属性关系模块")
+@Api(tags = "商品属性分组-属性关系 Console模块")
 @Slf4j
 @RestController
 @RequestMapping("/console/group-attribute-relation")
@@ -35,26 +37,26 @@ public class ConsoleGroupAttributeRelationController {
 
     @PostMapping("/page/no-attributes/by/groupCode")
     @ApiOperation(value = "查询 分组没有关联的属性列表")
-    public ApiResponse<PageResponse<AttributePageVo>> queryNoAttributePageByGroupCode(@RequestBody GaRelationPageDto gaRelationPageDto) {
-        return ApiResponse.result(groupAttributeRelationService.queryNoAttributePageByGroupCode(gaRelationPageDto));
+    public ApiResponse<PageResponse<AttributePageResp>> queryNoAttributePageByGroupCode(@RequestBody GaRelationPageReq gaRelationPageReq) {
+        return ApiResponse.result(groupAttributeRelationService.queryNoAttributePageByGroupCode(gaRelationPageReq));
     }
 
     @PostMapping("/list/attributes/by/groupCode")
     @ApiOperation(value = "查询 根据分组id查找关联的所有基本属性")
-    public ApiResponse<PageResponse<AttributePageVo>> queryAttributeListByGroupCode(@RequestBody GaRelationPageDto gaRelationPageDto) {
-        return ApiResponse.result(groupAttributeRelationService.queryAttributeListByGroupCode(gaRelationPageDto));
+    public ApiResponse<PageResponse<AttributePageResp>> queryAttributeListByGroupCode(@RequestBody GaRelationPageReq gaRelationPageReq) {
+        return ApiResponse.result(groupAttributeRelationService.queryAttributeListByGroupCode(gaRelationPageReq));
     }
 
     @PostMapping("/save/batch")
     @ApiOperation(value = "添加 分组和属性关系的对象")
-    public ApiResponse<Object> batchSaveGroupAttributeRelation(@RequestBody List<GaRelationAddDto> gaRelationAddDtos) {
-        return ApiResponse.result(groupAttributeRelationService.batchSaveGroupAttributeRelation(gaRelationAddDtos));
+    public ApiResponse<Object> batchSaveGroupAttributeRelation(@RequestBody List<GaRelationAddReq> gaRelationAddReqs) {
+        return ApiResponse.result(groupAttributeRelationService.batchSaveGroupAttributeRelation(gaRelationAddReqs));
     }
 
     @PostMapping("/remove/batch")
     @ApiOperation(value = "删除 分组和属性关系的对象")
-    public ApiResponse<Object> batchRemoveGroupAttributeRelation(@RequestBody List<GaRelationDelDto> gaRelationDelDtos) {
-        return ApiResponse.result(groupAttributeRelationService.batchRemoveGroupAttributeRelation(gaRelationDelDtos));
+    public ApiResponse<Object> batchRemoveGroupAttributeRelation(@RequestBody List<GaRelationDelReq> gaRelationDelReqs) {
+        return ApiResponse.result(groupAttributeRelationService.batchRemoveGroupAttributeRelation(gaRelationDelReqs));
     }
 
 }

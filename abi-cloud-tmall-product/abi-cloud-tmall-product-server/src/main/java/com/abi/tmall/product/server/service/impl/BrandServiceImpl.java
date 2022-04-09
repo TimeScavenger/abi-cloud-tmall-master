@@ -5,9 +5,9 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
 import com.abi.tmall.product.common.request.brand.*;
-import com.abi.tmall.product.common.response.brand.BrandInfoVo;
-import com.abi.tmall.product.common.response.brand.BrandListVo;
-import com.abi.tmall.product.common.response.brand.BrandPageVo;
+import com.abi.tmall.product.common.response.brand.BrandInfoResp;
+import com.abi.tmall.product.common.response.brand.BrandListResp;
+import com.abi.tmall.product.common.response.brand.BrandPageResp;
 import com.abi.tmall.product.dao.entity.Brand;
 import com.abi.tmall.product.dao.mapper.BrandMapper;
 import com.abi.tmall.product.dao.service.BrandDao;
@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 商品品牌 服务实现类
+ *
  * @ClassName: BrandServiceImpl
  * @Author: illCodean
  * @CreateDate: 2021/5/18
- * @Description: 商品品牌
+ * @Description:
  */
 @Slf4j
 @Service
@@ -49,9 +51,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 品牌分页列表
      */
     @Override
-    public PageResponse<BrandPageVo> queryBrandPageByCondition(BrandPageDto dto) {
+    public PageResponse<BrandPageResp> queryBrandPageByCondition(BrandPageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<BrandPageVo> pageResponse = new PageResponse<>();
+        PageResponse<BrandPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -59,11 +61,11 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<BrandPageVo> pageVoList = page.getRecords().stream()
+            List<BrandPageResp> pageVoList = page.getRecords().stream()
                     .map(brand -> {
-                        BrandPageVo brandPageVo = new BrandPageVo();
-                        BeanUtils.copyProperties(brand, brandPageVo);
-                        return brandPageVo;
+                        BrandPageResp brandPageResp = new BrandPageResp();
+                        BeanUtils.copyProperties(brand, brandPageResp);
+                        return brandPageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
@@ -83,19 +85,19 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 品牌列表
      */
     @Override
-    public List<BrandListVo> queryBrandListByCondition(BrandListDto dto) {
+    public List<BrandListResp> queryBrandListByCondition(BrandListReq dto) {
         // 1、查询数据
         List<Brand> brands = brandDao.queryListByBrandName(dto.getBrandName());
         // 2、组装数据
-        List<BrandListVo> brandListVos = brands.stream()
+        List<BrandListResp> brandListResps = brands.stream()
                 .map(brand -> {
-                    BrandListVo brandListVo = new BrandListVo();
-                    BeanUtils.copyProperties(brand, brandListVo);
-                    return brandListVo;
+                    BrandListResp brandListResp = new BrandListResp();
+                    BeanUtils.copyProperties(brand, brandListResp);
+                    return brandListResp;
                 })
                 .collect(Collectors.toList());
         // 3、返回数据
-        return brandListVos;
+        return brandListResps;
     }
 
     /**
@@ -105,7 +107,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 品牌列表
      */
     @Override
-    public List<BrandListVo> queryBrandListByCodes(List<Long> brandCodes) {
+    public List<BrandListResp> queryBrandListByCodes(List<Long> brandCodes) {
         // 1、判断数据是否为空
         if (CollectionUtils.isEmpty(brandCodes)) {
             throw new BusinessException(ResultCode.PARAM_IS_ERROR.code(), ResultCode.PARAM_IS_ERROR.message());
@@ -113,15 +115,15 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
         // 2、查询数据
         List<Brand> brands = brandDao.queryListByBrandCodes(brandCodes);
         // 3、组装数据
-        List<BrandListVo> brandListVos = brands.stream()
+        List<BrandListResp> brandListResps = brands.stream()
                 .map(brand -> {
-                    BrandListVo brandListVo = new BrandListVo();
-                    BeanUtils.copyProperties(brand, brandListVo);
-                    return brandListVo;
+                    BrandListResp brandListResp = new BrandListResp();
+                    BeanUtils.copyProperties(brand, brandListResp);
+                    return brandListResp;
                 })
                 .collect(Collectors.toList());
         // 4、返回数据
-        return brandListVos;
+        return brandListResps;
     }
 
     /**
@@ -153,7 +155,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 默认返回结果
      */
     @Override
-    public boolean saveBrand(BrandAddDto dto) {
+    public boolean saveBrand(BrandAddReq dto) {
         // 1、判断是否为重复添加
         Brand result = brandDao.queryInfoByBrandName(dto.getBrandName());
         // 2、判断是否为重复添加数据
@@ -174,7 +176,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 默认返回结果
      */
     @Override
-    public boolean removeBrand(BrandDelDto dto) {
+    public boolean removeBrand(BrandDelReq dto) {
         // 1、TODO 拓展：检查当前删除的品牌, 是否被别的地方引用，例如品牌和分组的关联关系
         // 2、逻辑删除
         return brandDao.deleteByBrandCodes(dto.getBrandCodes());
@@ -188,7 +190,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      */
     @Override
     @Transactional
-    public boolean modifyBrand(BrandEditDto dto) {
+    public boolean modifyBrand(BrandEditReq dto) {
         // 1、查询校验分类是否合法
         Brand brandOld = brandDao.queryInfoByBrandCode(dto.getBrandCode());
         if (brandOld != null) {
@@ -212,7 +214,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 默认返回结果
      */
     @Override
-    public boolean modifyBrandShowed(BrandShowedDto dto) {
+    public boolean modifyBrandShowed(BrandShowedReq dto) {
         return brandDao.updateShowedByBrandCode(dto.getBrandCode(), dto.getShowed());
     }
 
@@ -236,7 +238,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
      * @return 品牌信息
      */
     @Override
-    public BrandInfoVo findBrandByCode(Long brandCode) {
+    public BrandInfoResp findBrandByCode(Long brandCode) {
         // 1、判断数据是否为空
         if (brandCode == null) {
             throw new BusinessException(ResultCode.PARAM_IS_ERROR.code(), ResultCode.PARAM_IS_ERROR.message());
@@ -245,9 +247,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
         Brand brand = brandDao.queryInfoByBrandCode(brandCode);
         // 3、返回数据
         if (brand != null) {
-            BrandInfoVo brandInfoVo = new BrandInfoVo();
-            BeanUtils.copyProperties(brand, brandInfoVo);
-            return brandInfoVo;
+            BrandInfoResp brandInfoResp = new BrandInfoResp();
+            BeanUtils.copyProperties(brand, brandInfoResp);
+            return brandInfoResp;
         } else {
             throw new BusinessException(ResultCode.DATA_NOT_EXISTED.code(), ResultCode.DATA_NOT_EXISTED.message());
         }

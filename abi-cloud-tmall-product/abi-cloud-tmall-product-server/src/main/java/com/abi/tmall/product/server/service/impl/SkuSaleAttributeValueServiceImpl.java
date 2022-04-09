@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * Sku销售属性-属性值 服务实现类
+ *
  * @ClassName: SkuSaleAttributeValueServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Sku销售属性属性值
+ * @Description:
  */
 @Slf4j
 @Service

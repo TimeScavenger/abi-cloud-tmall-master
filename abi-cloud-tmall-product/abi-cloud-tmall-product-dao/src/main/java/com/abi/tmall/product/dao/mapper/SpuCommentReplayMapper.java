@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
+ * Spu评价-回复关系 持久类
+ *
  * @ClassName: SpuCommentReplayMapper
  * @Author: illidan
  * @CreateDate: 2021/06/10

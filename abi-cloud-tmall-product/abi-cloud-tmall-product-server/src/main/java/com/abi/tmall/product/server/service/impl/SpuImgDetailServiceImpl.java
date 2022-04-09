@@ -1,6 +1,5 @@
 package com.abi.tmall.product.server.service.impl;
 
-import com.abi.infrastructure.core.base.ResultCode;
 import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.tmall.product.dao.entity.SpuImgDetail;
 import com.abi.tmall.product.dao.mapper.SpuImgDetailMapper;
@@ -18,10 +17,12 @@ import java.util.stream.Collectors;
 import static com.abi.infrastructure.core.constant.CommonConstants.LOG_PRE;
 
 /**
+ * Spu详情图片 服务实现类
+ *
  * @ClassName: SpuImgDetailServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu商品详情图片
+ * @Description:
  */
 @Slf4j
 @Service

@@ -5,10 +5,10 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
 import com.abi.tmall.product.common.request.attribute.*;
-import com.abi.tmall.product.common.response.attribute.AttributeInfoVo;
-import com.abi.tmall.product.common.response.attribute.AttributePageVo;
-import com.abi.tmall.product.common.response.attribute.BaseAttributeListVo;
-import com.abi.tmall.product.common.response.attribute.SaleAttributeListVo;
+import com.abi.tmall.product.common.response.attribute.AttributeInfoResp;
+import com.abi.tmall.product.common.response.attribute.AttributePageResp;
+import com.abi.tmall.product.common.response.attribute.BaseAttributeListResp;
+import com.abi.tmall.product.common.response.attribute.SaleAttributeListResp;
 import com.abi.tmall.product.dao.entity.Attribute;
 import com.abi.tmall.product.dao.entity.Category;
 import com.abi.tmall.product.dao.entity.Group;
@@ -37,10 +37,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 商品属性 服务实现类
+ *
  * @ClassName: AttributeServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 商品属性
+ * @Description:
  */
 @Slf4j
 @Service
@@ -68,9 +70,9 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      * @return
      */
     @Override
-    public PageResponse<AttributePageVo> queryAttributePageByCondition(AttributePageDto dto) {
+    public PageResponse<AttributePageResp> queryAttributePageByCondition(AttributePageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<AttributePageVo> pageResponse = new PageResponse<>();
+        PageResponse<AttributePageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询数据
@@ -83,18 +85,18 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
         // 5、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<AttributePageVo> pageVoList = page.getRecords().stream()
+            List<AttributePageResp> pageVoList = page.getRecords().stream()
                     .map(attribute -> {
                         // 5.1新建一个VO返回对象
-                        AttributePageVo attributePageVo = new AttributePageVo();
-                        BeanUtils.copyProperties(attribute, attributePageVo);
+                        AttributePageResp attributePageResp = new AttributePageResp();
+                        BeanUtils.copyProperties(attribute, attributePageResp);
                         // 5.2、设置分类的名字
-                        attributePageVo.setCategoryName(categoryCodeAndcategoryNameMap.get(attribute.getCategoryCode()));
+                        attributePageResp.setCategoryName(categoryCodeAndcategoryNameMap.get(attribute.getCategoryCode()));
                         // 5.3、设置分组的名字
                         if (AttributeTypeEnum.ATTRIBUTE_TYPE_BASE.getCode().equals(dto.getType())) {
-                            attributePageVo.setGroupName(groupAttrribueCodeAndGroupNameMap.get(attribute.getAttributeCode()));
+                            attributePageResp.setGroupName(groupAttrribueCodeAndGroupNameMap.get(attribute.getAttributeCode()));
                         }
-                        return attributePageVo;
+                        return attributePageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
@@ -115,7 +117,7 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      * @return
      */
     @Override
-    public List<BaseAttributeListVo> queryBaseAttributeListByCategoryCode(AttributeListDto dto) {
+    public List<BaseAttributeListResp> queryBaseAttributeListByCategoryCode(AttributeListReq dto) {
         // 1、查询出分类关联的分组列表
         List<Group> groupList = groupDao.queryListByCategoryCode(dto.getCategoryCode());
         if (CollectionUtils.isEmpty(groupList)) {
@@ -141,28 +143,28 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
                 .collect(Collectors.toMap(Attribute::getAttributeCode, attribute -> attribute));
 
         // 3、查出每个属性分组的所有属性
-        List<BaseAttributeListVo> baseAttributeListVos = new ArrayList<>();
+        List<BaseAttributeListResp> baseAttributeListResps = new ArrayList<>();
 
         for (Group group : groupList) {
-            BaseAttributeListVo relationVo = new BaseAttributeListVo();
+            BaseAttributeListResp relationVo = new BaseAttributeListResp();
             BeanUtils.copyProperties(group, relationVo);
             List<GroupAttributeRelation> attributeRelations = groupAttributeMap.get(group.getGroupCode());
 
-            List<BaseAttributeListVo.AttributeInfo> attributeInfos = new ArrayList<>();
+            List<BaseAttributeListResp.AttributeInfo> attributeInfos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(attributeRelations)) {
                 for (GroupAttributeRelation attributeRelation : attributeRelations) {
-                    BaseAttributeListVo.AttributeInfo attributeInfo = new BaseAttributeListVo.AttributeInfo();
+                    BaseAttributeListResp.AttributeInfo attributeInfo = new BaseAttributeListResp.AttributeInfo();
                     Attribute attribute = codeEntiryMap.get(attributeRelation.getAttributeCode());
                     BeanUtils.copyProperties(attribute, attributeInfo);
                     attributeInfos.add(attributeInfo);
                 }
                 relationVo.setAttributeList(attributeInfos);
-                baseAttributeListVos.add(relationVo);
+                baseAttributeListResps.add(relationVo);
             }
         }
 
         // 4、返回数据
-        return baseAttributeListVos;
+        return baseAttributeListResps;
     }
 
     /**
@@ -172,20 +174,20 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      * @return
      */
     @Override
-    public List<SaleAttributeListVo> querySaleAttributeListByCategoryCode(AttributeListDto dto) {
+    public List<SaleAttributeListResp> querySaleAttributeListByCategoryCode(AttributeListReq dto) {
         // 查询出分类关联的所有销售属性
         List<Attribute> attributes = attributeDao.queryListByType(dto.getCategoryCode(), dto.getType());
 
         // 封装返回对象给前端
-        List<SaleAttributeListVo> saleAttributeListVos = attributes.stream()
+        List<SaleAttributeListResp> saleAttributeListResps = attributes.stream()
                 .map(item -> {
-                    SaleAttributeListVo saleAttributeListVo = new SaleAttributeListVo();
-                    BeanUtils.copyProperties(item, saleAttributeListVo);
-                    return saleAttributeListVo;
+                    SaleAttributeListResp saleAttributeListResp = new SaleAttributeListResp();
+                    BeanUtils.copyProperties(item, saleAttributeListResp);
+                    return saleAttributeListResp;
                 })
                 .collect(Collectors.toList());
 
-        return saleAttributeListVos;
+        return saleAttributeListResps;
     }
 
     /**
@@ -196,7 +198,7 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      */
     @Override
     @Transactional
-    public boolean saveAttribute(AttributeAddDto dto) {
+    public boolean saveAttribute(AttributeAddReq dto) {
         // 1、判断是否为重复添加
         Attribute result = attributeDao.queryInfoByCategoryCodeAndAttributeName(dto.getCategoryCode(), dto.getAttributeName());
         // 2、判断是否为重复添加数据
@@ -231,7 +233,7 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      * @return
      */
     @Override
-    public boolean removeAttribute(AttributeDelDto dto) {
+    public boolean removeAttribute(AttributeDelReq dto) {
         // 1、TODO 拓展：检查当前删除的属性, 是否被别的地方引用，例如分组和属性的关联关系
         // 2、逻辑删除
         return attributeDao.deleteByAttributeCodes(dto.getAttributeCodes());
@@ -245,7 +247,7 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      */
     @Override
     @Transactional
-    public boolean modifyAttribute(AttributeEditDto dto) {
+    public boolean modifyAttribute(AttributeEditReq dto) {
         // 1、新建属性对象
         Attribute attributeOld = attributeDao.queryInfoByAttributeCode(dto.getAttributeCode());
         if (attributeOld != null) {
@@ -282,36 +284,36 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
      * @return
      */
     @Override
-    public AttributeInfoVo findAttributeByCode(Long attributeCode) {
+    public AttributeInfoResp findAttributeByCode(Long attributeCode) {
         // 1、判断数据是否为空
         if (attributeCode == null) {
             throw new BusinessException(ResultCode.PARAM_IS_ERROR.code(), ResultCode.PARAM_IS_ERROR.message());
         }
         // 2、新建返回的Vo对象
-        AttributeInfoVo attributeInfoVo = new AttributeInfoVo();
+        AttributeInfoResp attributeInfoResp = new AttributeInfoResp();
         // 3、查询出属性的基本信息
         Attribute attribute = attributeDao.queryInfoByAttributeCode(
                 attributeCode);
-        BeanUtils.copyProperties(attribute, attributeInfoVo);
+        BeanUtils.copyProperties(attribute, attributeInfoResp);
         // 4、设置分组信息
         if (AttributeTypeEnum.ATTRIBUTE_TYPE_BASE.getCode().equals(attribute.getType())) {
             GroupAttributeRelation groupAttributeRelation = groupAttributeRelationDao.queryInfoByAttributeCode(attributeCode);
             if (groupAttributeRelation != null) {
-                attributeInfoVo.setGroupCode(groupAttributeRelation.getGroupCode());
-                attributeInfoVo.setGroupName(groupAttributeRelation.getGroupName());
+                attributeInfoResp.setGroupCode(groupAttributeRelation.getGroupCode());
+                attributeInfoResp.setGroupName(groupAttributeRelation.getGroupName());
             }
         }
         // 5、设置分类路径
         Long categoryCode = attribute.getCategoryCode();
         Long[] catelogPath = categoryService.findCategoryPath(categoryCode);
-        attributeInfoVo.setCategoryPath(catelogPath);
+        attributeInfoResp.setCategoryPath(catelogPath);
         // 6、设置分类名称
         Category category = categoryDao.queryInfoByCategoryCode(categoryCode);
         if (category != null) {
-            attributeInfoVo.setCategoryName(category.getCategoryName());
+            attributeInfoResp.setCategoryName(category.getCategoryName());
         }
         // 7、返回数据
-        return attributeInfoVo;
+        return attributeInfoResp;
     }
 
 }

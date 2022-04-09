@@ -1,10 +1,10 @@
 package com.abi.tmall.product.server.service.impl;
 
 import com.abi.infrastructure.dao.page.PageResponse;
-import com.abi.tmall.product.common.request.group.GaRelationAddDto;
-import com.abi.tmall.product.common.request.group.GaRelationDelDto;
-import com.abi.tmall.product.common.request.group.GaRelationPageDto;
-import com.abi.tmall.product.common.response.attribute.AttributePageVo;
+import com.abi.tmall.product.common.request.group.GaRelationAddReq;
+import com.abi.tmall.product.common.request.group.GaRelationDelReq;
+import com.abi.tmall.product.common.request.group.GaRelationPageReq;
+import com.abi.tmall.product.common.response.attribute.AttributePageResp;
 import com.abi.tmall.product.dao.entity.Attribute;
 import com.abi.tmall.product.dao.entity.Group;
 import com.abi.tmall.product.dao.entity.GroupAttributeRelation;
@@ -30,10 +30,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 商品属性分组-属性关系 服务实现类
+ *
  * @ClassName: GroupAttributeRelationServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 属性分组-属性关系
+ * @Description:
  */
 @Slf4j
 @Service
@@ -55,9 +57,9 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
      * @return
      */
     @Override
-    public PageResponse<AttributePageVo> queryNoAttributePageByGroupCode(GaRelationPageDto dto) {
+    public PageResponse<AttributePageResp> queryNoAttributePageByGroupCode(GaRelationPageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<AttributePageVo> pageResponse = new PageResponse<>();
+        PageResponse<AttributePageResp> pageResponse = new PageResponse<>();
 
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
@@ -84,11 +86,11 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
         // 6、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<AttributePageVo> pageVoList = page.getRecords().stream()
+            List<AttributePageResp> pageVoList = page.getRecords().stream()
                     .map(brand -> {
-                        AttributePageVo attributePageVo = new AttributePageVo();
-                        BeanUtils.copyProperties(brand, attributePageVo);
-                        return attributePageVo;
+                        AttributePageResp attributePageResp = new AttributePageResp();
+                        BeanUtils.copyProperties(brand, attributePageResp);
+                        return attributePageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
@@ -108,9 +110,9 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
      * @return
      */
     @Override
-    public PageResponse<AttributePageVo> queryAttributeListByGroupCode(GaRelationPageDto dto) {
+    public PageResponse<AttributePageResp> queryAttributeListByGroupCode(GaRelationPageReq dto) {
         // 1、新建分页返回对象
-        PageResponse<AttributePageVo> pageResponse = new PageResponse<>();
+        PageResponse<AttributePageResp> pageResponse = new PageResponse<>();
 
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
@@ -131,11 +133,11 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
 
         // 7、数据进行转换
         if (page.getRecords() != null) {
-            List<AttributePageVo> pageVoList = page.getRecords().stream()
+            List<AttributePageResp> pageVoList = page.getRecords().stream()
                     .map(brand -> {
-                        AttributePageVo attributePageVo = new AttributePageVo();
-                        BeanUtils.copyProperties(brand, attributePageVo);
-                        return attributePageVo;
+                        AttributePageResp attributePageResp = new AttributePageResp();
+                        BeanUtils.copyProperties(brand, attributePageResp);
+                        return attributePageResp;
                     })
                     .collect(Collectors.toList());
             // 4、组装返回数据
@@ -155,7 +157,7 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
      * @return
      */
     @Override
-    public boolean batchSaveGroupAttributeRelation(List<GaRelationAddDto> dtos) {
+    public boolean batchSaveGroupAttributeRelation(List<GaRelationAddReq> dtos) {
         // 1、查询出全部的分组集合
         List<Group> groups = groupDao.list();
         Map<Long, String> groupCodeAndGroupNameMap = groups.stream()
@@ -186,7 +188,7 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
      * @return
      */
     @Override
-    public boolean batchRemoveGroupAttributeRelation(List<GaRelationDelDto> dtos) {
+    public boolean batchRemoveGroupAttributeRelation(List<GaRelationDelReq> dtos) {
         // 1、查询出全部的分组属性关系集合
         List<GroupAttributeRelation> groupAttributeRelations = groupAttributeRelationDao.list();
         Map<Long, Long> groupCodeWithAttribueCodeAndCodeMap = groupAttributeRelations.stream()

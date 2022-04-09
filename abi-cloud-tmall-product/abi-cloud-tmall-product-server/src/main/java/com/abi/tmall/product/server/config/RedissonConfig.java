@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 
 /**
+ * Redisson 配置文件
+ *
  * @ClassName: RedissonConfig
  * @Author: illidan
  * @CreateDate: 2021/11/30
- * @Description: Redisson 配置文件
+ * @Description:
  */
 @Configuration
 public class RedissonConfig {

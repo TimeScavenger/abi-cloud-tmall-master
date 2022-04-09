@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spu 持久业务类
+ * Spu 持久服务类
  *
  * @ClassName: SpuDao
  * @Author: illidan

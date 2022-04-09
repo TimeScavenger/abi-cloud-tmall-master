@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品分类-品牌关系 持久业务类
+ * 商品分类-品牌关系 持久服务类
  *
  * @ClassName: BrandCategoryRelationDao
  * @Author: illidan

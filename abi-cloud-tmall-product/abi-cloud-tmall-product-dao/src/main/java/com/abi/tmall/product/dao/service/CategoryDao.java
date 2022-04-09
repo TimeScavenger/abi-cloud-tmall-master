@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品分类 持久业务类
+ * 商品分类 持久服务类
  *
  * @ClassName: CategoryDao
  * @Author: illidan

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Repository;
 
 /**
- * Sku图片 持久业务类
+ * Sku图片 持久服务类
  *
  * @ClassName: SkuImgDao
  * @Author: illidan

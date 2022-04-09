@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品属性分组 持久业务类
+ * 商品属性分组 持久服务类
  *
  * @ClassName: GroupDao
  * @Author: illidan

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品属性分组-属性关系 持久业务类
+ * 商品属性分组-属性关系 持久服务类
  *
  * @ClassName: GroupAttributeRelationDao
  * @Author: illidan

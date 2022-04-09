@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Spu介绍图片 持久业务类
+ * Spu介绍图片 持久服务类
  *
  * @ClassName: SpuImgDescDao
  * @Author: illidan

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品品牌 持久业务类
+ * 商品品牌 持久服务类
  *
  * @ClassName: BrandDao
  * @Author: illidan

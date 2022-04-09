@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Sku 持久业务类
+ * Sku 持久服务类
  *
  * @ClassName: SkuDao
  * @Author: illidan

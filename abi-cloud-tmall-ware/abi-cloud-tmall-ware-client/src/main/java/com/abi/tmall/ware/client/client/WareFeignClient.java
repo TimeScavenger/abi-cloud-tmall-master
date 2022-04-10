@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+/**
+ * 仓库 Feign接口
+ *
+ * @ClassName: WareFeignClient
+ * @Author: illidan
+ * @CreateDate: 2022/4/10
+ * @Description:
+ */
 @FeignClient(name = "abi-cloud-tmall-ware", fallbackFactory = WareFeignClientFallback.class)
 public interface WareFeignClient {
 

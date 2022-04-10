@@ -11,6 +11,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 仓库 Feign接口降级
+ *
+ * @ClassName: WareFeignClientFallback
+ * @Author: illidan
+ * @CreateDate: 2022/4/10
+ * @Description:
+ */
 @Slf4j
 @Component
 public class WareFeignClientFallback implements FallbackFactory<WareFeignClient> {

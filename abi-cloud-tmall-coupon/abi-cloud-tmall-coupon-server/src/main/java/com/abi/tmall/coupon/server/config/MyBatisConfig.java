@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.time.LocalDateTime;
 
 /**
+ * MyBatis分页 配置文件
+ *
  * @ClassName: MyBatisConfig
  * @Author: illidan
  * @CreateDate: 2021/2/10
- * @Description: MyBatis 分页配置文件
+ * @Description:
  */
 @Configuration
 @EnableTransactionManagement
@@ -55,12 +57,12 @@ public class MyBatisConfig {
             @Override
             public void insertFill(MetaObject metaObject) {
                 this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
-                this.setFieldValByName("modifyTime", LocalDateTime.now(), metaObject);
+                this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
             }
 
             @Override
             public void updateFill(MetaObject metaObject) {
-                this.setFieldValByName("modifyTime", LocalDateTime.now(), metaObject);
+                this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
             }
         };
     }

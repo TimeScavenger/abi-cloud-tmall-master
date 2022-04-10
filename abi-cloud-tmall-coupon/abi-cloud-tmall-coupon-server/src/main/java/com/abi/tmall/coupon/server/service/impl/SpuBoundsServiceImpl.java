@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
+ * 商品Spu积分设置 服务实现类
+ *
  * @ClassName: SpuBoundsServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: 商品Spu积分设置
+ * @Description:
  */
 @Service
 public class SpuBoundsServiceImpl extends ServiceImpl<SpuBoundsMapper, SpuBounds> implements SpuBoundsService {

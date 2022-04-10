@@ -1,4 +1,4 @@
-package com.abi.tmall.product.server.client.request.coupon;
+package com.abi.tmall.coupon.common.request.memberprice;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 @ApiModel(value = "商品会员价格")
 @Data
-public class MemberPriceReq implements Serializable {
+public class MemberPriceAddReq implements Serializable {
 
     @ApiModelProperty(value = "id")
     private Long id;

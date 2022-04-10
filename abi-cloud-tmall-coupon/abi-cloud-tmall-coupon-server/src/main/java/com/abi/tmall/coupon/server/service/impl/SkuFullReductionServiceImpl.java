@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
+ * 商品满减信息 服务实现类
+ *
  * @ClassName: SkuFullReductionServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/5/20
- * @Description: 商品满减信息
+ * @Description:
  */
 @Service
 public class SkuFullReductionServiceImpl extends ServiceImpl<SkuFullReductionMapper, SkuFullReduction> implements SkuFullReductionService {

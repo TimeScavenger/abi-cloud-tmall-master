@@ -1,8 +1,7 @@
 package com.abi.tmall.coupon.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -22,13 +22,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sms_spu_bounds")
-public class SpuBounds {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "id")
-    private Long id;
+public class SpuBounds extends BaseEntity implements Serializable {
 
     /**
      * spuCode
@@ -62,7 +56,7 @@ public class SpuBounds {
     @ApiModelProperty(value = "优惠生效情况 1111（四个状态位，从右到左）,0 - 无优惠，成长积分是否赠送；,1 - 无优惠，购物积分是否赠送；,2 - 有优惠，成长积分是否赠送；,3 - 有优惠，购物积分是否赠送【状态位0：不赠送，1：赠送】")
     private Integer work;
 
-    public static final String COL_ID = "id";
+    private static final long serialVersionUID = 1L;
 
     public static final String COL_SPU_ID = "spu_code";
 

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
+ * 商品Spu积分设置 持久类
+ *
  * @ClassName: SpuBoundsMapper
  * @Author: illidan
  * @CreateDate: 2021/6/10

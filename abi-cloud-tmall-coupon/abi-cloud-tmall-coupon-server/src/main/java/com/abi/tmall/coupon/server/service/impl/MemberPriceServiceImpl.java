@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
+ * 商品会员价格 服务实现类
+ *
  * @ClassName: MemberPriceServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: 商品会员价格
+ * @Description:
  */
 @Service
 public class MemberPriceServiceImpl extends ServiceImpl<MemberPriceMapper, MemberPrice> implements MemberPriceService {

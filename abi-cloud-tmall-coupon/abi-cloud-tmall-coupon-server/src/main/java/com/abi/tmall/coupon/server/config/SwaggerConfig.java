@@ -13,10 +13,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * Swagger 配置文件
+ *
  * @ClassName: SwaggerConfig
  * @Author: illidan
  * @CreateDate: 2021/2/10
- * @Description: Swagger 接口文档配置文件
+ * @Description:
  */
 @Configuration
 @EnableSwagger2
@@ -32,7 +34,6 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket docket(Environment environment) {
-
         Profiles profilesLocal = Profiles.of("local");
         Profiles profilesDev = Profiles.of("dev");
         Profiles profilesTest = Profiles.of("test");

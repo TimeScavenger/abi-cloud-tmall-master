@@ -1,8 +1,7 @@
 package com.abi.tmall.coupon.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,13 +22,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sms_sku_ladder")
-public class SkuLadder implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "id")
-    private Long id;
+public class SkuLadder extends BaseEntity implements Serializable {
 
     /**
      * skuCode
@@ -67,8 +60,6 @@ public class SkuLadder implements Serializable {
     private Integer addOther;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_SKU_ID = "sku_code";
 

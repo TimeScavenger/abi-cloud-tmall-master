@@ -27,18 +27,17 @@
         <!-- 服务版本号 -->
         <revision>1.0-SNAPSHOT</revision>
 
-        <!-- 基础依赖包 -->
+        <!-- 基础依赖 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- 业务依赖包 -->
-        <abi-cloud-middle-platform-infrastructure.version>1.0-SNAPSHOT
-        </abi-cloud-middle-platform-infrastructure.version>
+        <!-- 业务依赖 -->
+        <abi-cloud-middle-platform-infrastructure.version>1.0-SNAPSHOT</abi-cloud-middle-platform-infrastructure.version>
 
-        <!-- 拓展依赖包 -->
+        <!-- 拓展依赖 -->
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
         <spring-cloud-alibaba.version>2.2.7.RELEASE</spring-cloud-alibaba.version>
         <mariadb.version>2.7.1</mariadb.version>
@@ -54,21 +53,21 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- 优惠服务依赖包 - client -->
+            <!-- 优惠服务依赖 - client -->
             <dependency>
                 <groupId>abi.cloud.tmall.coupon</groupId>
                 <artifactId>abi-cloud-tmall-coupon-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- 优惠服务依赖包 - common -->
+            <!-- 优惠服务依赖 - common -->
             <dependency>
                 <groupId>abi.cloud.tmall.coupon</groupId>
                 <artifactId>abi-cloud-tmall-coupon-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- 优惠服务依赖包 - dao -->
+            <!-- 优惠服务依赖 - dao -->
             <dependency>
                 <groupId>abi.cloud.tmall.coupon</groupId>
                 <artifactId>abi-cloud-tmall-coupon-dao</artifactId>

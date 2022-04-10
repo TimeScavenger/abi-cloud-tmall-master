@@ -15,12 +15,20 @@
     <description>abi client project</description>
 
     <dependencies>
-        <!-- 优惠服务依赖包 - common -->
+        <!-- 优惠服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.coupon</groupId>
             <artifactId>abi-cloud-tmall-coupon-common</artifactId>
         </dependency>
 
+
+        <!-- spring cloud feign组件-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+        </dependency>
+
+        <!-- spring web相关的组件-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>

@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
+ * 商品折扣信息 服务实现类
+ *
  * @ClassName: SkuLadderController
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: 商品折扣信息
+ * @Description:
  */
 @Service
 public class SkuLadderServiceImpl extends ServiceImpl<SkuLadderMapper, SkuLadder> implements SkuLadderService {

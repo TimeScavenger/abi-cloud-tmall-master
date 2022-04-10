@@ -1,5 +1,6 @@
 package com.abi.tmall.coupon.dao.entity;
 
+import com.abi.infrastructure.dao.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -23,13 +24,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sms_member_price")
-public class MemberPrice implements Serializable {
-    /**
-     * 自增Id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "id")
-    private Long id;
+public class MemberPrice extends BaseEntity implements Serializable {
 
     /**
      * skuCode
@@ -67,8 +62,6 @@ public class MemberPrice implements Serializable {
     private Integer addOther;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
 
     public static final String COL_SKU_ID = "sku_code";
 

@@ -4,12 +4,13 @@ import com.abi.tmall.coupon.dao.entity.MemberPrice;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * @ClassName: MemberPriceService
+ * 商品会员价格 服务类
+ *
+ * @ClassName: MemberPriceController
  * @Author: illidan
  * @CreateDate: 2021/6/10
- * @Description: 商品会员价格
+ * @Description: MemberPriceService
  */
-public interface MemberPriceService extends IService<MemberPrice>{
-
+public interface MemberPriceService extends IService<MemberPrice> {
 
 }

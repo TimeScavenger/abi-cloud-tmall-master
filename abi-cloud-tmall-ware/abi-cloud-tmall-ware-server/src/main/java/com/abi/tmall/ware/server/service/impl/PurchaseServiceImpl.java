@@ -120,10 +120,10 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     /**
-     * 新增 采购单
+     * 添加 采购单
      *
      * @param req 采购单
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
     public boolean addPurchase(PurchaseAddReq req) {
@@ -264,7 +264,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
             List<WareSkuRelation> wareSkuRelationAddList = new ArrayList<>();
             List<WareSkuRelation> wareSkuRelationUpdList = new ArrayList<>();
             for (PurchaseItem successPurchaseItem : successPurchaseItems) {
-                // 判断仓库中是否有商品，没有商品新增，有商品在原有基础上追加商品数量
+                // 判断仓库中是否有商品，没有商品添加，有商品在原有基础上追加商品数量
                 Integer stockOld = wareSkuCodeAndStockMap.get(successPurchaseItem.getWareCode() + successPurchaseItem.getSkuCode());
                 WareSkuRelation wareSkuRelation = new WareSkuRelation();
                 if (stockOld == null) {

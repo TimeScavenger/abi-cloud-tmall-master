@@ -102,10 +102,10 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
     }
 
     /**
-     * 新增 采购项
+     * 添加 采购项
      *
      * @param req 采购项
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
     public boolean addPurchaseDetail(PurchaseItemAddReq req) {

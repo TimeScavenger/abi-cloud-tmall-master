@@ -60,13 +60,13 @@ public class ConsoleWareController {
     }
 
     /**
-     * 新增 仓库信息
+     * 添加 仓库信息
      *
      * @param wareAddReq 仓库信息
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     @PostMapping("/save")
-    @ApiOperation(value = "新增 仓库信息")
+    @ApiOperation(value = "添加 仓库信息")
     public ApiResponse<Boolean> saveWare(@RequestBody @Validated WareAddReq wareAddReq) {
         return ApiResponse.result(wareService.saveWare(wareAddReq));
     }

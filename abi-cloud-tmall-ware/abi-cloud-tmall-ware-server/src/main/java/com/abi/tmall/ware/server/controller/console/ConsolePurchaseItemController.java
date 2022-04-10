@@ -46,13 +46,13 @@ public class ConsolePurchaseItemController {
     }
 
     /**
-     * 新增 采购项
+     * 添加 采购项
      *
      * @param purchaseItemAddReq 采购项
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     @PostMapping("/save")
-    @ApiOperation(value = "新增 采购项")
+    @ApiOperation(value = "添加 采购项")
     public ApiResponse<Boolean> addPurchaseDetail(@RequestBody @Validated PurchaseItemAddReq purchaseItemAddReq) {
         return ApiResponse.result(purchaseItemService.addPurchaseDetail(purchaseItemAddReq));
     }

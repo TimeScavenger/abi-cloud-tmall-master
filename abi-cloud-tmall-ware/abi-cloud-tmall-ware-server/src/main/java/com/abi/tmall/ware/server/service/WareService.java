@@ -35,10 +35,10 @@ public interface WareService extends IService<Ware> {
     List<Ware> queryWareListByCondition(WareListReq wareListReq);
 
     /**
-     * 新增 仓库信息
+     * 添加 仓库信息
      *
      * @param wareAddReq 仓库信息
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     boolean saveWare(WareAddReq wareAddReq);
 

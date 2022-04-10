@@ -35,10 +35,10 @@ public interface PurchaseService extends IService<Purchase> {
     List<Purchase> queryPurchaseListByCondition(PurchaseListReq purchaseListReq);
 
     /**
-     * 新增 采购单
+     * 添加 采购单
      *
      * @param purchaseAddReq 采购单
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     boolean addPurchase(PurchaseAddReq purchaseAddReq);
 

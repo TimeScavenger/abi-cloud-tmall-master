@@ -25,10 +25,10 @@ public interface PurchaseItemService extends IService<PurchaseItem> {
     PageResponse<PurchaseItemPageResp> queryPurchaseDetailPageByCondition(PurchaseItemPageReq purchaseItemPageReq);
 
     /**
-     * 新增 采购项
+     * 添加 采购项
      *
      * @param purchaseItemAddReq 采购项
-     * @return 新增是否成功: true-成功, false-失败
+     * @return 添加是否成功: true-成功, false-失败
      */
     boolean addPurchaseDetail(PurchaseItemAddReq purchaseItemAddReq);
 

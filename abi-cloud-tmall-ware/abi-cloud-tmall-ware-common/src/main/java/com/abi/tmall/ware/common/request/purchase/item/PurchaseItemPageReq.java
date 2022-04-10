@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.request.purchasedetail;
+package com.abi.tmall.ware.common.request.purchase.item;
 
 import com.abi.infrastructure.dao.page.PageRequest;
 import io.swagger.annotations.ApiModel;
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "查看采购项分页")
-public class PurchaseDetailPageReq extends PageRequest {
+public class PurchaseItemPageReq extends PageRequest {
 
     @ApiModelProperty(value = "仓库Code")
     private Long wareCode;

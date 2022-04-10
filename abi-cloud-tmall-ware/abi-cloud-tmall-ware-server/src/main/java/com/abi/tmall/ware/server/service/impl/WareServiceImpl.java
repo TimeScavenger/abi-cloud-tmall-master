@@ -5,7 +5,7 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import com.abi.tmall.ware.common.request.ware.*;
-import com.abi.tmall.ware.common.response.ware.WarePageVo;
+import com.abi.tmall.ware.common.response.ware.WarePageResp;
 import com.abi.tmall.ware.dao.entity.Ware;
 import com.abi.tmall.ware.dao.mapper.WareMapper;
 import com.abi.tmall.ware.dao.service.WareDao;
@@ -38,9 +38,9 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     private WareDao wareDao;
 
     @Override
-    public PageResponse<WarePageVo> queryWarePageByCondition(WarePageReq dto) {
+    public PageResponse<WarePageResp> queryWarePageByCondition(WarePageReq dto) {
         // 1、新建用于返回的分页对象
-        PageResponse<WarePageVo> pageResponse = new PageResponse<>();
+        PageResponse<WarePageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -48,9 +48,9 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<WarePageVo> pageVoList = page.getRecords().stream()
+            List<WarePageResp> pageVoList = page.getRecords().stream()
                     .map(ware -> {
-                        WarePageVo pageVo = new WarePageVo();
+                        WarePageResp pageVo = new WarePageResp();
                         BeanUtils.copyProperties(ware, pageVo);
                         return pageVo;
                     })

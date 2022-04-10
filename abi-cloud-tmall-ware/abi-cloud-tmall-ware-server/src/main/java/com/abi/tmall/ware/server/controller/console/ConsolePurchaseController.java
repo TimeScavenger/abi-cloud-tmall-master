@@ -3,7 +3,7 @@ package com.abi.tmall.ware.server.controller.console;
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.purchase.*;
-import com.abi.tmall.ware.common.response.purchase.PurchasePageVo;
+import com.abi.tmall.ware.common.response.purchase.PurchasePageResp;
 import com.abi.tmall.ware.dao.entity.Purchase;
 import com.abi.tmall.ware.server.service.PurchaseService;
 import io.swagger.annotations.Api;
@@ -37,7 +37,7 @@ public class ConsolePurchaseController {
 
     @PostMapping("/page")
     @ApiOperation(value = "查询 采购单分页")
-    public ApiResponse<PageResponse<PurchasePageVo>> queryPurchasePageByCondition(@RequestBody PurchasePageReq purchasePageReq) {
+    public ApiResponse<PageResponse<PurchasePageResp>> queryPurchasePageByCondition(@RequestBody PurchasePageReq purchasePageReq) {
         return ApiResponse.result(purchaseService.queryPurchasePageByCondition(purchasePageReq));
     }
 

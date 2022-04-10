@@ -1,8 +1,8 @@
 package com.abi.tmall.ware.server.service;
 
 import com.abi.infrastructure.dao.page.PageResponse;
-import com.abi.tmall.ware.common.request.purchasedetail.*;
-import com.abi.tmall.ware.common.response.purchase.PurchaseDetailPageVo;
+import com.abi.tmall.ware.common.request.purchase.item.*;
+import com.abi.tmall.ware.common.response.purchase.item.PurchaseItemPageResp;
 import com.abi.tmall.ware.dao.entity.PurchaseItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,16 +16,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PurchaseItemService extends IService<PurchaseItem> {
 
-    PageResponse<PurchaseDetailPageVo> queryPurchaseDetailPageByCondition(PurchaseDetailPageReq purchaseDetailPageReq);
+    PageResponse<PurchaseItemPageResp> queryPurchaseDetailPageByCondition(PurchaseItemPageReq purchaseItemPageReq);
 
-    boolean addPurchaseDetail(PurchaseDetailAddReq purchaseDetailAddReq);
+    boolean addPurchaseDetail(PurchaseItemAddReq purchaseItemAddReq);
 
-    boolean removePurchaseDetail(PurchaseDetailDelReq purchaseDetailDelReq);
+    boolean removePurchaseDetail(PurchaseItemDelReq purchaseItemDelReq);
 
-    boolean modifyPurchaseDetail(PurchaseDetailEditReq purchaseDetailEditReq);
+    boolean modifyPurchaseDetail(PurchaseItemEditReq purchaseItemEditReq);
 
-    PurchaseItem findPurchaseDetailByCode(PurchaseDetailInfoReq purchaseDetailInfoReq);
+    PurchaseItem findPurchaseDetailByCode(PurchaseItemInfoReq purchaseItemInfoReq);
 
-    boolean mergePurchaseDetail(PurchaseDetailMergeReq purchaseDetailMergeReq);
+    boolean mergePurchaseDetail(PurchaseItemMergeReq purchaseItemMergeReq);
 
 }

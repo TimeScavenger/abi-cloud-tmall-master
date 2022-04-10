@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 /**
  * 采购单信息
  */
-@ApiModel(value = "采购单信息")
 @Data
-public class PurchasePageVo implements Serializable {
+@ApiModel(value = "采购单信息")
+public class PurchasePageResp implements Serializable {
 
     @ApiModelProperty(value = "采购单Code")
     private Long purchaseCode;

@@ -2,7 +2,7 @@ package com.abi.tmall.ware.server.service;
 
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.ware.*;
-import com.abi.tmall.ware.common.response.ware.WarePageVo;
+import com.abi.tmall.ware.common.response.ware.WarePageResp;
 import com.abi.tmall.ware.dao.entity.Ware;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface WareService extends IService<Ware> {
 
-    PageResponse<WarePageVo> queryWarePageByCondition(WarePageReq warePageReq);
+    PageResponse<WarePageResp> queryWarePageByCondition(WarePageReq warePageReq);
 
     List<Ware> queryWareListByCondition(WareListReq wareListReq);
 

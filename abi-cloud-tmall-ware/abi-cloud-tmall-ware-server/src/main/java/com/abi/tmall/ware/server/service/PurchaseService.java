@@ -2,7 +2,7 @@ package com.abi.tmall.ware.server.service;
 
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.purchase.*;
-import com.abi.tmall.ware.common.response.purchase.PurchasePageVo;
+import com.abi.tmall.ware.common.response.purchase.PurchasePageResp;
 import com.abi.tmall.ware.dao.entity.Purchase;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface PurchaseService extends IService<Purchase> {
 
-    PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageReq purchasePageReq);
+    PageResponse<PurchasePageResp> queryPurchasePageByCondition(PurchasePageReq purchasePageReq);
 
     List<Purchase> queryPurchaseListByCondition(PurchaseListReq purchaseListReq);
 

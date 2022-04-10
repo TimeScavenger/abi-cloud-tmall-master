@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.request.purchasedetail;
+package com.abi.tmall.ware.common.request.purchase.item;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value = "合并采购项")
-public class PurchaseDetailMergeReq implements Serializable {
+public class PurchaseItemMergeReq implements Serializable {
 
     @ApiModelProperty(value = "采购单Code")
     private Long purchaseCode;

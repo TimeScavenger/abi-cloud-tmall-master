@@ -7,9 +7,9 @@ import com.abi.tmall.product.common.request.sku.SkuListByCodeReq;
 import com.abi.tmall.product.common.request.sku.SkuListByNameReq;
 import com.abi.tmall.product.common.response.sku.SkuListResp;
 import com.abi.tmall.ware.common.request.ware.WareStockReq;
-import com.abi.tmall.ware.common.request.waresku.WareSkuRelationPageReq;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationPageVo;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationStockVo;
+import com.abi.tmall.ware.common.request.ware.sku.WareSkuRelationPageReq;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationPageResp;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
 import com.abi.tmall.ware.dao.entity.WareSkuRelation;
 import com.abi.tmall.ware.dao.mapper.WareSkuRelationMapper;
 import com.abi.tmall.ware.dao.service.WareDao;
@@ -55,9 +55,9 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
     private WareDao wareDao;
 
     @Override
-    public PageResponse<WareSkuRelationPageVo> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq dto) {
+    public PageResponse<WareSkuRelationPageResp> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq dto) {
         // 1、新建用于返回的分页对象
-        PageResponse<WareSkuRelationPageVo> pageResponse = new PageResponse<>();
+        PageResponse<WareSkuRelationPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -97,9 +97,9 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
 
             // 4.3、数据进行转换
             Map<Long, String> finalSkuCodeAndSkuNameMap = skuCodeAndSkuNameMap;
-            List<WareSkuRelationPageVo> warePageRespList = page.getRecords().stream()
+            List<WareSkuRelationPageResp> warePageRespList = page.getRecords().stream()
                     .map(ware -> {
-                        WareSkuRelationPageVo warePageResp = new WareSkuRelationPageVo();
+                        WareSkuRelationPageResp warePageResp = new WareSkuRelationPageResp();
                         BeanUtils.copyProperties(ware, warePageResp);
                         if (ware.getWareCode() != null && MapUtils.isNotEmpty(wareCodeAndWareNameMap)) {
                             warePageResp.setWareName(wareCodeAndWareNameMap.get(ware.getWareCode()));
@@ -128,11 +128,11 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
     }
 
     @Override
-    public List<WareSkuRelationStockVo> querySkuHasStock(WareStockReq dto) {
+    public List<WareSkuRelationStockResp> querySkuHasStock(WareStockReq dto) {
         return dto.getSkuCodes().stream()
                 .map(item -> {
                     Integer count = baseMapper.getSkuStock(item);
-                    WareSkuRelationStockVo skuHasStockVo = new WareSkuRelationStockVo();
+                    WareSkuRelationStockResp skuHasStockVo = new WareSkuRelationStockResp();
                     skuHasStockVo.setSkuCode(item);
                     skuHasStockVo.setHasStock(count != null && count > 0);
                     return skuHasStockVo;

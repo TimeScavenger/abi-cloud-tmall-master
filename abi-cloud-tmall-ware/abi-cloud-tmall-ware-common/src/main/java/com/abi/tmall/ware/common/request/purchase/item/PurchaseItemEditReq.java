@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.request.purchasedetail;
+package com.abi.tmall.ware.common.request.purchase.item;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,11 +8,15 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * 新增采购项
+ * 编辑采购项
  */
 @Data
-@ApiModel(value = "新增采购项")
-public class PurchaseDetailAddReq implements Serializable {
+@ApiModel(value = "编辑采购项")
+public class PurchaseItemEditReq implements Serializable {
+
+    @NotNull(message = "采购项Code不能为空")
+    @ApiModelProperty(value = "采购项Code")
+    private Long purchaseDetailCode;
 
     @NotNull(message = "采购商品Code不能为空")
     @ApiModelProperty(value = "采购商品Code")

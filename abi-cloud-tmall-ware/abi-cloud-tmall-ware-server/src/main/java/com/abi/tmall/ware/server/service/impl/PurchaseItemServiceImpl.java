@@ -8,8 +8,8 @@ import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import com.abi.tmall.product.client.SkuFeignClient;
 import com.abi.tmall.product.common.request.sku.SkuListByNameReq;
 import com.abi.tmall.product.common.response.sku.SkuListResp;
-import com.abi.tmall.ware.common.request.purchasedetail.*;
-import com.abi.tmall.ware.common.response.purchase.PurchaseDetailPageVo;
+import com.abi.tmall.ware.common.request.purchase.item.*;
+import com.abi.tmall.ware.common.response.purchase.item.PurchaseItemPageResp;
 import com.abi.tmall.ware.dao.entity.Purchase;
 import com.abi.tmall.ware.dao.entity.PurchaseItem;
 import com.abi.tmall.ware.dao.mapper.PurchaseItemMapper;
@@ -56,9 +56,9 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
     private SkuFeignClient skuFeignClient;
 
     @Override
-    public PageResponse<PurchaseDetailPageVo> queryPurchaseDetailPageByCondition(PurchaseDetailPageReq dto) {
+    public PageResponse<PurchaseItemPageResp> queryPurchaseDetailPageByCondition(PurchaseItemPageReq dto) {
         // 1、新建用于返回的分页对象
-        PageResponse<PurchaseDetailPageVo> pageResponse = new PageResponse<>();
+        PageResponse<PurchaseItemPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -77,18 +77,18 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
-            List<PurchaseDetailPageVo> purchaseDetailPageVoList = page.getRecords().stream()
+            List<PurchaseItemPageResp> purchaseItemPageRespList = page.getRecords().stream()
                     .map(purchaseDetail -> {
-                        PurchaseDetailPageVo purchaseDetailPageVo = new PurchaseDetailPageVo();
-                        BeanUtils.copyProperties(purchaseDetail, purchaseDetailPageVo);
-                        return purchaseDetailPageVo;
+                        PurchaseItemPageResp purchaseItemPageResp = new PurchaseItemPageResp();
+                        BeanUtils.copyProperties(purchaseDetail, purchaseItemPageResp);
+                        return purchaseItemPageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
             pageResponse.setTotal(page.getTotal());
             pageResponse.setPage(page.getCurrent());
             pageResponse.setSize(page.getSize());
-            pageResponse.setRecords(purchaseDetailPageVoList);
+            pageResponse.setRecords(purchaseItemPageRespList);
         }
 
         // 5、返回数据
@@ -96,7 +96,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
     }
 
     @Override
-    public boolean addPurchaseDetail(PurchaseDetailAddReq dto) {
+    public boolean addPurchaseDetail(PurchaseItemAddReq dto) {
         PurchaseItem purchaseItem = new PurchaseItem();
         BeanUtils.copyProperties(dto, purchaseItem);
         purchaseItem.setPurchaseDetailCode(snowflakeIdWorker.nextId());
@@ -104,14 +104,14 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
     }
 
     @Override
-    public boolean removePurchaseDetail(PurchaseDetailDelReq dto) {
+    public boolean removePurchaseDetail(PurchaseItemDelReq dto) {
         // 1、TODO 拓展：检查当前删除的采购项, 是否被别的地方引用，例如采购单和采购项的关联关系
         // 2、逻辑删除
         return purchaseItemDao.removeBatchByPurchaseDetailCodes(dto.getPurchaseDetailCodes());
     }
 
     @Override
-    public boolean modifyPurchaseDetail(PurchaseDetailEditReq dto) {
+    public boolean modifyPurchaseDetail(PurchaseItemEditReq dto) {
         // 1、查询校验分类是否合法
         PurchaseItem purchaseItemOld = purchaseItemDao.queryInfoByPurchaseDetailCode(dto.getPurchaseDetailCode());
         if (purchaseItemOld != null) {
@@ -130,7 +130,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
     }
 
     @Override
-    public PurchaseItem findPurchaseDetailByCode(PurchaseDetailInfoReq dto) {
+    public PurchaseItem findPurchaseDetailByCode(PurchaseItemInfoReq dto) {
         // 1、查询数据
         PurchaseItem purchaseItem = purchaseItemDao.queryInfoByPurchaseDetailCode(dto.getPurchaseDetailCode());
         // 2、返回数据
@@ -143,7 +143,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
 
     @Override
     @Transactional
-    public boolean mergePurchaseDetail(PurchaseDetailMergeReq dto) {
+    public boolean mergePurchaseDetail(PurchaseItemMergeReq dto) {
         // 1、根据采购项Code查询出采购项列表
         List<Long> purchaseDetailCodes = dto.getPurchaseDetailCodes();
         List<PurchaseItem> purchaseItems = purchaseItemDao.queryListByPurchaseDetailCodes(purchaseDetailCodes);

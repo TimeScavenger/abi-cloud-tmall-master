@@ -3,7 +3,7 @@ package com.abi.tmall.ware.server.controller.console;
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.ware.*;
-import com.abi.tmall.ware.common.response.ware.WarePageVo;
+import com.abi.tmall.ware.common.response.ware.WarePageResp;
 import com.abi.tmall.ware.dao.entity.Ware;
 import com.abi.tmall.ware.server.service.WareService;
 import io.swagger.annotations.Api;
@@ -37,7 +37,7 @@ public class ConsoleWareController {
 
     @PostMapping("/page")
     @ApiOperation(value = "查询 仓库分页")
-    public ApiResponse<PageResponse<WarePageVo>> queryWarePageByCondition(@RequestBody WarePageReq warePageReq) {
+    public ApiResponse<PageResponse<WarePageResp>> queryWarePageByCondition(@RequestBody WarePageReq warePageReq) {
         return ApiResponse.result(wareService.queryWarePageByCondition(warePageReq));
     }
 

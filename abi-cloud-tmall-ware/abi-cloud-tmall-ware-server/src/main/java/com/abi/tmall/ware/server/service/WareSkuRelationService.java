@@ -2,9 +2,9 @@ package com.abi.tmall.ware.server.service;
 
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.ware.WareStockReq;
-import com.abi.tmall.ware.common.request.waresku.WareSkuRelationPageReq;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationPageVo;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationStockVo;
+import com.abi.tmall.ware.common.request.ware.sku.WareSkuRelationPageReq;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationPageResp;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
 import com.abi.tmall.ware.dao.entity.WareSkuRelation;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,10 +20,10 @@ import java.util.List;
  */
 public interface WareSkuRelationService extends IService<WareSkuRelation> {
 
-    PageResponse<WareSkuRelationPageVo> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq warePageReq);
+    PageResponse<WareSkuRelationPageResp> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq warePageReq);
 
     void stockWareSkuRelation(Long skuCode, Long wareCode, Integer skuNum);
 
-    List<WareSkuRelationStockVo> querySkuHasStock(WareStockReq wareStockReq);
+    List<WareSkuRelationStockResp> querySkuHasStock(WareStockReq wareStockReq);
 
 }

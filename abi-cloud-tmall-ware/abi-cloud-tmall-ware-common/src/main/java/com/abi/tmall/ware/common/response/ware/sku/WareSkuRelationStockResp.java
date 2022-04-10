@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.response.waresku;
+package com.abi.tmall.ware.common.response.ware.sku;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,9 +9,9 @@ import java.io.Serializable;
 /**
  * 商品库存
  */
-@ApiModel(value = "商品库存")
 @Data
-public class WareSkuRelationStockVo implements Serializable {
+@ApiModel(value = "商品库存")
+public class WareSkuRelationStockResp implements Serializable {
 
     @ApiModelProperty(value = "skuCode")
     private Long skuCode;

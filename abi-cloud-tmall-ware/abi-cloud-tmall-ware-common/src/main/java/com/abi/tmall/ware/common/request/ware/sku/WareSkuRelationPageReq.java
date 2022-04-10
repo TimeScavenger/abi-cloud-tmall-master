@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.request.waresku;
+package com.abi.tmall.ware.common.request.ware.sku;
 
 import com.abi.infrastructure.dao.page.PageRequest;
 import io.swagger.annotations.ApiModel;

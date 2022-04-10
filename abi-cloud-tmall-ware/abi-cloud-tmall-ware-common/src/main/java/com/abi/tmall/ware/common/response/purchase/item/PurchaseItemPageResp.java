@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.response.purchase;
+package com.abi.tmall.ware.common.response.purchase.item;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 /**
  * 采购单明细信息
  */
-@ApiModel(value = "采购单明细信息")
 @Data
-public class PurchaseDetailPageVo implements Serializable {
+@ApiModel(value = "采购单明细信息")
+public class PurchaseItemPageResp implements Serializable {
 
     @ApiModelProperty(value = "采购项Code")
     private Long purchaseDetailCode;

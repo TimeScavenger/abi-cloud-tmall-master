@@ -5,7 +5,7 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.snowflake.SnowflakeIdWorker;
 import com.abi.tmall.ware.common.request.purchase.*;
-import com.abi.tmall.ware.common.response.purchase.PurchasePageVo;
+import com.abi.tmall.ware.common.response.purchase.PurchasePageResp;
 import com.abi.tmall.ware.dao.entity.Purchase;
 import com.abi.tmall.ware.dao.entity.PurchaseItem;
 import com.abi.tmall.ware.dao.entity.WareSkuRelation;
@@ -54,9 +54,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     private WareSkuRelationDao wareSkuRelationDao;
 
     @Override
-    public PageResponse<PurchasePageVo> queryPurchasePageByCondition(PurchasePageReq dto) {
+    public PageResponse<PurchasePageResp> queryPurchasePageByCondition(PurchasePageReq dto) {
         // 1、新建用于返回的分页对象
-        PageResponse<PurchasePageVo> pageResponse = new PageResponse<>();
+        PageResponse<PurchasePageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
         dto.checkParam();
         // 3、分页查询
@@ -74,24 +74,24 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
                     .collect(Collectors.groupingBy(PurchaseItem::getPurchaseCode));
 
             // 数据进行转换
-            List<PurchasePageVo> purchasePageVoList = page.getRecords().stream()
+            List<PurchasePageResp> purchasePageRespList = page.getRecords().stream()
                     .map(purchase -> {
-                        PurchasePageVo purchasePageVo = new PurchasePageVo();
-                        BeanUtils.copyProperties(purchase, purchasePageVo);
+                        PurchasePageResp purchasePageResp = new PurchasePageResp();
+                        BeanUtils.copyProperties(purchase, purchasePageResp);
                         if (MapUtils.isNotEmpty(purchaseCodeMap) && purchase.getPurchaseCode() != null) {
                             List<PurchaseItem> purchaseItemList = purchaseCodeMap.get(purchase.getPurchaseCode());
                             if (CollectionUtils.isNotEmpty(purchaseItemList)) {
-                                purchasePageVo.setPurchaseDetailCount(purchaseItemList.size());
+                                purchasePageResp.setPurchaseDetailCount(purchaseItemList.size());
                             }
                         }
-                        return purchasePageVo;
+                        return purchasePageResp;
                     })
                     .collect(Collectors.toList());
             // 组装返回数据
             pageResponse.setTotal(page.getTotal());
             pageResponse.setPage(page.getCurrent());
             pageResponse.setSize(page.getSize());
-            pageResponse.setRecords(purchasePageVoList);
+            pageResponse.setRecords(purchasePageRespList);
         }
         // 5、返回数据
         return pageResponse;

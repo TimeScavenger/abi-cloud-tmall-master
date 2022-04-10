@@ -1,9 +1,9 @@
-package com.abi.tmall.product.server.client;
+package com.abi.tmall.ware.client.client;
 
 import com.abi.infrastructure.core.response.ApiResponse;
-import com.abi.tmall.product.server.client.fallback.WareFeignClientFallback;
-import com.abi.tmall.product.server.client.request.ware.WareStockDto;
-import com.abi.tmall.product.server.client.response.ware.WareSkuRelationStockVo;
+import com.abi.tmall.ware.client.client.falback.WareFeignClientFallback;
+import com.abi.tmall.ware.common.request.ware.WareStockReq;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +24,6 @@ public interface WareFeignClient {
      * @return
      */
     @PostMapping(value = "/ware/console/ware-sku-relation/hasStock")
-    public ApiResponse<List<WareSkuRelationStockVo>> querySkuHasStock(@RequestBody WareStockDto wareStockDto);
+    public ApiResponse<List<WareSkuRelationStockResp>> querySkuHasStock(@RequestBody WareStockReq wareStockReq);
 
 }

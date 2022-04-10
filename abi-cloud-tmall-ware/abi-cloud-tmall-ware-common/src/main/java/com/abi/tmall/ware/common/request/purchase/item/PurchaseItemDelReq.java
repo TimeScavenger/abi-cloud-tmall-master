@@ -1,4 +1,4 @@
-package com.abi.tmall.ware.common.request.purchasedetail;
+package com.abi.tmall.ware.common.request.purchase.item;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(value = "移除采购项")
-public class PurchaseDetailDelReq {
+public class PurchaseItemDelReq {
 
     @NotEmpty(message = "采购项Code不能为空")
     @ApiModelProperty(value = "采购项Code列表")

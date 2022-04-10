@@ -9,9 +9,9 @@ import java.io.Serializable;
 /**
  * 仓库信息
  */
-@ApiModel(value = "仓库信息")
 @Data
-public class WarePageVo implements Serializable {
+@ApiModel(value = "仓库信息")
+public class WareListResp implements Serializable {
 
     @ApiModelProperty(value = "仓库Code")
     private Long wareCode;

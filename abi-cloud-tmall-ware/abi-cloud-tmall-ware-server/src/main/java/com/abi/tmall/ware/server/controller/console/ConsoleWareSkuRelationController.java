@@ -3,9 +3,9 @@ package com.abi.tmall.ware.server.controller.console;
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.tmall.ware.common.request.ware.WareStockReq;
-import com.abi.tmall.ware.common.request.waresku.WareSkuRelationPageReq;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationPageVo;
-import com.abi.tmall.ware.common.response.waresku.WareSkuRelationStockVo;
+import com.abi.tmall.ware.common.request.ware.sku.WareSkuRelationPageReq;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationPageResp;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
 import com.abi.tmall.ware.server.service.WareSkuRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,13 +37,13 @@ public class ConsoleWareSkuRelationController {
 
     @PostMapping("/page")
     @ApiOperation(value = "查询 Sku库存分页")
-    public ApiResponse<PageResponse<WareSkuRelationPageVo>> queryWareSkuRelationPageByCondition(@RequestBody WareSkuRelationPageReq warePageReq) {
+    public ApiResponse<PageResponse<WareSkuRelationPageResp>> queryWareSkuRelationPageByCondition(@RequestBody WareSkuRelationPageReq warePageReq) {
         return ApiResponse.result(wareSkuRelationService.queryWareSkuRelationPageByCondition(warePageReq));
     }
 
     @PostMapping(value = "/hasStock")
     @ApiOperation(value = "查询 Sku是否有库存")
-    public ApiResponse<List<WareSkuRelationStockVo>> querySkuHasStock(@RequestBody WareStockReq wareStockReq) {
+    public ApiResponse<List<WareSkuRelationStockResp>> querySkuHasStock(@RequestBody WareStockReq wareStockReq) {
         return ApiResponse.result(wareSkuRelationService.querySkuHasStock(wareStockReq));
     }
 

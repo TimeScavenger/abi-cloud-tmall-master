@@ -2,8 +2,8 @@ package com.abi.tmall.ware.server.controller.console;
 
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
-import com.abi.tmall.ware.common.request.purchasedetail.*;
-import com.abi.tmall.ware.common.response.purchase.PurchaseDetailPageVo;
+import com.abi.tmall.ware.common.request.purchase.item.*;
+import com.abi.tmall.ware.common.response.purchase.item.PurchaseItemPageResp;
 import com.abi.tmall.ware.dao.entity.PurchaseItem;
 import com.abi.tmall.ware.server.service.PurchaseItemService;
 import io.swagger.annotations.Api;
@@ -35,38 +35,38 @@ public class ConsolePurchaseItemController {
 
     @PostMapping("/page")
     @ApiOperation(value = "查询 采购项分页")
-    public ApiResponse<PageResponse<PurchaseDetailPageVo>> queryPurchaseDetailPageByCondition(@RequestBody PurchaseDetailPageReq purchaseDetailPageReq) {
-        return ApiResponse.result(purchaseItemService.queryPurchaseDetailPageByCondition(purchaseDetailPageReq));
+    public ApiResponse<PageResponse<PurchaseItemPageResp>> queryPurchaseDetailPageByCondition(@RequestBody PurchaseItemPageReq purchaseItemPageReq) {
+        return ApiResponse.result(purchaseItemService.queryPurchaseDetailPageByCondition(purchaseItemPageReq));
     }
 
     @PostMapping("/save")
     @ApiOperation(value = "新增 采购项")
-    public ApiResponse<Boolean> addPurchaseDetail(@RequestBody @Validated PurchaseDetailAddReq purchaseDetailAddReq) {
-        return ApiResponse.result(purchaseItemService.addPurchaseDetail(purchaseDetailAddReq));
+    public ApiResponse<Boolean> addPurchaseDetail(@RequestBody @Validated PurchaseItemAddReq purchaseItemAddReq) {
+        return ApiResponse.result(purchaseItemService.addPurchaseDetail(purchaseItemAddReq));
     }
 
     @PostMapping("/remove")
     @ApiOperation(value = "删除 采购项")
-    public ApiResponse<Boolean> removePurchaseDetail(@RequestBody @Validated PurchaseDetailDelReq purchaseDetailDelReq) {
-        return ApiResponse.result(purchaseItemService.removePurchaseDetail(purchaseDetailDelReq));
+    public ApiResponse<Boolean> removePurchaseDetail(@RequestBody @Validated PurchaseItemDelReq purchaseItemDelReq) {
+        return ApiResponse.result(purchaseItemService.removePurchaseDetail(purchaseItemDelReq));
     }
 
     @PostMapping("/modify")
     @ApiOperation(value = "修改 采购项")
-    public ApiResponse<Boolean> modifyPurchaseDetail(@RequestBody @Validated PurchaseDetailEditReq purchaseDetailEditReq) {
-        return ApiResponse.result(purchaseItemService.modifyPurchaseDetail(purchaseDetailEditReq));
+    public ApiResponse<Boolean> modifyPurchaseDetail(@RequestBody @Validated PurchaseItemEditReq purchaseItemEditReq) {
+        return ApiResponse.result(purchaseItemService.modifyPurchaseDetail(purchaseItemEditReq));
     }
 
     @PostMapping("/info")
     @ApiOperation(value = "查询 采购项")
-    public ApiResponse<PurchaseItem> findPurchaseDetailByCode(@RequestBody @Validated PurchaseDetailInfoReq purchaseDetailInfoReq) {
-        return ApiResponse.result(purchaseItemService.findPurchaseDetailByCode(purchaseDetailInfoReq));
+    public ApiResponse<PurchaseItem> findPurchaseDetailByCode(@RequestBody @Validated PurchaseItemInfoReq purchaseItemInfoReq) {
+        return ApiResponse.result(purchaseItemService.findPurchaseDetailByCode(purchaseItemInfoReq));
     }
 
     @PostMapping("/merge")
     @ApiOperation(value = "合并 采购项")
-    public ApiResponse<Boolean> mergePurchaseDetail(@RequestBody @Validated PurchaseDetailMergeReq purchaseDetailMergeReq) {
-        return ApiResponse.result(purchaseItemService.mergePurchaseDetail(purchaseDetailMergeReq));
+    public ApiResponse<Boolean> mergePurchaseDetail(@RequestBody @Validated PurchaseItemMergeReq purchaseItemMergeReq) {
+        return ApiResponse.result(purchaseItemService.mergePurchaseDetail(purchaseItemMergeReq));
     }
 
 }

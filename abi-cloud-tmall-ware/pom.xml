@@ -97,7 +97,6 @@
                 <version>${abi-cloud-middle-platform-infrastructure.version}</version>
             </dependency>
 
-
             <!-- 商品服务依赖包 - client -->
             <dependency>
                 <groupId>abi.cloud.tmall.product</groupId>

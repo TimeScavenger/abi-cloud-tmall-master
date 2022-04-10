@@ -15,18 +15,19 @@ import com.abi.tmall.product.dao.mapper.SpuMapper;
 import com.abi.tmall.product.dao.service.*;
 import com.abi.tmall.product.server.client.CouponFeignClient;
 import com.abi.tmall.product.server.client.SearchFeignClient;
-import com.abi.tmall.product.server.client.WareFeignClient;
 import com.abi.tmall.product.server.client.request.coupon.SkuFullReductionAddReq;
 import com.abi.tmall.product.server.client.request.coupon.SkuLadderAddReq;
 import com.abi.tmall.product.server.client.request.coupon.SpuBoundsAddReq;
 import com.abi.tmall.product.server.client.request.search.SkuSearchAddReq;
-import com.abi.tmall.product.server.client.request.ware.WareStockDto;
 import com.abi.tmall.product.server.client.response.ware.WareSkuRelationStockVo;
 import com.abi.tmall.product.server.enums.AttributeSearchTypeEnum;
 import com.abi.tmall.product.server.enums.ProductInitCodeEnum;
 import com.abi.tmall.product.server.enums.SpuPublishTypeEnum;
 import com.abi.tmall.product.server.service.SpuImgDetailService;
 import com.abi.tmall.product.server.service.SpuService;
+import com.abi.tmall.ware.client.client.WareFeignClient;
+import com.abi.tmall.ware.common.request.ware.WareStockReq;
+import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -45,10 +46,12 @@ import java.util.stream.Collectors;
 import static com.abi.infrastructure.core.constant.CommonConstants.LOG_PRE;
 
 /**
+ * Spu 服务实现类
+ *
  * @ClassName: SpuServiceImpl
  * @Author: illidan
  * @CreateDate: 2021/06/10
- * @Description: Spu信息
+ * @Description:
  */
 @Slf4j
 @Service
@@ -368,10 +371,10 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         // 6、发送远程调用，库存系统查询是否有库存
         Map<Long, Boolean> stockMap = new HashMap<>();
         try {
-            WareStockDto wareStockDto = new WareStockDto();
-            wareStockDto.setSkuCodes(skuCodes);
-            ApiResponse<List<WareSkuRelationStockVo>> apiResponse = wareFeignClient.querySkuHasStock(wareStockDto);
-            stockMap = apiResponse.getData().stream().collect(Collectors.toMap(WareSkuRelationStockVo::getSkuCode, WareSkuRelationStockVo::getHasStock));
+            WareStockReq wareStockReq = new WareStockReq();
+            wareStockReq.setSkuCodes(skuCodes);
+            ApiResponse<List<WareSkuRelationStockResp>> apiResponse = wareFeignClient.querySkuHasStock(wareStockReq);
+            stockMap = apiResponse.getData().stream().collect(Collectors.toMap(WareSkuRelationStockResp::getSkuCode, WareSkuRelationStockResp::getHasStock));
         } catch (Exception e) {
             log.error("库存服务查询异常：原因{}", e);
         }

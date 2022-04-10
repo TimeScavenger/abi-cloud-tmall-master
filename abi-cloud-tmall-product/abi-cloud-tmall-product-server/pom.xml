@@ -34,6 +34,13 @@
         </dependency>
 
 
+        <!-- 仓库服务依赖包 - client -->
+        <dependency>
+            <groupId>abi.cloud.tmall.ware</groupId>
+            <artifactId>abi-cloud-tmall-ware-client</artifactId>
+        </dependency>
+
+
         <!-- nacos 服务注册中心 负责注册/发现 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

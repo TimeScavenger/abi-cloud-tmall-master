@@ -15,11 +15,12 @@
     <description>abi dao project</description>
 
     <dependencies>
-        <!-- 仓库服务依赖包 - common -->
+        <!-- 仓库服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.ware</groupId>
             <artifactId>abi-cloud-tmall-ware-common</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>com.baomidou</groupId>

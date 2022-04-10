@@ -37,6 +37,8 @@
         <!-- 业务依赖 -->
         <abi-cloud-middle-platform-infrastructure.version>1.0-SNAPSHOT</abi-cloud-middle-platform-infrastructure.version>
         <abi-cloud-tmall-ware-client.version>1.0-SNAPSHOT</abi-cloud-tmall-ware-client.version>
+        <abi-cloud-tmall-search-client.version>1.0-SNAPSHOT</abi-cloud-tmall-search-client.version>
+        <abi-cloud-tmall-coupon-client.version>1.0-SNAPSHOT</abi-cloud-tmall-coupon-client.version>
 
         <!-- 拓展依赖 -->
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
@@ -102,6 +104,20 @@
                 <groupId>abi.cloud.tmall.ware</groupId>
                 <artifactId>abi-cloud-tmall-ware-client</artifactId>
                 <version>${abi-cloud-tmall-ware-client.version}</version>
+            </dependency>
+
+            <!-- 搜索服务依赖 - client -->
+            <dependency>
+                <groupId>abi.cloud.tmall.search</groupId>
+                <artifactId>abi-cloud-tmall-search-client</artifactId>
+                <version>${abi-cloud-tmall-search-client.version}</version>
+            </dependency>
+
+            <!-- 优惠服务依赖 - client -->
+            <dependency>
+                <groupId>abi.cloud.tmall.coupon</groupId>
+                <artifactId>abi-cloud-tmall-coupon-client</artifactId>
+                <version>${abi-cloud-tmall-coupon-client.version}</version>
             </dependency>
 
 

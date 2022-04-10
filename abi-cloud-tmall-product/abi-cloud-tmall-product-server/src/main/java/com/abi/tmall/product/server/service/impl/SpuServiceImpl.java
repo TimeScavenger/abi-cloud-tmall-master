@@ -5,6 +5,10 @@ import com.abi.infrastructure.core.exception.BusinessException;
 import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.infrastructure.dao.page.PageResponse;
 import com.abi.infrastructure.web.util.GenerateCodeUtils;
+import com.abi.tmall.coupon.client.client.CouponFeignClient;
+import com.abi.tmall.coupon.common.request.skufullreduction.SkuFullReductionAddReq;
+import com.abi.tmall.coupon.common.request.skuladder.SkuLadderAddReq;
+import com.abi.tmall.coupon.common.request.spubounds.SpuBoundsAddReq;
 import com.abi.tmall.product.common.request.sku.SkuAddReq;
 import com.abi.tmall.product.common.request.spu.SpuAddReq;
 import com.abi.tmall.product.common.request.spu.SpuPageReq;
@@ -13,17 +17,13 @@ import com.abi.tmall.product.common.response.spu.SpuPageResp;
 import com.abi.tmall.product.dao.entity.*;
 import com.abi.tmall.product.dao.mapper.SpuMapper;
 import com.abi.tmall.product.dao.service.*;
-import com.abi.tmall.product.server.client.CouponFeignClient;
-import com.abi.tmall.product.server.client.SearchFeignClient;
-import com.abi.tmall.product.server.client.request.coupon.SkuFullReductionAddReq;
-import com.abi.tmall.product.server.client.request.coupon.SkuLadderAddReq;
-import com.abi.tmall.product.server.client.request.coupon.SpuBoundsAddReq;
-import com.abi.tmall.product.server.client.request.search.SkuSearchAddReq;
 import com.abi.tmall.product.server.enums.AttributeSearchTypeEnum;
 import com.abi.tmall.product.server.enums.ProductInitCodeEnum;
 import com.abi.tmall.product.server.enums.SpuPublishTypeEnum;
 import com.abi.tmall.product.server.service.SpuImgDetailService;
 import com.abi.tmall.product.server.service.SpuService;
+import com.abi.tmall.search.client.client.ProductFeignClient;
+import com.abi.tmall.search.common.request.SkuEsAddReq;
 import com.abi.tmall.ware.client.client.WareFeignClient;
 import com.abi.tmall.ware.common.request.ware.WareStockReq;
 import com.abi.tmall.ware.common.response.ware.sku.WareSkuRelationStockResp;
@@ -93,7 +93,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     private WareFeignClient wareFeignClient;
 
     @Autowired
-    private SearchFeignClient searchFeignService;
+    private ProductFeignClient productFeignClient;
 
     /**
      * 查询 Spu分页列表
@@ -375,10 +375,10 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         // 过滤出可检索属性Code并进行去重
         List<Long> searchAttributeCodes = attributes.stream().map(Attribute::getAttributeCode).distinct().collect(Collectors.toList());
         // 根据过滤出来的可检索属性Code过滤出属性信息
-        List<SkuSearchAddReq.Attribute> attrsList = spuBaseAttributeValues.stream()
+        List<SkuEsAddReq.Attribute> attrsList = spuBaseAttributeValues.stream()
                 .filter(item -> searchAttributeCodes.contains(item.getAttributeCode()))
                 .map(item -> {
-                    SkuSearchAddReq.Attribute attribute = new SkuSearchAddReq.Attribute();
+                    SkuEsAddReq.Attribute attribute = new SkuEsAddReq.Attribute();
                     attribute.setAttrCode(item.getAttributeCode());
                     attribute.setAttrName(item.getAttributeName());
                     attribute.setAttrValue(item.getAttributeValue());
@@ -398,10 +398,10 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
         // 7、封装每个sku的信息
         Map<Long, Boolean> finalStockMap = stockMap;
-        List<SkuSearchAddReq> collect = skus.stream()
+        List<SkuEsAddReq> collect = skus.stream()
                 .map(sku -> {
                     // 组装需要的数据
-                    SkuSearchAddReq esModel = new SkuSearchAddReq();
+                    SkuEsAddReq esModel = new SkuEsAddReq();
                     BeanUtils.copyProperties(sku, esModel);
                     // 设置Sku价格
                     esModel.setSkuPrice(sku.getSkuPrice());
@@ -435,7 +435,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
                 })
                 .collect(Collectors.toList());
         // 8、将数据发给es进行保存
-        ApiResponse<Boolean> apiResponse = searchFeignService.saveProductToEs(collect);
+        ApiResponse<Boolean> apiResponse = productFeignClient.saveProductToEs(collect);
         if (ResultCode.SUCCESS.code() == apiResponse.getCode()) {
             // 远程调用成功
             // 8.1、修改当前spu的状态

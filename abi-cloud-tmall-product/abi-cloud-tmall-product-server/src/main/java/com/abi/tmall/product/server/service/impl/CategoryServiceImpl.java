@@ -16,7 +16,7 @@ import com.abi.tmall.product.dao.entity.Category;
 import com.abi.tmall.product.dao.mapper.CategoryMapper;
 import com.abi.tmall.product.dao.service.CategoryBrandRelationDao;
 import com.abi.tmall.product.dao.service.CategoryDao;
-import com.abi.tmall.product.server.constant.CategoryConstants;
+import com.abi.tmall.product.common.constant.CategoryConstants;
 import com.abi.tmall.product.server.enums.ProductInitCodeEnum;
 import com.abi.tmall.product.server.service.CategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

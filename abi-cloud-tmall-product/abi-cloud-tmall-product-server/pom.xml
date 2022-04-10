@@ -39,6 +39,17 @@
             <artifactId>abi-cloud-tmall-ware-client</artifactId>
         </dependency>
 
+        <!-- 搜索服务依赖 - client -->
+        <dependency>
+            <groupId>abi.cloud.tmall.search</groupId>
+            <artifactId>abi-cloud-tmall-search-client</artifactId>
+        </dependency>
+
+        <!-- 优惠服务依赖 - client -->
+        <dependency>
+            <groupId>abi.cloud.tmall.coupon</groupId>
+            <artifactId>abi-cloud-tmall-coupon-client</artifactId>
+        </dependency>
 
         <!-- nacos 服务注册中心 负责注册/发现 -->
         <dependency>

@@ -24,7 +24,7 @@ public interface AttributeFeignClient {
      * @param attributeCode 商品属性Code
      * @return
      */
-    @GetMapping("/product/console/attribute/find/{attributeCode}")
+    @GetMapping("/console/attribute/find/{attributeCode}")
     public ApiResponse<AttributeInfoResp> findAttributeByCode(@PathVariable("attributeCode") Long attributeCode);
 
 }

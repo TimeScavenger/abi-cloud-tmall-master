@@ -8,10 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * ElasticSearch 配置文件
+ *
  * @ClassName: ElasticSearchConfig
  * @Author: illidan
  * @CreateDate: 2021/2/10
- * @Description: ElasticSearch 配置文件
+ * @Description:
  */
 @Configuration
 public class ElasticSearchConfig {

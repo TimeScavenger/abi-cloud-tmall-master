@@ -1,12 +1,11 @@
 package com.abi.tmall.search.server.service.impl;
 
-import com.abi.base.foundation.utils.JacksonUtils;
-import com.abi.tmall.search.common.constant.ProductConstant;
+import com.abi.infrastructure.web.util.JacksonUtils;
+import com.abi.tmall.search.common.constant.ProductConstants;
 import com.abi.tmall.search.common.request.SkuEsAddReq;
 import com.abi.tmall.search.common.request.SkuEsSearchReq;
 import com.abi.tmall.search.common.response.SkuEsModel;
 import com.abi.tmall.search.common.response.SkuEsSearchResp;
-import com.abi.tmall.search.server.client.ProductFeignClient;
 import com.abi.tmall.search.server.config.ElasticSearchConfig;
 import com.abi.tmall.search.server.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,10 +48,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 商品模块 服务实现类
+ *
  * @ClassName: ProductServiceImpl
  * @Author: illCodean
  * @CreateDate: 2021/5/18
- * @Description: 商品模块
+ * @Description:
  */
 @Slf4j
 @Service
@@ -61,9 +62,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 
-    @Autowired
-    private ProductFeignClient productFeignClient;
-
+    /**
+     * 搜索 商品信息
+     *
+     * @param skuEsSearchReq 搜索条件
+     * @return 搜索结果
+     */
     @Override
     public SkuEsSearchResp searchProductFromEs(SkuEsSearchReq skuEsSearchReq) {
         // 1.动态构建出查询需要的DSL语句
@@ -86,10 +90,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * 准备检索请求
+     * 构建检索请求
      * 模糊匹配，过滤（按照属性，分类，品牌，价格区间，库存），排序，分页，高亮，聚合分析
      *
-     * @return
+     * @param req 搜索条件
+     * @return 检索请求
      */
     private SearchRequest buildSearchRequest(SkuEsSearchReq req) {
         // 1.构建检索请求
@@ -166,8 +171,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         // 3.2.分页 from = (pageNum - 1) * pageSize
-        searchSourceBuilder.from((req.getPageNum() - 1) * ProductConstant.PRODUCT_PAGE_SIZE);
-        searchSourceBuilder.size(ProductConstant.PRODUCT_PAGE_SIZE);
+        searchSourceBuilder.from((req.getPageNum() - 1) * ProductConstants.PRODUCT_PAGE_SIZE);
+        searchSourceBuilder.size(ProductConstants.PRODUCT_PAGE_SIZE);
 
         // 3.3.高亮
         if (!StringUtils.isEmpty(req.getSkuTitle())) {
@@ -210,7 +215,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("调用ES查询商品列表，DSL语句查询、排序、分页、高亮、聚合：【{}】", searchSourceBuilder.toString());
 
         // 5.构建SearchRequest
-        SearchRequest searchRequest = new SearchRequest(new String[]{ProductConstant.PRODUCT_INDEX}, searchSourceBuilder);
+        SearchRequest searchRequest = new SearchRequest(new String[]{ProductConstants.PRODUCT_INDEX}, searchSourceBuilder);
         return searchRequest;
     }
 
@@ -323,8 +328,8 @@ public class ProductServiceImpl implements ProductService {
         result.setTotal(total);
 
         // 6.2.分页信息-总页码-计算
-        int totalPages = (int) total % ProductConstant.PRODUCT_PAGE_SIZE == 0 ?
-                (int) total / ProductConstant.PRODUCT_PAGE_SIZE : ((int) total / ProductConstant.PRODUCT_PAGE_SIZE + 1);
+        int totalPages = (int) total % ProductConstants.PRODUCT_PAGE_SIZE == 0 ?
+                (int) total / ProductConstants.PRODUCT_PAGE_SIZE : ((int) total / ProductConstants.PRODUCT_PAGE_SIZE + 1);
         result.setTotalPages(totalPages);
 
         List<Integer> pageNavs = new ArrayList<>();
@@ -336,6 +341,13 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
+    /**
+     * 添加 商品信息
+     *
+     * @param skuEsAddReqs 商品信息
+     * @return 添加是否成功: true-成功, false-失败
+     * @throws IOException
+     */
     @Override
     public boolean saveProductToEs(List<SkuEsAddReq> skuEsAddReqs) throws IOException {
         // 1.在ES中建立索引，建立好映射关系（doc/json/product-mapping.json）
@@ -344,7 +356,7 @@ public class ProductServiceImpl implements ProductService {
         BulkRequest bulkRequest = new BulkRequest();
         for (SkuEsAddReq skuEsModel : skuEsAddReqs) {
             // 构造保存请求
-            IndexRequest indexRequest = new IndexRequest(ProductConstant.PRODUCT_INDEX); // 目标索引
+            IndexRequest indexRequest = new IndexRequest(ProductConstants.PRODUCT_INDEX); // 目标索引
             indexRequest.id(skuEsModel.getSkuCode().toString()); // 索引唯一ID，取SkuCode
             String jsonString = JacksonUtils.toJson(skuEsModel); // 数据内容，对象转换成JSON字符串
             indexRequest.source(jsonString, XContentType.JSON);
@@ -367,6 +379,5 @@ public class ProductServiceImpl implements ProductService {
 
         return hasFailures;
     }
-
 
 }

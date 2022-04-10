@@ -15,22 +15,28 @@
     <description>abi server project</description>
 
     <dependencies>
-        <!-- 搜索服务依赖包 - client -->
+        <!-- 搜索服务依赖 - client -->
         <dependency>
             <groupId>abi.cloud.tmall.search</groupId>
             <artifactId>abi-cloud-tmall-search-client</artifactId>
         </dependency>
 
-        <!-- 搜索服务依赖包 - common -->
+        <!-- 搜索服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.search</groupId>
             <artifactId>abi-cloud-tmall-search-common</artifactId>
         </dependency>
 
-        <!-- 搜索服务依赖包 - dao -->
+        <!-- 搜索服务依赖 - dao -->
         <dependency>
             <groupId>abi.cloud.tmall.search</groupId>
             <artifactId>abi-cloud-tmall-search-dao</artifactId>
+        </dependency>
+
+        <!-- 商品服务依赖 - client -->
+        <dependency>
+            <groupId>abi.cloud.tmall.product</groupId>
+            <artifactId>abi-cloud-tmall-product-client</artifactId>
         </dependency>
 
 
@@ -125,10 +131,23 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>7.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.4.2</version>
         </dependency>
     </dependencies>
 

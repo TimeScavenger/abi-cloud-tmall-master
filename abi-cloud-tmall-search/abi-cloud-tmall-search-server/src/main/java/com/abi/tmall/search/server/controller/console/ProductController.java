@@ -1,7 +1,7 @@
 package com.abi.tmall.search.server.controller.console;
 
-import com.abi.base.foundation.code.ResultCode;
-import com.abi.base.foundation.response.ApiResponse;
+import com.abi.infrastructure.core.base.ResultCode;
+import com.abi.infrastructure.core.response.ApiResponse;
 import com.abi.tmall.search.common.request.SkuEsAddReq;
 import com.abi.tmall.search.common.request.SkuEsSearchReq;
 import com.abi.tmall.search.common.response.SkuEsSearchResp;
@@ -20,27 +20,41 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 商品模块
+ *
  * @ClassName: ProductController
  * @Author: illidan
  * @CreateDate: 2021/5/18
- * @Description: 商品模块
+ * @Description:
  */
 @Api(tags = "商品模块")
 @Slf4j
 @RestController
-@RequestMapping("/console/product")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-
+    /**
+     * 搜索 商品信息
+     *
+     * @param skuEsSearchReq 搜索条件
+     * @return 搜索结果
+     */
     @PostMapping("/search")
     @ApiOperation(value = "搜索 商品信息")
     public ApiResponse<SkuEsSearchResp> searchProductFromEs(@RequestBody SkuEsSearchReq skuEsSearchReq) {
         return ApiResponse.result(productService.searchProductFromEs(skuEsSearchReq));
     }
 
+    /**
+     * 添加 商品信息
+     *
+     * @param skuEsAddReqs 商品信息
+     * @return 添加是否成功: true-成功, false-失败
+     * @throws IOException
+     */
     @PostMapping("/save")
     @ApiOperation(value = "添加 商品信息")
     public ApiResponse<Boolean> saveProductToEs(@RequestBody @Validated List<SkuEsAddReq> skuEsAddReqs) throws IOException {

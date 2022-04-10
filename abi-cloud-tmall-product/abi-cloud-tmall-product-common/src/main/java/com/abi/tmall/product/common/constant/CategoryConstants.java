@@ -1,4 +1,4 @@
-package com.abi.tmall.product.server.constant;
+package com.abi.tmall.product.common.constant;
 
 /**
  * 分类 常量

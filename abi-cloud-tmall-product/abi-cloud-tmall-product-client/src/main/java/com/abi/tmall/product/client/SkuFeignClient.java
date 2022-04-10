@@ -11,6 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+/**
+ * Sku Feign接口
+ *
+ * @ClassName: SkuFeignClient
+ * @Author: illidan
+ * @CreateDate: 2022/4/10
+ * @Description:
+ */
 @FeignClient(name = "abi-cloud-tmall-product", fallbackFactory = SkuFeignClientFallback.class)
 public interface SkuFeignClient {
 
@@ -22,9 +30,21 @@ public interface SkuFeignClient {
      * 总结：只要json数据模型是兼容的。双方服务无需使用同一个to
      */
 
+    /**
+     * 根据SkuCode查询Sku列表
+     *
+     * @param skuListByCodeReq skuCode集合
+     * @return
+     */
     @PostMapping("/product/console/sku-info/list/by/code")
     public ApiResponse<List<SkuListResp>> querySkuListByCodes(@RequestBody SkuListByCodeReq skuListByCodeReq);
 
+    /**
+     * 根据Sku名字查询Sku列表
+     *
+     * @param skuListByNameReq sku名称集合
+     * @return
+     */
     @PostMapping("/product/console/sku-info/list/by/name")
     public ApiResponse<List<SkuListResp>> querySkuListByName(@RequestBody SkuListByNameReq skuListByNameReq);
 

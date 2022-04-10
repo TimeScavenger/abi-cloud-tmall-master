@@ -18,10 +18,28 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SpuService extends IService<Spu> {
 
+    /**
+     * 查询 Spu分页列表
+     *
+     * @param spuPageReq 查询条件
+     * @return Spu分页列表
+     */
     PageResponse<SpuPageResp> querySpuPageByCondition(SpuPageReq spuPageReq);
 
+    /**
+     * 添加 Spu信息
+     *
+     * @param spuAddReq Spu信息
+     * @return 添加是否成功: true-成功, false-失败
+     */
     boolean saveSpu(SpuAddReq spuAddReq);
 
+    /**
+     * 上架 Spu信息
+     *
+     * @param spuUpReq spuCode
+     * @return 上架是否成功: true-成功, false-失败
+     */
     boolean upSpu(SpuUpReq spuUpReq);
 
 }

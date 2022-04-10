@@ -53,17 +53,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     /**
      * 查询 分组分页列表
      *
-     * @param dto
-     * @return
+     * @param groupPageReq 查询条件
+     * @return 分组分页列表
      */
     @Override
-    public PageResponse<GroupPageResp> queryGroupPageByCondition(GroupPageReq dto) {
+    public PageResponse<GroupPageResp> queryGroupPageByCondition(GroupPageReq req) {
         // 1、新建分页返回对象
         PageResponse<GroupPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Group> page = groupDao.queryPage(dto.getPageNo(), dto.getPageSize(), dto.getCategoryCode(), dto.getGroupName());
+        Page<Group> page = groupDao.queryPage(req.getPageNo(), req.getPageSize(), req.getCategoryCode(), req.getGroupName());
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
@@ -87,46 +87,52 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     /**
      * 添加 分组信息
      *
-     * @param dto
-     * @return
+     * @param req 分组信息
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
-    public boolean saveGroup(GroupAddReq dto) {
+    public boolean saveGroup(GroupAddReq req) {
         // 1、判断是否为重复添加
-        Group result = groupDao.queryInfoByCategoryCodeAndGroupName(dto.getCategoryCode(), dto.getGroupName());
+        Group result = groupDao.queryInfoByCategoryCodeAndGroupName(req.getCategoryCode(), req.getGroupName());
         // 2、判断是否为重复添加数据
         if (result != null) {
             throw new BusinessException(ResultCode.DATA_IS_EXISTED.code(), ResultCode.DATA_IS_EXISTED.message());
         }
         // 3、新建分组对象
         Group group = new Group();
-        BeanUtils.copyProperties(dto, group);
+        BeanUtils.copyProperties(req, group);
         group.setGroupCode(GenerateCodeUtils.getCode(ProductInitCodeEnum.PMS_GROUP_INIT_CODE.getDesc()));
         return groupDao.save(group);
     }
 
     /**
-     * 删除 根据codes删除分组信息
+     * 删除 根据Codes删除分组信息
      *
-     * @param dto
-     * @return
+     * @param req 分组Codes
+     * @return 删除是否成功: true-成功, false-失败
      */
     @Override
-    public boolean removeGroup(GroupDelReq dto) {
+    public boolean removeGroup(GroupDelReq req) {
         // 1、TODO 拓展：检查当前删除的分组, 是否被别的地方引用，例如分组和属性的关联关系
         // 2、逻辑删除
-        return groupDao.deleteByGroupCodes(dto.getGroupCodes());
+        return groupDao.deleteByGroupCodes(req.getGroupCodes());
     }
 
-    @Override
+    /**
+     * 修改 分组信息
+     *
+     * @param req 分组信息
+     * @return 修改是否成功: true-成功, false-失败
+     */
     @Transactional
-    public boolean modifyGroup(GroupEditReq dto) {
+    @Override
+    public boolean modifyGroup(GroupEditReq req) {
         // 1、查询校验分类是否合法
-        Group groupOld = groupDao.queryInfoByGroupCode(dto.getGroupCode());
+        Group groupOld = groupDao.queryInfoByGroupCode(req.getGroupCode());
         if (groupOld != null) {
             // 2、新建分组对象
             Group groupNew = new Group();
-            BeanUtils.copyProperties(dto, groupNew);
+            BeanUtils.copyProperties(req, groupNew);
             groupNew.setId(groupOld.getId());
             // 3、更新分组对象数据
             baseMapper.updateById(groupNew);
@@ -139,10 +145,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     /**
-     * 查询 根据分组Code
+     * 查询 根据分组Code查询分组信息
      *
-     * @param groupCode
-     * @return
+     * @param groupCode 分组Code
+     * @return 分组信息
      */
     @Override
     public GroupInfoResp findGroupByCode(Long groupCode) {

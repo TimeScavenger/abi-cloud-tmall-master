@@ -47,17 +47,17 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     /**
      * 查询 品牌分页列表
      *
-     * @param dto 查询品牌分页的条件
+     * @param req 查询条件
      * @return 品牌分页列表
      */
     @Override
-    public PageResponse<BrandPageResp> queryBrandPageByCondition(BrandPageReq dto) {
+    public PageResponse<BrandPageResp> queryBrandPageByCondition(BrandPageReq req) {
         // 1、新建分页返回对象
         PageResponse<BrandPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Brand> page = brandDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getBrandName());
+        Page<Brand> page = brandDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getBrandName());
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
@@ -81,13 +81,13 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     /**
      * 查询 品牌列表
      *
-     * @param dto 查询品牌列表的条件
+     * @param req 查询条件
      * @return 品牌列表
      */
     @Override
-    public List<BrandListResp> queryBrandListByCondition(BrandListReq dto) {
+    public List<BrandListResp> queryBrandListByCondition(BrandListReq req) {
         // 1、查询数据
-        List<Brand> brands = brandDao.queryListByBrandName(dto.getBrandName());
+        List<Brand> brands = brandDao.queryListByBrandName(req.getBrandName());
         // 2、组装数据
         List<BrandListResp> brandListResps = brands.stream()
                 .map(brand -> {
@@ -103,7 +103,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     /**
      * 查询 根据品牌Codes查询品牌列表
      *
-     * @param brandCodes 品牌Code集合
+     * @param brandCodes 品牌Codes
      * @return 品牌列表
      */
     @Override
@@ -129,8 +129,8 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     /**
      * 查询 根据品牌Codes查询品牌名称列表
      *
-     * @param brandCodes 品牌Code集合
-     * @return 品牌名称列表
+     * @param brandCodes 品牌Codes
+     * @return 品牌列表
      */
     @Override
     public List<String> queryBrandNameListByCodes(List<Long> brandCodes) {
@@ -151,51 +151,52 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     /**
      * 添加 品牌信息
      *
-     * @param dto 需要添加的品牌信息
-     * @return 默认返回结果
+     * @param req 品牌信息
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
-    public boolean saveBrand(BrandAddReq dto) {
+    public boolean saveBrand(BrandAddReq req) {
         // 1、判断是否为重复添加
-        Brand result = brandDao.queryInfoByBrandName(dto.getBrandName());
+        Brand result = brandDao.queryInfoByBrandName(req.getBrandName());
         // 2、判断是否为重复添加数据
         if (result != null) {
             throw new BusinessException(ResultCode.DATA_IS_EXISTED.code(), ResultCode.DATA_IS_EXISTED.message());
         }
         // 3、新建品牌对象
         Brand brand = new Brand();
-        BeanUtils.copyProperties(dto, brand);
+        BeanUtils.copyProperties(req, brand);
         brand.setBrandCode(GenerateCodeUtils.getCode(ProductInitCodeEnum.PMS_BRAND_INIT_CODE.getDesc()));
         return brandDao.save(brand);
     }
 
+
     /**
-     * 删除 根据Codes删除品牌信息
+     * 删除 根据品牌Codes删除品牌信息
      *
-     * @param dto 品牌Code集合
-     * @return 默认返回结果
+     * @param req 品牌Codes
+     * @return 删除是否成功: true-成功, false-失败
      */
     @Override
-    public boolean removeBrand(BrandDelReq dto) {
+    public boolean removeBrand(BrandDelReq req) {
         // 1、TODO 拓展：检查当前删除的品牌, 是否被别的地方引用，例如品牌和分组的关联关系
         // 2、逻辑删除
-        return brandDao.deleteByBrandCodes(dto.getBrandCodes());
+        return brandDao.deleteByBrandCodes(req.getBrandCodes());
     }
 
     /**
      * 修改 品牌信息
      *
-     * @param dto 需要修改的品牌信息
-     * @return 默认返回结果
+     * @param req 品牌信息
+     * @return 修改是否成功: true-成功, false-失败
      */
     @Override
     @Transactional
-    public boolean modifyBrand(BrandEditReq dto) {
+    public boolean modifyBrand(BrandEditReq req) {
         // 1、查询校验分类是否合法
-        Brand brandOld = brandDao.queryInfoByBrandCode(dto.getBrandCode());
+        Brand brandOld = brandDao.queryInfoByBrandCode(req.getBrandCode());
         if (brandOld != null) {
             Brand brandNew = new Brand();
-            BeanUtils.copyProperties(dto, brandNew);
+            BeanUtils.copyProperties(req, brandNew);
             brandNew.setId(brandOld.getId());
             // 2、更新品牌对象数据
             brandDao.updateById(brandNew);
@@ -208,22 +209,22 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     }
 
     /**
-     * 修改 根据品牌Code和状态修改品牌状态
+     * 修改 根据品牌Code和状态修改品牌显示状态
      *
-     * @param dto 品牌Code和状态
-     * @return 默认返回结果
+     * @param req 品牌Code+品牌状态
+     * @return 修改是否成功: true-成功, false-失败
      */
     @Override
-    public boolean modifyBrandShowed(BrandShowedReq dto) {
-        return brandDao.updateShowedByBrandCode(dto.getBrandCode(), dto.getShowed());
+    public boolean modifyBrandShowed(BrandShowedReq req) {
+        return brandDao.updateShowedByBrandCode(req.getBrandCode(), req.getShowed());
     }
 
     /**
-     * 修改 根据品牌Code和状态修改品牌状态
+     * 修改 根据品牌Code和状态修改品牌可用状态
      *
      * @param brandCode 品牌Code
      * @param enabled   品牌状态
-     * @return 默认返回结果
+     * @return 修改是否成功: true-成功, false-失败
      */
     @Override
     public boolean modifyBrandEnabled(Long brandCode, Integer enabled) {

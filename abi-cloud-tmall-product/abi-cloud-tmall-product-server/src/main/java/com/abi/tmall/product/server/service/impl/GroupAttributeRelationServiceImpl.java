@@ -53,19 +53,19 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
     /**
      * 查询 分组没有关联的属性列表
      *
-     * @param dto
-     * @return
+     * @param req 属性分组名字+属性名称
+     * @return 属性列表
      */
     @Override
-    public PageResponse<AttributePageResp> queryNoAttributePageByGroupCode(GaRelationPageReq dto) {
+    public PageResponse<AttributePageResp> queryNoAttributePageByGroupCode(GaRelationPageReq req) {
         // 1、新建分页返回对象
         PageResponse<AttributePageResp> pageResponse = new PageResponse<>();
 
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
 
         // 3、当前分组只能关联自己所属的分类里面的所有属性
-        Group group = groupDao.queryInfoByGroupCode(dto.getGroupCode());
+        Group group = groupDao.queryInfoByGroupCode(req.getGroupCode());
         Long categoryCode = group.getCategoryCode();
 
         // 4、当前分组只能关联别的分组没有引用的属性
@@ -81,7 +81,7 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
                 .collect(Collectors.toList());
 
         // 5、从当前分类的所有属性中移除这些属性；
-        Page<Attribute> page = attributeDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), categoryCode, AttributeTypeEnum.ATTRIBUTE_TYPE_BASE.getCode(), attributeCodes, dto.getAttributeName());
+        Page<Attribute> page = attributeDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), categoryCode, AttributeTypeEnum.ATTRIBUTE_TYPE_BASE.getCode(), attributeCodes, req.getAttributeName());
 
         // 6、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
@@ -104,21 +104,21 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
     }
 
     /**
-     * 根据分组id查找关联的所有基本属性
+     * 查询 根据分组Code查找关联的所有基本属性
      *
-     * @param dto
-     * @return
+     * @param req 属性分组名字+属性名称
+     * @return 属性列表
      */
     @Override
-    public PageResponse<AttributePageResp> queryAttributeListByGroupCode(GaRelationPageReq dto) {
+    public PageResponse<AttributePageResp> queryAttributeListByGroupCode(GaRelationPageReq req) {
         // 1、新建分页返回对象
         PageResponse<AttributePageResp> pageResponse = new PageResponse<>();
 
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
 
         // 3、根据分组ID查询出所有已关联的属性
-        List<GroupAttributeRelation> groupAttributeRelations = groupAttributeRelationDao.queryListByGroupCodes(Lists.newArrayList(dto.getGroupCode()));
+        List<GroupAttributeRelation> groupAttributeRelations = groupAttributeRelationDao.queryListByGroupCodes(Lists.newArrayList(req.getGroupCode()));
         if (CollectionUtils.isEmpty(groupAttributeRelations)) {
             return pageResponse;
         }
@@ -129,7 +129,7 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
                 .collect(Collectors.toList());
 
         // 6、从当前分类的所有属性中移除这些属性；
-        Page<Attribute> page = attributeDao.queryPageByAttributeCodes(dto.getPageNo(), dto.getPageSize(), attributeCodes);
+        Page<Attribute> page = attributeDao.queryPageByAttributeCodes(req.getPageNo(), req.getPageSize(), attributeCodes);
 
         // 7、数据进行转换
         if (page.getRecords() != null) {
@@ -151,13 +151,13 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
     }
 
     /**
-     * 添加 分组和属性关系的对象
+     * 添加 分组和属性关系
      *
-     * @param dtos
-     * @return
+     * @param reqs 分组和属性关系列表
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
-    public boolean batchSaveGroupAttributeRelation(List<GaRelationAddReq> dtos) {
+    public boolean batchSaveGroupAttributeRelation(List<GaRelationAddReq> reqs) {
         // 1、查询出全部的分组集合
         List<Group> groups = groupDao.list();
         Map<Long, String> groupCodeAndGroupNameMap = groups.stream()
@@ -167,7 +167,7 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
         Map<Long, String> attributeCodeAndAttributeNameMap = attributes.stream()
                 .collect(Collectors.toMap(Attribute::getAttributeCode, Attribute::getAttributeName));
         // 3、对拷数据然后批量保存
-        List<GroupAttributeRelation> relationList = dtos.stream()
+        List<GroupAttributeRelation> relationList = reqs.stream()
                 .map(item -> {
                     GroupAttributeRelation relation = new GroupAttributeRelation();
                     BeanUtils.copyProperties(item, relation);
@@ -182,20 +182,20 @@ public class GroupAttributeRelationServiceImpl extends ServiceImpl<GroupAttribut
     }
 
     /**
-     * 删除 分组和属性关系的对象
+     * 删除 分组和属性关系
      *
-     * @param dtos
-     * @return
+     * @param reqs 分组和属性关系列表
+     * @return 删除是否成功: true-成功, false-失败
      */
     @Override
-    public boolean batchRemoveGroupAttributeRelation(List<GaRelationDelReq> dtos) {
+    public boolean batchRemoveGroupAttributeRelation(List<GaRelationDelReq> reqs) {
         // 1、查询出全部的分组属性关系集合
         List<GroupAttributeRelation> groupAttributeRelations = groupAttributeRelationDao.list();
         Map<Long, Long> groupCodeWithAttribueCodeAndCodeMap = groupAttributeRelations.stream()
                 .collect(HashMap::new, (m, v) -> m.put(v.getGroupCode() + v.getAttributeCode(), v.getId()), HashMap::putAll);
         // 2、过滤出全部的分组ID集合
         List<Long> ids = new ArrayList<>();
-        dtos.forEach(item -> {
+        reqs.forEach(item -> {
             Long aLong = groupCodeWithAttribueCodeAndCodeMap.get(item.getGroupCode() + item.getAttributeCode());
             ids.add(aLong);
         });

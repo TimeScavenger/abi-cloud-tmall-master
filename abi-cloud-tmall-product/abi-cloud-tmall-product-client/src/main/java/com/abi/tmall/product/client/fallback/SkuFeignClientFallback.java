@@ -12,6 +12,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Sku Feign接口降级
+ *
+ * @ClassName: SkuFeignClientFallback
+ * @Author: illidan
+ * @CreateDate: 2022/4/10
+ * @Description:
+ */
 @Slf4j
 @Component
 public class SkuFeignClientFallback implements FallbackFactory<SkuFeignClient> {

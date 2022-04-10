@@ -19,7 +19,6 @@ import com.abi.tmall.product.server.client.request.coupon.SkuFullReductionAddReq
 import com.abi.tmall.product.server.client.request.coupon.SkuLadderAddReq;
 import com.abi.tmall.product.server.client.request.coupon.SpuBoundsAddReq;
 import com.abi.tmall.product.server.client.request.search.SkuSearchAddReq;
-import com.abi.tmall.product.server.client.response.ware.WareSkuRelationStockVo;
 import com.abi.tmall.product.server.enums.AttributeSearchTypeEnum;
 import com.abi.tmall.product.server.enums.ProductInitCodeEnum;
 import com.abi.tmall.product.server.enums.SpuPublishTypeEnum;
@@ -96,14 +95,20 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     @Autowired
     private SearchFeignClient searchFeignService;
 
+    /**
+     * 查询 Spu分页列表
+     *
+     * @param spuPageReq 查询条件
+     * @return Spu分页列表
+     */
     @Override
-    public PageResponse<SpuPageResp> querySpuPageByCondition(SpuPageReq dto) {
+    public PageResponse<SpuPageResp> querySpuPageByCondition(SpuPageReq req) {
         // 1、新建分页返回对象
         PageResponse<SpuPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Spu> page = spuDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getCategoryCode(), dto.getBrandCode(), dto.getPublishStatus(), dto.getSpuName());
+        Page<Spu> page = spuDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getCategoryCode(), req.getBrandCode(), req.getPublishStatus(), req.getSpuName());
         // 4、数据进行转换
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 4.1、查询出SPU关联的分类信息
@@ -144,19 +149,25 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
     }
 
-    @Override
+    /**
+     * 添加 Spu信息
+     *
+     * @param spuAddReq Spu信息
+     * @return 添加是否成功: true-成功, false-失败
+     */
     @Transactional
-    public boolean saveSpu(SpuAddReq dto) {
+    @Override
+    public boolean saveSpu(SpuAddReq req) {
         // 1、保存SPU基本信息 -> pms_spu_info
         Spu spu = new Spu();
-        BeanUtils.copyProperties(dto, spu);
+        BeanUtils.copyProperties(req, spu);
         spu.setSpuCode(GenerateCodeUtils.getCode(ProductInitCodeEnum.PMS_SPU_INIT_CODE.getDesc()));
         spuDao.save(spu);
         // 提取spuCode作为公共参数
         Long spuCode = spu.getSpuCode();
 
         // 2、保存Spu的描述图片 -> pms_spu_img_desc
-        List<String> spuDescImgs = dto.getSpuDescImgs();
+        List<String> spuDescImgs = req.getSpuDescImgs();
         if (CollectionUtils.isNotEmpty(spuDescImgs)) {
             SpuImgDesc spuImgDesc = new SpuImgDesc();
             spuImgDesc.setSpuCode(spuCode);
@@ -165,7 +176,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         }
 
         // 3、保存Spu的详情图片 -> pms_spu_img_detail
-        List<String> spuDetailImgs = dto.getSpuDetailImgs();
+        List<String> spuDetailImgs = req.getSpuDetailImgs();
         if (CollectionUtils.isNotEmpty(spuDetailImgs)) {
             spuImgDetailService.saveSpuDetailImgs(spuCode, spuDetailImgs);
         }
@@ -176,7 +187,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         Map<Long, Attribute> idAttributeMap = attributes.stream()
                 .collect(Collectors.toMap(Attribute::getAttributeCode, attribute -> attribute));
         // 对前端传输过来的相关属性进行处理
-        List<SpuAddReq.SpuBaseAttribute> spuBaseAttributes = dto.getSpuBaseAttributes();
+        List<SpuAddReq.SpuBaseAttribute> spuBaseAttributes = req.getSpuBaseAttributes();
         if (CollectionUtils.isNotEmpty(spuBaseAttributes)) {
             List<SpuBaseAttributeValue> spuBaseAttributeValues = spuBaseAttributes.stream()
                     .map(item -> {
@@ -194,7 +205,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         }
 
         // 5、保存Spu的积分信息 -> sms_spu_bounds
-        SpuAddReq.Bounds bounds = dto.getBounds();
+        SpuAddReq.Bounds bounds = req.getBounds();
         SpuBoundsAddReq spuBoundsAddReq = new SpuBoundsAddReq();
         BeanUtils.copyProperties(bounds, spuBoundsAddReq);
         spuBoundsAddReq.setSpuCode(spuCode);
@@ -205,7 +216,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         }
 
         // 6、保存当前Spu对应的所有Sku信息
-        List<SkuAddReq> skuAddReqs = dto.getSkuAddReqs();
+        List<SkuAddReq> skuAddReqs = req.getSkuAddReqs();
         if (CollectionUtils.isEmpty(skuAddReqs)) {
             log.error(LOG_PRE + "获取SKU信息异常");
             throw new BusinessException("获取SKU信息异常");
@@ -322,12 +333,18 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         return true;
     }
 
+    /**
+     * 上架 Spu信息
+     *
+     * @param spuUpReq spuCode
+     * @return 上架是否成功: true-成功, false-失败
+     */
     // @GlobalTransactional(rollbackFor = Exception.class)
     // @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean upSpu(SpuUpReq dto) {
+    public boolean upSpu(SpuUpReq req) {
         // 1、获取当前提交的SpuCode
-        Long spuCode = dto.getSpuCode();
+        Long spuCode = req.getSpuCode();
         Spu spu = spuDao.queryInfoBySpuCode(spuCode);
         if (Objects.isNull(spu)) {
             throw new BusinessException("根据SpuCode无法查询到Spu信息");

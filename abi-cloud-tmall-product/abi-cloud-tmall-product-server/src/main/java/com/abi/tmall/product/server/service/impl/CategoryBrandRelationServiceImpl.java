@@ -53,14 +53,14 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     /**
      * 查询 品牌关联的所有分类列表
      *
-     * @param dto 品牌Code集合
-     * @return 品牌分类关系返回列表
+     * @param req 品牌Code
+     * @return 分类列表
      */
     @Override
-    public List<CbRelationListByCategoryResp> queryCategoryListByBrandCode(CbRelationListByBrandReq dto) {
+    public List<CbRelationListByCategoryResp> queryCategoryListByBrandCode(CbRelationListByBrandReq req) {
         // 1、查询品牌关联的分类列表
-        List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryCategoryListByBrandCode(dto.getBrandCode());
-        log.info(LOG_PRE + "查询品牌关联的分类列表，品牌ID: 【{}】，分类关联的品牌列表：【{}】", dto.getBrandCode(), categoryBrandRelations);
+        List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryCategoryListByBrandCode(req.getBrandCode());
+        log.info(LOG_PRE + "查询品牌关联的分类列表，品牌ID: 【{}】，分类关联的品牌列表：【{}】", req.getBrandCode(), categoryBrandRelations);
         // 2、判断查询出来的数据
         if (CollectionUtils.isEmpty(categoryBrandRelations)) {
             return Lists.newArrayList();
@@ -80,14 +80,14 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     /**
      * 查询 分类关联的所有品牌列表
      *
-     * @param dto 查询品牌分类关系条件
-     * @return 品牌分类关系返回列表
+     * @param req 分类Code
+     * @return 品牌列表
      */
     @Override
-    public List<CbRelationListByBrandResp> queryBrandListByCategoryCode(CbRelationListByCategoryReq dto) {
+    public List<CbRelationListByBrandResp> queryBrandListByCategoryCode(CbRelationListByCategoryReq req) {
         // 1、查询分类关联的品牌列表
-        List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryBrandListByCategoryCode(dto.getCategoryCode());
-        log.info(LOG_PRE + "查询分类关联的品牌列表，分类ID: 【{}】，分类关联的品牌列表：【{}】", dto.getCategoryCode(), categoryBrandRelations);
+        List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationDao.queryBrandListByCategoryCode(req.getCategoryCode());
+        log.info(LOG_PRE + "查询分类关联的品牌列表，分类ID: 【{}】，分类关联的品牌列表：【{}】", req.getCategoryCode(), categoryBrandRelations);
         // 2、判断查询出来的数据
         if (CollectionUtils.isEmpty(categoryBrandRelations)) {
             return Lists.newArrayList();
@@ -107,14 +107,14 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     /**
      * 添加 品牌和分类关系的对象
      *
-     * @param dto 添加的品牌分类关系
-     * @return 默认返回结果
+     * @param req 品牌和分类关系
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
-    public boolean saveBrandCategoryRelation(CbRelationAddReq dto) {
+    public boolean saveBrandCategoryRelation(CbRelationAddReq req) {
         // 1、获取到品牌的名字和分类的名字
-        Long brandCode = dto.getBrandCode();
-        Long categoryCode = dto.getCategoryCode();
+        Long brandCode = req.getBrandCode();
+        Long categoryCode = req.getCategoryCode();
         // 2、查询品牌和分类信息，校验数据是否合法
         Brand brand = brandDao.queryInfoByBrandCode(brandCode);
         Category category = categoryDao.queryInfoByCategoryCode(categoryCode);
@@ -128,7 +128,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         }
         // 4、封装分组名称和分类名称，保存数据
         CategoryBrandRelation categoryBrandRelation = new CategoryBrandRelation();
-        BeanUtils.copyProperties(dto, categoryBrandRelation);
+        BeanUtils.copyProperties(req, categoryBrandRelation);
         categoryBrandRelation.setBrandName(brand.getBrandName());
         categoryBrandRelation.setCategoryName(category.getCategoryName());
         return categoryBrandRelationDao.save(categoryBrandRelation);
@@ -137,12 +137,12 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     /**
      * 删除 品牌和分类关系的对象
      *
-     * @param dto 品牌分类关系Code集合
-     * @return 默认返回结果
+     * @param req 品牌和分类关系
+     * @return 删除是否成功: true-成功, false-失败
      */
     @Override
-    public boolean removeBrandCategoryRelation(CbRelationDelReq dto) {
-        return categoryBrandRelationDao.removeByIds(dto.getIds());
+    public boolean removeBrandCategoryRelation(CbRelationDelReq req) {
+        return categoryBrandRelationDao.removeByIds(req.getIds());
     }
 
 }

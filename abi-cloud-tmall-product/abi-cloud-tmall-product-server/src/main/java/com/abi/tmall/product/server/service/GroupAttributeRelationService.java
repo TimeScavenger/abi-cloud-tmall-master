@@ -20,12 +20,36 @@ import java.util.List;
  */
 public interface GroupAttributeRelationService extends IService<GroupAttributeRelation> {
 
+    /**
+     * 查询 分组没有关联的属性列表
+     *
+     * @param gaRelationPageReq 属性分组名字+属性名称
+     * @return 属性列表
+     */
     PageResponse<AttributePageResp> queryNoAttributePageByGroupCode(GaRelationPageReq gaRelationPageReq);
 
+    /**
+     * 查询 根据分组Code查找关联的所有基本属性
+     *
+     * @param gaRelationPageReq 属性分组名字+属性名称
+     * @return 属性列表
+     */
     PageResponse<AttributePageResp> queryAttributeListByGroupCode(GaRelationPageReq gaRelationPageReq);
 
+    /**
+     * 添加 分组和属性关系
+     *
+     * @param gaRelationAddReqs 分组和属性关系列表
+     * @return 添加是否成功: true-成功, false-失败
+     */
     boolean batchSaveGroupAttributeRelation(List<GaRelationAddReq> gaRelationAddReqs);
 
+    /**
+     * 删除 分组和属性关系
+     *
+     * @param gaRelationDelReqs 分组和属性关系列表
+     * @return 删除是否成功: true-成功, false-失败
+     */
     boolean batchRemoveGroupAttributeRelation(List<GaRelationDelReq> gaRelationDelReqs);
 
 }

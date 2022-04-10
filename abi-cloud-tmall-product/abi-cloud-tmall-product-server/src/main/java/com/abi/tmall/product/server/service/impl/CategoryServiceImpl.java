@@ -61,10 +61,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     private RedissonClient redissonClient;
 
     /**
-     * 查询 所有分类以及子分类 以树形结构组装起来
+     * 查询 分类以及子分类 以树形结构组装起来
      *
-     * @param level 分类的层级
-     * @return 分类及其子分类
+     * @param level 层级
+     * @return 分类以及子分类树形结构
      */
     @Override
     public List<CategoryTreeResp> queryCategoryListWithTree(Integer level) {
@@ -257,52 +257,52 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     /**
      * 添加 分类信息
      *
-     * @param dto 添加的分类信息
-     * @return 默认返回结果
+     * @param req 分类信息
+     * @return 添加是否成功: true-成功, false-失败
      */
     @Override
-    public boolean saveCategory(CategoryAddReq dto) {
+    public boolean saveCategory(CategoryAddReq req) {
         // 1、判断是否为重复添加(名字一样、父级一样)
-        Category result = categoryDao.queryInfoByCategoryNameAndParentCode(dto.getCategoryName(), dto.getParentCode());
+        Category result = categoryDao.queryInfoByCategoryNameAndParentCode(req.getCategoryName(), req.getParentCode());
         // 2、判断是否为重复添加数据
         if (result != null) {
             throw new BusinessException(ResultCode.DATA_IS_EXISTED.code(), ResultCode.DATA_IS_EXISTED.message());
         }
         // 3、新建分类对象
         Category category = new Category();
-        BeanUtils.copyProperties(dto, category);
+        BeanUtils.copyProperties(req, category);
         category.setCategoryCode(GenerateCodeUtils.getCode(ProductInitCodeEnum.PMS_CATEGORY_INIT_CODE.getDesc()));
         // 4、保存分类对象
         return categoryDao.save(category);
     }
 
     /**
-     * 删除 根据Codes删除分类信息
+     * 删除 根据分类Codes删除分类信息
      *
-     * @param dto 分类Code的数组
-     * @return 默认返回结果
+     * @param req 分类Codes列表
+     * @return 删除是否成功: true-成功, false-失败
      */
     @Override
-    public boolean removeCategory(CategoryDelReq dto) {
+    public boolean removeCategory(CategoryDelReq req) {
         // 1、TODO 拓展：检查当前删除的分类, 是否被别的地方引用，例如品牌和分组的关联关系
         // 2、逻辑删除
-        return categoryDao.deleteByCategoryCodes(dto.getCategoryCodes());
+        return categoryDao.deleteByCategoryCodes(req.getCategoryCodes());
     }
 
     /**
      * 修改 分类信息
      *
-     * @param dto 需要修改分类信息
-     * @return 默认返回结果
+     * @param req 分类信息
+     * @return 修改是否成功: true-成功, false-失败
      */
-    @Override
     @Transactional
-    public boolean modifyCategory(CategoryEditReq dto) {
+    @Override
+    public boolean modifyCategory(CategoryEditReq req) {
         // 1、查询校验分类是否合法
-        Category categoryOld = categoryDao.queryInfoByCategoryCode(dto.getCategoryCode());
+        Category categoryOld = categoryDao.queryInfoByCategoryCode(req.getCategoryCode());
         if (categoryOld != null) {
             Category categoryNew = new Category();
-            BeanUtils.copyProperties(dto, categoryNew);
+            BeanUtils.copyProperties(req, categoryNew);
             categoryNew.setId(categoryOld.getId());
             // 2、更新分类对象数据
             categoryDao.updateById(categoryNew);
@@ -315,19 +315,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     /**
-     * 修改 同步更新所有关联的数据
+     * 修改 分类排序
      *
-     * @param dtos 需要修改分类信息集合
-     * @return 默认返回结果
+     * @param reqs 分类信息列表
+     * @return 修改是否成功: true-成功, false-失败
      */
     @Override
-    public boolean modifyCategorySort(List<CategorySortReq> dtos) {
+    public boolean modifyCategorySort(List<CategorySortReq> reqs) {
         // 1、查询出全部的分类列表
         Map<Long, Long> categoryCodeAndIdMap = categoryDao.list()
                 .stream()
                 .collect(Collectors.toMap(Category::getCategoryCode, Category::getId));
-        // 2、将dto对象拷贝成需要添加的对象
-        List<Category> categories = dtos.stream()
+        // 2、将req对象拷贝成需要添加的对象
+        List<Category> categories = reqs.stream()
                 .map(categorySortReq -> {
                     Category category = new Category();
                     BeanUtils.copyProperties(categorySortReq, category);
@@ -339,11 +339,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return categoryDao.updateBatchById(categories);
     }
 
+
     /**
      * 查询 根据分类Code查询分类信息
      *
      * @param categoryCode 分类Code
-     * @return 默认返回结果
+     * @return 分类信息
      */
     @Override
     public CategoryInfoResp findCategoryByCode(Long categoryCode) {
@@ -364,10 +365,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     /**
-     * 找到categoryCode的完整路径；[父/子/孙] [2, 25, 225]
+     * 查询 分类完整路径；[父/子/孙] [2, 25, 225]
      *
      * @param categoryCode 分类Code
-     * @return [父/子/孙] [2, 25, 225]
+     * @return 类全层次路径 [父/子/孙] [2, 25, 225]
      */
     @Override
     public Long[] findCategoryPath(Long categoryCode) {

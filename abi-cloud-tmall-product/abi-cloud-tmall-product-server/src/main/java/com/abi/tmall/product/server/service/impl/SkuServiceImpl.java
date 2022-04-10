@@ -59,14 +59,20 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     @Autowired
     private SpuBaseAttributeValueDao spuBaseAttributeValueDao;
 
+    /**
+     * 查询 Sku分页列表
+     *
+     * @param req 查询条件
+     * @return Sku分页列表
+     */
     @Override
-    public PageResponse<SkuPageResp> querySkuPageByCondition(SkuPageReq dto) {
+    public PageResponse<SkuPageResp> querySkuPageByCondition(SkuPageReq req) {
         // 1、新建分页返回对象
         PageResponse<SkuPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Sku> page = skuDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getCategoryCode(), dto.getBrandCode(), dto.getSkuName(), dto.getPriceMax(), dto.getPriceMin());
+        Page<Sku> page = skuDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getCategoryCode(), req.getBrandCode(), req.getSkuName(), req.getPriceMax(), req.getPriceMin());
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
@@ -86,10 +92,16 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         return pageResponse;
     }
 
+    /**
+     * 查询 根据SkuCode查询Sku列表
+     *
+     * @param req SkuCode
+     * @return Sku列表
+     */
     @Override
-    public List<SkuListResp> querySkuListByCodes(SkuListByCodeReq dto) {
+    public List<SkuListResp> querySkuListByCodes(SkuListByCodeReq req) {
         // 根据SkuCode集合查询出对应的sku信息
-        List<Sku> skus = skuDao.queryListBySkuCodes(dto.getSkuCodes());
+        List<Sku> skus = skuDao.queryListBySkuCodes(req.getSkuCodes());
         // 数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(skus)) {
             List<SkuListResp> skuListResps = skus.stream()
@@ -105,10 +117,16 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         }
     }
 
+    /**
+     * 查询 根据Sku名字查询Sku列表
+     *
+     * @param req Sku名字
+     * @return Sku列表
+     */
     @Override
-    public List<SkuListResp> querySkuListByName(SkuListByNameReq dto) {
+    public List<SkuListResp> querySkuListByName(SkuListByNameReq req) {
         // 根据SkuCode集合查询出对应的sku信息
-        List<Sku> skus = skuDao.queryListBySkuName(dto.getSkuName());
+        List<Sku> skus = skuDao.queryListBySkuName(req.getSkuName());
         // 数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(skus)) {
             List<SkuListResp> skuListResps = skus.stream()
@@ -124,6 +142,14 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         }
     }
 
+    /**
+     * 根据skuCode查询sku信息
+     *
+     * @param skuCode skuCode
+     * @return Sku信息
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @Override
     public SkuItemResp querySkuItemBySkuCode(Long skuCode) throws ExecutionException, InterruptedException {
         SkuItemResp skuItemResp = new SkuItemResp();

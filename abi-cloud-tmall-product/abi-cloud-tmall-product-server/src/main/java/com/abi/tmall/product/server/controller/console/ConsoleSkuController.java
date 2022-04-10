@@ -36,18 +36,36 @@ public class ConsoleSkuController {
     @Autowired
     private SkuService skuService;
 
+    /**
+     * 查询 Sku分页列表
+     *
+     * @param skuPageReq 查询条件
+     * @return Sku分页列表
+     */
     @PostMapping("/page")
-    @ApiOperation(value = "查询 Sku分页")
+    @ApiOperation(value = "查询 Sku分页列表")
     public ApiResponse<PageResponse<SkuPageResp>> querySkuPageByCondition(@RequestBody SkuPageReq skuPageReq) {
         return ApiResponse.result(skuService.querySkuPageByCondition(skuPageReq));
     }
 
+    /**
+     * 查询 根据SkuCode查询Sku列表
+     *
+     * @param skuListByCodeReq SkuCode
+     * @return Sku列表
+     */
     @PostMapping("/list/by/code")
     @ApiOperation(value = "查询 根据SkuCode查询Sku列表")
     public ApiResponse<List<SkuListResp>> querySkuListByCodes(@RequestBody SkuListByCodeReq skuListByCodeReq) {
         return ApiResponse.result(skuService.querySkuListByCodes(skuListByCodeReq));
     }
 
+    /**
+     * 查询 根据Sku名字查询Sku列表
+     *
+     * @param skuListByNameReq Sku名字
+     * @return Sku列表
+     */
     @PostMapping("/list/by/name")
     @ApiOperation(value = "查询 根据Sku名字查询Sku列表")
     public ApiResponse<List<SkuListResp>> querySkuListByName(@RequestBody SkuListByNameReq skuListByNameReq) {

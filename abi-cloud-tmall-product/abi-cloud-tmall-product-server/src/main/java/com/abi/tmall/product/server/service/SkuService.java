@@ -23,12 +23,38 @@ import java.util.concurrent.ExecutionException;
  */
 public interface SkuService extends IService<Sku> {
 
+    /**
+     * 查询 Sku分页列表
+     *
+     * @param skuPageReq 查询条件
+     * @return Sku分页列表
+     */
     PageResponse<SkuPageResp> querySkuPageByCondition(SkuPageReq skuPageReq);
 
+    /**
+     * 查询 根据SkuCode查询Sku列表
+     *
+     * @param skuListByCodeReq SkuCode
+     * @return Sku列表
+     */
     List<SkuListResp> querySkuListByCodes(SkuListByCodeReq skuListByCodeReq);
 
+    /**
+     * 查询 根据Sku名字查询Sku列表
+     *
+     * @param skuListByNameReq Sku名字
+     * @return Sku列表
+     */
     List<SkuListResp> querySkuListByName(SkuListByNameReq skuListByNameReq);
 
+    /**
+     * 根据skuCode查询sku信息
+     *
+     * @param skuCode skuCode
+     * @return Sku信息
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     SkuItemResp querySkuItemBySkuCode(Long skuCode) throws ExecutionException, InterruptedException;
 
 }

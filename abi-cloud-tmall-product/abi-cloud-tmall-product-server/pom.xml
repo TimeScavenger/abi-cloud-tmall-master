@@ -15,26 +15,25 @@
     <description>abi server project</description>
 
     <dependencies>
-        <!-- 商品服务依赖包 - client -->
+        <!-- 商品服务依赖 - client -->
         <dependency>
             <groupId>abi.cloud.tmall.product</groupId>
             <artifactId>abi-cloud-tmall-product-client</artifactId>
         </dependency>
 
-        <!-- 商品服务依赖包 - common -->
+        <!-- 商品服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.product</groupId>
             <artifactId>abi-cloud-tmall-product-common</artifactId>
         </dependency>
 
-        <!-- 商品服务依赖包 - dao -->
+        <!-- 商品服务依赖 - dao -->
         <dependency>
             <groupId>abi.cloud.tmall.product</groupId>
             <artifactId>abi-cloud-tmall-product-dao</artifactId>
         </dependency>
 
-
-        <!-- 仓库服务依赖包 - client -->
+        <!-- 仓库服务依赖 - client -->
         <dependency>
             <groupId>abi.cloud.tmall.ware</groupId>
             <artifactId>abi-cloud-tmall-ware-client</artifactId>

@@ -15,7 +15,7 @@
     <description>abi api project</description>
 
     <dependencies>
-        <!-- 商品服务依赖包 - common -->
+        <!-- 商品服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.product</groupId>
             <artifactId>abi-cloud-tmall-product-common</artifactId>

@@ -8,9 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
+ * Jackson 配置文件
+ *
  * @ClassName: JacksonConfig
  * @Author: illidan
- * @CreateDate: 2022/2/10
+ * @CreateDate: 2021/11/10
  * @Description: 统一注解，解决前后端交互Long类型精度丢失的问题
  */
 @Configuration

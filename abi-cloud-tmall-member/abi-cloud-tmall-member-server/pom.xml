@@ -15,19 +15,19 @@
     <description>abi server project</description>
 
     <dependencies>
-        <!-- 会员服务依赖包 - client -->
+        <!-- 会员服务依赖 - client -->
         <dependency>
             <groupId>abi.cloud.tmall.member</groupId>
             <artifactId>abi-cloud-tmall-member-client</artifactId>
         </dependency>
 
-        <!-- 会员服务依赖包 - common -->
+        <!-- 会员服务依赖 - common -->
         <dependency>
             <groupId>abi.cloud.tmall.member</groupId>
             <artifactId>abi-cloud-tmall-member-common</artifactId>
         </dependency>
 
-        <!-- 会员服务依赖包 - dao -->
+        <!-- 会员服务依赖 - dao -->
         <dependency>
             <groupId>abi.cloud.tmall.member</groupId>
             <artifactId>abi-cloud-tmall-member-dao</artifactId>

@@ -33,36 +33,72 @@ public class ConsolePurchaseItemController {
     @Autowired
     PurchaseItemService purchaseItemService;
 
+    /**
+     * 查询 采购项分页列表
+     *
+     * @param purchaseItemPageReq 查询条件
+     * @return 采购项分页列表
+     */
     @PostMapping("/page")
-    @ApiOperation(value = "查询 采购项分页")
+    @ApiOperation(value = "查询 采购项分页列表")
     public ApiResponse<PageResponse<PurchaseItemPageResp>> queryPurchaseDetailPageByCondition(@RequestBody PurchaseItemPageReq purchaseItemPageReq) {
         return ApiResponse.result(purchaseItemService.queryPurchaseDetailPageByCondition(purchaseItemPageReq));
     }
 
+    /**
+     * 新增 采购项
+     *
+     * @param purchaseItemAddReq 采购项
+     * @return 新增是否成功: true-成功, false-失败
+     */
     @PostMapping("/save")
     @ApiOperation(value = "新增 采购项")
     public ApiResponse<Boolean> addPurchaseDetail(@RequestBody @Validated PurchaseItemAddReq purchaseItemAddReq) {
         return ApiResponse.result(purchaseItemService.addPurchaseDetail(purchaseItemAddReq));
     }
 
+    /**
+     * 删除 采购项
+     *
+     * @param purchaseItemDelReq 采购项Code列表
+     * @return 删除是否成功: true-成功, false-失败
+     */
     @PostMapping("/remove")
     @ApiOperation(value = "删除 采购项")
     public ApiResponse<Boolean> removePurchaseDetail(@RequestBody @Validated PurchaseItemDelReq purchaseItemDelReq) {
         return ApiResponse.result(purchaseItemService.removePurchaseDetail(purchaseItemDelReq));
     }
 
+    /**
+     * 修改 采购项
+     *
+     * @param purchaseItemEditReq 采购项
+     * @return 修改是否成功: true-成功, false-失败
+     */
     @PostMapping("/modify")
     @ApiOperation(value = "修改 采购项")
     public ApiResponse<Boolean> modifyPurchaseDetail(@RequestBody @Validated PurchaseItemEditReq purchaseItemEditReq) {
         return ApiResponse.result(purchaseItemService.modifyPurchaseDetail(purchaseItemEditReq));
     }
 
+    /**
+     * 查询 采购项
+     *
+     * @param purchaseItemInfoReq 采购项Code
+     * @return 采购项
+     */
     @PostMapping("/info")
     @ApiOperation(value = "查询 采购项")
     public ApiResponse<PurchaseItem> findPurchaseDetailByCode(@RequestBody @Validated PurchaseItemInfoReq purchaseItemInfoReq) {
         return ApiResponse.result(purchaseItemService.findPurchaseDetailByCode(purchaseItemInfoReq));
     }
 
+    /**
+     * 合并 采购项
+     *
+     * @param purchaseItemMergeReq 采购单Code+采购项Code集合
+     * @return 合并是否成功: true-成功, false-失败
+     */
     @PostMapping("/merge")
     @ApiOperation(value = "合并 采购项")
     public ApiResponse<Boolean> mergePurchaseDetail(@RequestBody @Validated PurchaseItemMergeReq purchaseItemMergeReq) {

@@ -35,42 +35,84 @@ public class ConsolePurchaseController {
     @Autowired
     PurchaseService purchaseService;
 
+    /**
+     * 查询 采购单分页列表
+     *
+     * @param purchasePageReq 查询条件
+     * @return 采购单分页列表
+     */
     @PostMapping("/page")
     @ApiOperation(value = "查询 采购单分页")
     public ApiResponse<PageResponse<PurchasePageResp>> queryPurchasePageByCondition(@RequestBody PurchasePageReq purchasePageReq) {
         return ApiResponse.result(purchaseService.queryPurchasePageByCondition(purchasePageReq));
     }
 
+    /**
+     * 查询 采购单列表
+     *
+     * @param purchaseListReq 查询条件
+     * @return 采购单列表
+     */
     @PostMapping("/list")
     @ApiOperation(value = "查询 采购单列表")
     public ApiResponse<List<Purchase>> queryPurchaseListByCondition(@RequestBody PurchaseListReq purchaseListReq) {
         return ApiResponse.result(purchaseService.queryPurchaseListByCondition(purchaseListReq));
     }
 
+    /**
+     * 新增 采购单
+     *
+     * @param purchaseAddReq 采购单
+     * @return 新增是否成功: true-成功, false-失败
+     */
     @PostMapping("/save")
     @ApiOperation(value = "新增 采购单")
     public ApiResponse<Boolean> addPurchase(@RequestBody @Validated PurchaseAddReq purchaseAddReq) {
         return ApiResponse.result(purchaseService.addPurchase(purchaseAddReq));
     }
 
+    /**
+     * 修改 采购单
+     *
+     * @param purchaseEditReq 采购单
+     * @return 修改是否成功: true-成功, false-失败
+     */
     @PostMapping("/modify")
     @ApiOperation(value = "修改 采购单")
     public ApiResponse<Boolean> modifyPurchase(@RequestBody @Validated PurchaseEditReq purchaseEditReq) {
         return ApiResponse.result(purchaseService.modifyPurchase(purchaseEditReq));
     }
 
+    /**
+     * 查询 采购单
+     *
+     * @param purchaseInfoReq 采购单Code
+     * @return 采购单
+     */
     @PostMapping("/info")
     @ApiOperation(value = "查询 采购单")
     public ApiResponse<Purchase> findPurchaseByCode(@RequestBody @Validated PurchaseInfoReq purchaseInfoReq) {
         return ApiResponse.result(purchaseService.findPurchaseByCode(purchaseInfoReq));
     }
 
+    /**
+     * 领取 采购单
+     *
+     * @param purchaseReceiveReq 采购单Code列表
+     * @return 领取是否成功: true-成功, false-失败
+     */
     @PostMapping("/receive")
     @ApiOperation(value = "领取 采购单")
     public ApiResponse<Boolean> receivePurchase(@RequestBody @Validated PurchaseReceiveReq purchaseReceiveReq) {
         return ApiResponse.result(purchaseService.receivePurchase(purchaseReceiveReq));
     }
 
+    /**
+     * 完成 采购单
+     *
+     * @param purchaseDoneReq 采购单Code + 采购项列表
+     * @return 完成是否成功: true-成功, false-失败
+     */
     @PostMapping("/done")
     @ApiOperation(value = "完成 采购单")
     public ApiResponse<Boolean> donePurchase(@RequestBody @Validated PurchaseDoneReq purchaseDoneReq) {

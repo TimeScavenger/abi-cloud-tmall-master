@@ -17,7 +17,7 @@ import java.util.List;
 public class PurchaseDoneReq implements Serializable {
 
     @NotNull(message = "采购单Code不能为空")
-    @ApiModelProperty(value = "采购单COde")
+    @ApiModelProperty(value = "采购单Code")
     private Long purchaseCode;
 
     @NotEmpty(message = "采购项列表不能为空")

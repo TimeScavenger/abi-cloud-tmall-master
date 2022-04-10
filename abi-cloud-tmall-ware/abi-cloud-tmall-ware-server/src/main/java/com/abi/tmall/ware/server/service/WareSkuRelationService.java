@@ -20,10 +20,28 @@ import java.util.List;
  */
 public interface WareSkuRelationService extends IService<WareSkuRelation> {
 
+    /**
+     * 查询 Sku库存分页列表
+     *
+     * @param warePageReq 查询条件
+     * @return Sku库存分页列表
+     */
     PageResponse<WareSkuRelationPageResp> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq warePageReq);
 
-    void stockWareSkuRelation(Long skuCode, Long wareCode, Integer skuNum);
-
+    /**
+     * 查询 Sku是否有库存
+     *
+     * @param wareStockReq SkuCode列表
+     * @return 商品库存数列表
+     */
     List<WareSkuRelationStockResp> querySkuHasStock(WareStockReq wareStockReq);
 
+    /**
+     * 添加商品库存
+     *
+     * @param skuCode  skuCode
+     * @param wareCode 仓库Code
+     * @param skuNum   sku数量
+     */
+    void stockWareSkuRelation(Long skuCode, Long wareCode, Integer skuNum);
 }

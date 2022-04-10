@@ -35,12 +35,24 @@ public class ConsoleWareSkuRelationController {
     @Autowired
     WareSkuRelationService wareSkuRelationService;
 
+    /**
+     * 查询 Sku库存分页列表
+     *
+     * @param warePageReq 查询条件
+     * @return Sku库存分页列表
+     */
     @PostMapping("/page")
-    @ApiOperation(value = "查询 Sku库存分页")
+    @ApiOperation(value = "查询 Sku库存分页列表")
     public ApiResponse<PageResponse<WareSkuRelationPageResp>> queryWareSkuRelationPageByCondition(@RequestBody WareSkuRelationPageReq warePageReq) {
         return ApiResponse.result(wareSkuRelationService.queryWareSkuRelationPageByCondition(warePageReq));
     }
 
+    /**
+     * 查询 Sku是否有库存
+     *
+     * @param wareStockReq SkuCode列表
+     * @return 商品库存数列表
+     */
     @PostMapping(value = "/hasStock")
     @ApiOperation(value = "查询 Sku是否有库存")
     public ApiResponse<List<WareSkuRelationStockResp>> querySkuHasStock(@RequestBody WareStockReq wareStockReq) {

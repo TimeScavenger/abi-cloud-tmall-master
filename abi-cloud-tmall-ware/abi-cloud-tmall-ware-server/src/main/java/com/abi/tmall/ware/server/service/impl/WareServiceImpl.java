@@ -37,14 +37,20 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
     @Autowired
     private WareDao wareDao;
 
+    /**
+     * 查询 仓库分页列表
+     *
+     * @param req 查询条件
+     * @return 仓库分页列表
+     */
     @Override
-    public PageResponse<WarePageResp> queryWarePageByCondition(WarePageReq dto) {
+    public PageResponse<WarePageResp> queryWarePageByCondition(WarePageReq req) {
         // 1、新建用于返回的分页对象
         PageResponse<WarePageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Ware> page = wareDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getWareName());
+        Page<Ware> page = wareDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getWareName());
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
             // 数据进行转换
@@ -65,43 +71,67 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
         return pageResponse;
     }
 
+    /**
+     * 查询 仓库列表
+     *
+     * @param req 查询条件
+     * @return 仓库列表
+     */
     @Override
-    public List<Ware> queryWareListByCondition(WareListReq dto) {
+    public List<Ware> queryWareListByCondition(WareListReq req) {
         // 1、查询列表信息
-        List<Ware> wareList = wareDao.queryListByCondition(dto.getWareName());
+        List<Ware> wareList = wareDao.queryListByCondition(req.getWareName());
         // 2、返回数据
         return wareList;
     }
 
+    /**
+     * 新增 仓库信息
+     *
+     * @param req 仓库信息
+     * @return 新增是否成功: true-成功, false-失败
+     */
     @Override
-    public boolean saveWare(WareAddReq dto) {
+    public boolean saveWare(WareAddReq req) {
         // 1、判断是否为重复添加
-        Ware result = wareDao.queryInfoByWareNameAndAreaCode(dto.getWareName(), dto.getAreaCode());
+        Ware result = wareDao.queryInfoByWareNameAndAreaCode(req.getWareName(), req.getAreaCode());
         // 2、判断是否为重复添加数据
         if (result != null) {
             throw new BusinessException(ResultCode.DATA_IS_EXISTED.code(), ResultCode.DATA_IS_EXISTED.message());
         }
         // 3、新建仓库对象
         Ware ware = new Ware();
-        BeanUtils.copyProperties(dto, ware);
+        BeanUtils.copyProperties(req, ware);
         ware.setWareCode(snowflakeIdWorker.nextId());
         return wareDao.save(ware);
     }
 
+    /**
+     * 删除 仓库信息
+     *
+     * @param req 仓库Code
+     * @return 删除是否成功: true-成功, false-失败
+     */
     @Override
-    public boolean removeWare(WareDelReq dto) {
+    public boolean removeWare(WareDelReq req) {
         // 1、TODO 拓展：检查当前删除的仓库, 是否被别的地方引用，例如仓库和分销单的关联关系
         // 2、逻辑删除
-        return wareDao.removeByWareCodes(dto.getWareCodes());
+        return wareDao.removeByWareCodes(req.getWareCodes());
     }
 
+    /**
+     * 修改 仓库信息
+     *
+     * @param req 仓库信息
+     * @return 修改是否成功: true-成功, false-失败
+     */
     @Override
-    public boolean modifyWare(WareEditReq dto) {
+    public boolean modifyWare(WareEditReq req) {
         // 1、查询校验分类是否合法
-        Ware wareOld = wareDao.queryInfoByWareCode(dto.getWareCode());
+        Ware wareOld = wareDao.queryInfoByWareCode(req.getWareCode());
         if (wareOld != null) {
             Ware wareNew = new Ware();
-            BeanUtils.copyProperties(dto, wareNew);
+            BeanUtils.copyProperties(req, wareNew);
             wareNew.setId(wareOld.getId());
             // 2、更新仓库对象数据
             wareDao.updateById(wareNew);
@@ -111,10 +141,16 @@ public class WareServiceImpl extends ServiceImpl<WareMapper, Ware> implements Wa
         return false;
     }
 
+    /**
+     * 查询 仓库信息
+     *
+     * @param req 仓库Code
+     * @return 仓库信息
+     */
     @Override
-    public Ware findWareByCode(WareInfoReq dto) {
+    public Ware findWareByCode(WareInfoReq req) {
         // 1、查询数据
-        Ware ware = wareDao.queryInfoByWareCode(dto.getWareCode());
+        Ware ware = wareDao.queryInfoByWareCode(req.getWareCode());
         // 2、返回数据
         if (ware != null) {
             return ware;

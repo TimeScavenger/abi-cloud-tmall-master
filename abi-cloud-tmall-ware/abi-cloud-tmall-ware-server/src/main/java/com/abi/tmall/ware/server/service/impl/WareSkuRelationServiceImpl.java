@@ -54,24 +54,30 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
     @Autowired
     private WareDao wareDao;
 
+    /**
+     * 查询 Sku库存分页列表
+     *
+     * @param req 查询条件
+     * @return Sku库存分页列表
+     */
     @Override
-    public PageResponse<WareSkuRelationPageResp> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq dto) {
+    public PageResponse<WareSkuRelationPageResp> queryWareSkuRelationPageByCondition(WareSkuRelationPageReq req) {
         // 1、新建用于返回的分页对象
         PageResponse<WareSkuRelationPageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
         // 调用商品服务 传入Sku的名字模糊查询出符合条件的SkuCode集合
         List<Long> skuCodeList = new ArrayList<>();
-        if (StringUtils.isNotBlank(dto.getSkuName())) {
+        if (StringUtils.isNotBlank(req.getSkuName())) {
             SkuListByNameReq skuListByNameReq = new SkuListByNameReq();
-            skuListByNameReq.setSkuName(dto.getSkuName());
+            skuListByNameReq.setSkuName(req.getSkuName());
             ApiResponse<List<SkuListResp>> apiResponse = skuFeignClient.querySkuListByName(skuListByNameReq);
             if (apiResponse != null && CollectionUtils.isNotEmpty(apiResponse.getData())) {
                 skuCodeList = apiResponse.getData().stream().map(SkuListResp::getSkuCode).collect(Collectors.toList());
             }
         }
-        Page<WareSkuRelation> page = wareSkuRelationDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getWareCode(), skuCodeList);
+        Page<WareSkuRelation> page = wareSkuRelationDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getWareCode(), skuCodeList);
 
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
@@ -122,14 +128,15 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
         return pageResponse;
     }
 
+    /**
+     * 查询 Sku是否有库存
+     *
+     * @param req SkuCode列表
+     * @return 商品库存数列表
+     */
     @Override
-    public void stockWareSkuRelation(Long skuCode, Long wareCode, Integer skuNum) {
-        // TODO 此处代码直接存在及更新进行操作。
-    }
-
-    @Override
-    public List<WareSkuRelationStockResp> querySkuHasStock(WareStockReq dto) {
-        return dto.getSkuCodes().stream()
+    public List<WareSkuRelationStockResp> querySkuHasStock(WareStockReq req) {
+        return req.getSkuCodes().stream()
                 .map(item -> {
                     Integer count = baseMapper.getSkuStock(item);
                     WareSkuRelationStockResp skuHasStockVo = new WareSkuRelationStockResp();
@@ -139,4 +146,15 @@ public class WareSkuRelationServiceImpl extends ServiceImpl<WareSkuRelationMappe
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * 添加商品库存
+     *
+     * @param skuCode  skuCode
+     * @param wareCode 仓库Code
+     * @param skuNum   sku数量
+     */
+    @Override
+    public void stockWareSkuRelation(Long skuCode, Long wareCode, Integer skuNum) {
+        // TODO 此处代码直接存在及更新进行操作。
+    }
 }

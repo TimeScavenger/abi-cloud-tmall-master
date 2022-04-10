@@ -53,14 +53,20 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     @Autowired
     private WareSkuRelationDao wareSkuRelationDao;
 
+    /**
+     * 查询 采购单分页列表
+     *
+     * @param req 查询条件
+     * @return 采购单分页列表
+     */
     @Override
-    public PageResponse<PurchasePageResp> queryPurchasePageByCondition(PurchasePageReq dto) {
+    public PageResponse<PurchasePageResp> queryPurchasePageByCondition(PurchasePageReq req) {
         // 1、新建用于返回的分页对象
         PageResponse<PurchasePageResp> pageResponse = new PageResponse<>();
         // 2、检查分页参数，如果分页未设置，则赋予默认值
-        dto.checkParam();
+        req.checkParam();
         // 3、分页查询
-        Page<Purchase> page = purchaseDao.queryPageByCondition(dto.getPageNo(), dto.getPageSize(), dto.getStatus(), dto.getPurchaseName());
+        Page<Purchase> page = purchaseDao.queryPageByCondition(req.getPageNo(), req.getPageSize(), req.getStatus(), req.getPurchaseName());
 
         // 4、数据进行转换、组装返回数据
         if (CollectionUtils.isNotEmpty(page.getRecords())) {
@@ -97,28 +103,46 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         return pageResponse;
     }
 
+    /**
+     * 查询 采购单列表
+     *
+     * @param req 查询条件
+     * @return 采购单列表
+     */
     @Override
-    public List<Purchase> queryPurchaseListByCondition(PurchaseListReq dto) {
+    public List<Purchase> queryPurchaseListByCondition(PurchaseListReq req) {
         // 1、查询列表信息
         List<Purchase> purchaseList = this.lambdaQuery()
-                .eq(dto.getStatus() != null, Purchase::getStatus, dto.getStatus())
+                .eq(req.getStatus() != null, Purchase::getStatus, req.getStatus())
                 .list();
         // 2、返回数据
         return purchaseList;
     }
 
+    /**
+     * 新增 采购单
+     *
+     * @param req 采购单
+     * @return 新增是否成功: true-成功, false-失败
+     */
     @Override
-    public boolean addPurchase(PurchaseAddReq dto) {
+    public boolean addPurchase(PurchaseAddReq req) {
         Purchase purchase = new Purchase();
-        BeanUtils.copyProperties(dto, purchase);
+        BeanUtils.copyProperties(req, purchase);
         purchase.setPurchaseCode(snowflakeIdWorker.nextId());
         return purchaseDao.save(purchase);
     }
 
+    /**
+     * 修改 采购单
+     *
+     * @param req 采购单
+     * @return 修改是否成功: true-成功, false-失败
+     */
     @Override
-    public boolean modifyPurchase(PurchaseEditReq dto) {
+    public boolean modifyPurchase(PurchaseEditReq req) {
         // 1、查询校验分类是否合法
-        Purchase purchaseOld = purchaseDao.queryInfoByPurchaseCode(dto.getPurchaseCode());
+        Purchase purchaseOld = purchaseDao.queryInfoByPurchaseCode(req.getPurchaseCode());
         if (purchaseOld != null) {
             if (!PurchaseStatusEnum.CREATED.getCode().equals(purchaseOld.getStatus()) &&
                     !PurchaseStatusEnum.ASSIGNED.getCode().equals(purchaseOld.getStatus())) {
@@ -126,7 +150,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
             }
 
             Purchase purchaseNew = new Purchase();
-            BeanUtils.copyProperties(dto, purchaseNew);
+            BeanUtils.copyProperties(req, purchaseNew);
             purchaseNew.setId(purchaseOld.getId());
             // 2、更新仓库对象数据
             purchaseDao.updateById(purchaseNew);
@@ -136,23 +160,31 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         return false;
     }
 
+    /**
+     * 查询 采购单
+     *
+     * @param req 采购单Code
+     * @return 采购单
+     */
     @Override
-    public Purchase findPurchaseByCode(PurchaseInfoReq dto) {
-        return purchaseDao.queryInfoByPurchaseCode(dto.getPurchaseCode());
+    public Purchase findPurchaseByCode(PurchaseInfoReq req) {
+        return purchaseDao.queryInfoByPurchaseCode(req.getPurchaseCode());
     }
 
     /**
-     * @param dto
-     * @return
+     * 领取 采购单
+     *
+     * @param req 采购单Code列表
+     * @return 领取是否成功: true-成功, false-失败
      */
     @Override
     @Transactional
-    public boolean receivePurchase(PurchaseReceiveReq dto) {
+    public boolean receivePurchase(PurchaseReceiveReq req) {
         // 1、获取当前登录用户的Code
         Long currentCode = 2L;
 
         // 2、确认当前采购单是新建或者已分配状态，并且是分配给自己的
-        List<Purchase> purchaseList = purchaseDao.queryListByPurchaseCodes(dto.getPurchaseCodes());
+        List<Purchase> purchaseList = purchaseDao.queryListByPurchaseCodes(req.getPurchaseCodes());
         purchaseList.forEach(item -> {
             if (!PurchaseStatusEnum.CREATED.getCode().equals(item.getStatus()) && !PurchaseStatusEnum.ASSIGNED.getCode().equals(item.getStatus())) {
                 throw new BusinessException(ResultCode.SERVER_ERROR.code(), "采购单的状态必须为新建或已分配状态");
@@ -178,18 +210,20 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
     }
 
     /**
-     * @param dto
-     * @return
+     * 完成 采购单
+     *
+     * @param req 采购单Code + 采购项列表
+     * @return 完成是否成功: true-成功, false-失败
      */
     @Override
     @Transactional
-    public boolean donePurchase(PurchaseDoneReq dto) {
+    public boolean donePurchase(PurchaseDoneReq req) {
         // 1、先处理采购项，全部采购项都完成，再去处理采购单
-        Long purchaseCode = dto.getPurchaseCode();
+        Long purchaseCode = req.getPurchaseCode();
 
         // 2、改变采购项的状态
         boolean flag = true;
-        List<PurchaseDoneReq.PurchaseDetailDoneReq> purchaseDetailDoneReqList = dto.getPurchaseDetailDoneReqList();
+        List<PurchaseDoneReq.PurchaseDetailDoneReq> purchaseDetailDoneReqList = req.getPurchaseDetailDoneReqList();
         // 采购项列表
         List<PurchaseItem> allPurchaseItems = new ArrayList<>();
         // 采购项成功列表

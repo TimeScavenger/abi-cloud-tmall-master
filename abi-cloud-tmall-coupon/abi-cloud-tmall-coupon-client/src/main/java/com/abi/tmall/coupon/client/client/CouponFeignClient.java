@@ -24,21 +24,38 @@ import java.util.List;
 public interface CouponFeignClient {
 
     /**
-     * SpringCloud远程调用原理：CouponFeignService.saveSpuBounds(spuBoundsTo);
-     * 1、@RequestBody将这个对象转为json。
-     * 2、找到tmall-cloud-coupon服务，给/coupon/console/spubounds/save发送请求。将上一步转的json放在请求体位置，发送请求。
-     * 3、对方服务收到请求。请求体里有json数据。(@RequestBody SpuBoundsEntity spuBounds)；将请求体的json转为SpuBoundsEntity；
-     * 总结：只要json数据模型是兼容的。双方服务无需使用同一个模型。
+     * 添加 积分信息
+     *
+     * @param spuBoundsAddReq 积分信息
+     * @return 添加是否成功: true-成功, false-失败
      */
     @PostMapping("/console/spu-bounds/save")
     ApiResponse<Boolean> saveSpuBounds(@RequestBody SpuBoundsAddReq spuBoundsAddReq);
 
+    /**
+     * 添加 满减信息
+     *
+     * @param skuFullReductionAddReqs 满减信息
+     * @return 添加是否成功: true-成功, false-失败
+     */
     @PostMapping("/console/sku-full-reduction/save/batch")
     ApiResponse<Boolean> saveSkuFullReduction(@RequestBody List<SkuFullReductionAddReq> skuFullReductionAddReqs);
 
+    /**
+     * 添加 商品折扣信息
+     *
+     * @param skuLadderAddReqs 折扣信息
+     * @return 添加是否成功: true-成功, false-失败
+     */
     @PostMapping("/console/sku-ladder/save/batch")
     ApiResponse<Boolean> saveSkuLadder(@RequestBody List<SkuLadderAddReq> skuLadderAddReqs);
 
+    /**
+     * 添加 商品会员价格
+     *
+     * @param memberPriceAddReq 会员价格
+     * @return 添加是否成功: true-成功, false-失败
+     */
     @PostMapping("/console/member-price/save")
     ApiResponse<Boolean> saveMemberPrice(@RequestBody MemberPriceAddReq memberPriceAddReq);
 

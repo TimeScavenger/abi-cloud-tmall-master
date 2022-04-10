@@ -31,7 +31,7 @@ public interface WareFeignClient {
      * @param wareStockDto
      * @return
      */
-    @PostMapping(value = "/ware/console/ware-sku-relation/hasStock")
+    @PostMapping(value = "/console/ware-sku-relation/hasStock")
     public ApiResponse<List<WareSkuRelationStockResp>> querySkuHasStock(@RequestBody WareStockReq wareStockReq);
 
 }

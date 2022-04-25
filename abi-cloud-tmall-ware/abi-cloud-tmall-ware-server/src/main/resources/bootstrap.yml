@@ -7,6 +7,8 @@ server:
 spring:
   application:
     name: abi-cloud-tmall-ware # 应用名称，注册中心中使用
+  profiles:
+    active: local
   cloud:
     nacos: # nacos注册中心配置
       discovery: # 服务注册发现
@@ -58,7 +60,7 @@ spring:
       load-balance-algorithm-type: ROUND_ROBIN #从库负载均衡算法类型，可选值：ROUND_ROBIN，RANDOM。若`load-balance-algorithm-class-name`存在则忽略该配置
       master-data-source-name: master
       name: master
-      slave-data-source-names: slave1
+      slave-data-source-names: slave1,slave2
     props:
       sql:
         show: true

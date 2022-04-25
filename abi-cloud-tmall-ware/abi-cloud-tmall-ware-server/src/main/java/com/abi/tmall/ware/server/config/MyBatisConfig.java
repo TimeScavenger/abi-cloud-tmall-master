@@ -21,9 +21,9 @@ import java.time.LocalDateTime;
  * @CreateDate: 2021/2/10
  * @Description:
  */
-@Configuration
 @EnableTransactionManagement
 @MapperScan({"com.abi.tmall.ware.dao.mapper"})
+@Configuration
 public class MyBatisConfig {
 
     /**

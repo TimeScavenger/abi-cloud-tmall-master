@@ -20,8 +20,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @CreateDate: 2021/2/10
  * @Description:
  */
-@Configuration
 @EnableSwagger2
+@Configuration
 public class SwaggerConfig {
 
     /**
@@ -34,13 +34,10 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket docket(Environment environment) {
-
         Profiles profilesLocal = Profiles.of("local");
         Profiles profilesDev = Profiles.of("dev");
         Profiles profilesTest = Profiles.of("test");
-
         boolean flag = environment.acceptsProfiles(profilesLocal) || environment.acceptsProfiles(profilesDev) || environment.acceptsProfiles(profilesTest);
-
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(flag)

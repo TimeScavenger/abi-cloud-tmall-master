@@ -41,9 +41,11 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket docket(Environment environment) {
+        // 接口文档请求环境
         Profiles profilesLocal = Profiles.of("local");
         Profiles profilesDev = Profiles.of("dev");
         Profiles profilesTest = Profiles.of("test");
+        // 判断是否符合接口文档的请求环境
         boolean flag = environment.acceptsProfiles(profilesLocal) || environment.acceptsProfiles(profilesDev) || environment.acceptsProfiles(profilesTest);
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())

@@ -18,18 +18,6 @@
         <!-- 基础服务依赖 -->
         <dependency>
             <groupId>abi.cloud.middle.platform.infrastructure</groupId>
-            <artifactId>abi-cloud-middle-platform-infrastructure-core</artifactId>
-        </dependency>
-
-        <!-- 基础服务依赖 -->
-        <dependency>
-            <groupId>abi.cloud.middle.platform.infrastructure</groupId>
-            <artifactId>abi-cloud-middle-platform-infrastructure-dao</artifactId>
-        </dependency>
-
-        <!-- 基础服务依赖 -->
-        <dependency>
-            <groupId>abi.cloud.middle.platform.infrastructure</groupId>
             <artifactId>abi-cloud-middle-platform-infrastructure-web</artifactId>
         </dependency>
 

@@ -41,15 +41,7 @@
         <!-- 拓展依赖 -->
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
         <spring-cloud-alibaba.version>2.2.7.RELEASE</spring-cloud-alibaba.version>
-        <mariadb.version>2.7.1</mariadb.version>
-        <shardingsphere.version>4.1.1</shardingsphere.version>
-        <mybatis.plus.boot.version>3.4.1</mybatis.plus.boot.version>
         <spring-web.version>5.2.12.RELEASE</spring-web.version>
-        <lombok.version>1.18.16</lombok.version>
-        <swagger-annotations.version>1.5.20</swagger-annotations.version>
-        <springfox.boot.version>3.0.0</springfox.boot.version>
-        <hibernate-validator.version>6.1.7.Final</hibernate-validator.version>
-        <redisson.version>3.12.0</redisson.version>
     </properties>
 
     <dependencyManagement>
@@ -73,21 +65,6 @@
                 <groupId>abi.cloud.tmall.ware</groupId>
                 <artifactId>abi-cloud-tmall-ware-dao</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-
-            <!-- 基础服务依赖 -->
-            <dependency>
-                <groupId>abi.cloud.middle.platform.infrastructure</groupId>
-                <artifactId>abi-cloud-middle-platform-infrastructure-core</artifactId>
-                <version>${abi-cloud-middle-platform-infrastructure.version}</version>
-            </dependency>
-
-            <!-- 基础服务依赖 -->
-            <dependency>
-                <groupId>abi.cloud.middle.platform.infrastructure</groupId>
-                <artifactId>abi-cloud-middle-platform-infrastructure-dao</artifactId>
-                <version>${abi-cloud-middle-platform-infrastructure.version}</version>
             </dependency>
 
             <!-- 基础服务依赖 -->
@@ -123,13 +100,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- sharding 分布式数据库解决方案 -->
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-                <version>${shardingsphere.version}</version>
-            </dependency>
-
             <!-- spring web相关的组件-->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -141,49 +111,70 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
+                <version>1.18.16</version>
             </dependency>
 
             <!-- swagger 接口文档 -->
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>${swagger-annotations.version}</version>
+                <version>1.5.20</version>
             </dependency>
 
             <!-- swagger 接口文档 -->
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-boot-starter</artifactId>
-                <version>${springfox.boot.version}</version>
+                <version>3.0.0</version>
+            </dependency>
+
+            <!-- knife4接口文档美化 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>3.0.3</version>
             </dependency>
 
             <!-- mariadb jdbc驱动 -->
             <dependency>
                 <groupId>org.mariadb.jdbc</groupId>
                 <artifactId>mariadb-java-client</artifactId>
-                <version>${mariadb.version}</version>
+                <version>2.7.5</version>
+            </dependency>
+
+            <!-- sharding 分布式数据库解决方案 -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>4.1.1</version>
             </dependency>
 
             <!-- mybatis-plus 数据库持久化-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis.plus.boot.version}</version>
+                <version>3.4.3</version>
             </dependency>
 
             <!-- hibernate 参数验证 -->
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
+                <version>6.2.2.Final</version>
             </dependency>
 
             <!-- redisson 使用redisson作为分布式锁，分布式对象等功能框架 -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
-                <version>${redisson.version}</version>
+                <version>3.16.6</version>
+            </dependency>
+
+            <!-- common 工具包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.10</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

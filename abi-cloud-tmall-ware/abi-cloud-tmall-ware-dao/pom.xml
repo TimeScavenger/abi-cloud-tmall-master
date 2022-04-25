@@ -22,12 +22,6 @@
         </dependency>
 
 
-        <!-- sharding 分布式数据库解决方案 -->
-        <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-        </dependency>
-
         <!-- mybatis-plus 数据库持久化-->
         <dependency>
             <groupId>com.baomidou</groupId>

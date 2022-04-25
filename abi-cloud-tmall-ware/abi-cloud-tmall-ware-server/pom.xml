@@ -15,18 +15,6 @@
     <description>abi server project</description>
 
     <dependencies>
-        <!-- 仓库服务依赖 - client -->
-        <dependency>
-            <groupId>abi.cloud.tmall.ware</groupId>
-            <artifactId>abi-cloud-tmall-ware-client</artifactId>
-        </dependency>
-
-        <!-- 仓库服务依赖 - common -->
-        <dependency>
-            <groupId>abi.cloud.tmall.ware</groupId>
-            <artifactId>abi-cloud-tmall-ware-common</artifactId>
-        </dependency>
-
         <!-- 仓库服务依赖 - dao -->
         <dependency>
             <groupId>abi.cloud.tmall.ware</groupId>

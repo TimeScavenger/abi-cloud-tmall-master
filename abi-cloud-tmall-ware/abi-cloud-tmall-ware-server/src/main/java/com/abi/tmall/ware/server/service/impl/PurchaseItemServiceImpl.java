@@ -139,7 +139,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
         // 1、查询校验分类是否合法
         PurchaseItem purchaseItemOld = purchaseItemDao.queryInfoByPurchaseDetailCode(req.getPurchaseDetailCode());
         if (purchaseItemOld != null) {
-            if (!PurchaseItemStatusEnum.CREATED.getCode().equals(purchaseItemOld.getStatus())) {
+            if (!PurchaseItemStatusEnum.CREATED.getValue().equals(purchaseItemOld.getStatus())) {
                 throw new BusinessException(ResultCode.SERVER_ERROR.code(), "采购项的状态不是新建状态，无法更改");
             }
             PurchaseItem purchaseItemNew = new PurchaseItem();
@@ -186,9 +186,9 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
 
         // 2、校验采购项的状态是否有正在采购、已完成采购、采购失败
         List<Long> purchaseDetailStatusCodes = purchaseItems.stream()
-                .filter(item -> PurchaseStatusEnum.RECEIVE.getCode().equals(item.getStatus()) ||
-                        PurchaseStatusEnum.FINISH.getCode().equals(item.getStatus()) ||
-                        PurchaseStatusEnum.HASERROR.getCode().equals(item.getStatus()))
+                .filter(item -> PurchaseStatusEnum.RECEIVE.getValue().equals(item.getStatus()) ||
+                        PurchaseStatusEnum.FINISH.getValue().equals(item.getStatus()) ||
+                        PurchaseStatusEnum.HASERROR.getValue().equals(item.getStatus()))
                 .map(PurchaseItem::getPurchaseDetailCode)
                 .collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(purchaseDetailStatusCodes)) {
@@ -211,7 +211,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
             Purchase purchase = new Purchase();
             purchase.setPurchaseName(LocalDate.now().getYear() + "年采购单");
             purchase.setPurchaseCode(snowflakeIdWorker.nextId());
-            purchase.setStatus(PurchaseStatusEnum.CREATED.getCode());
+            purchase.setStatus(PurchaseStatusEnum.CREATED.getValue());
             purchase.setWareCode(wareCodes.get(0));
             purchase.setPriority(5);
             purchaseDao.save(purchase);
@@ -227,7 +227,7 @@ public class PurchaseItemServiceImpl extends ServiceImpl<PurchaseItemMapper, Pur
         Long finalPurchaseCode = purchaseCode;
         purchaseItems.forEach(purchaseDetail -> {
             purchaseDetail.setPurchaseCode(finalPurchaseCode);
-            purchaseDetail.setStatus(PurchaseItemStatusEnum.ASSIGNED.getCode());
+            purchaseDetail.setStatus(PurchaseItemStatusEnum.ASSIGNED.getValue());
         });
         purchaseItemDao.updateBatchById(purchaseItems);
         return true;

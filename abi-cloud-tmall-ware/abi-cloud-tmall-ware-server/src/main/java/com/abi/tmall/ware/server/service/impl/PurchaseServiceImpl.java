@@ -144,8 +144,8 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         // 1、查询校验分类是否合法
         Purchase purchaseOld = purchaseDao.queryInfoByPurchaseCode(req.getPurchaseCode());
         if (purchaseOld != null) {
-            if (!PurchaseStatusEnum.CREATED.getCode().equals(purchaseOld.getStatus()) &&
-                    !PurchaseStatusEnum.ASSIGNED.getCode().equals(purchaseOld.getStatus())) {
+            if (!PurchaseStatusEnum.CREATED.getValue().equals(purchaseOld.getStatus()) &&
+                    !PurchaseStatusEnum.ASSIGNED.getValue().equals(purchaseOld.getStatus())) {
                 throw new BusinessException(ResultCode.SERVER_ERROR.code(), "采购单 状态已领取、已完成，无法修改");
             }
 
@@ -186,13 +186,13 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         // 2、确认当前采购单是新建或者已分配状态，并且是分配给自己的
         List<Purchase> purchaseList = purchaseDao.queryListByPurchaseCodes(req.getPurchaseCodes());
         purchaseList.forEach(item -> {
-            if (!PurchaseStatusEnum.CREATED.getCode().equals(item.getStatus()) && !PurchaseStatusEnum.ASSIGNED.getCode().equals(item.getStatus())) {
+            if (!PurchaseStatusEnum.CREATED.getValue().equals(item.getStatus()) && !PurchaseStatusEnum.ASSIGNED.getValue().equals(item.getStatus())) {
                 throw new BusinessException(ResultCode.SERVER_ERROR.code(), "采购单的状态必须为新建或已分配状态");
             }
             if (!currentCode.equals(item.getAssigneeCode())) {
                 throw new BusinessException(ResultCode.SERVER_ERROR.code(), "采购单的采购人必须为提交人");
             }
-            item.setStatus(PurchaseStatusEnum.RECEIVE.getCode());
+            item.setStatus(PurchaseStatusEnum.RECEIVE.getValue());
         });
 
         // 3、更新采购单的状态
@@ -204,7 +204,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
                 .collect(Collectors.toList());
         List<PurchaseItem> purchaseItemList = purchaseItemDao.queryListByPurchaseCodes(purchaseCodes);
 
-        purchaseItemList.forEach(item -> item.setStatus(PurchaseItemStatusEnum.BUYING.getCode()));
+        purchaseItemList.forEach(item -> item.setStatus(PurchaseItemStatusEnum.BUYING.getValue()));
         purchaseItemDao.updateBatchById(purchaseItemList);
         return true;
     }
@@ -231,10 +231,10 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         for (PurchaseDoneReq.PurchaseDetailDoneReq item : purchaseDetailDoneReqList) {
             PurchaseItem purchaseItem = new PurchaseItem();
             // 判断采购项是否采购成功
-            if (PurchaseItemStatusEnum.HASERROR.getCode().equals(item.getStatus())) {
+            if (PurchaseItemStatusEnum.HASERROR.getValue().equals(item.getStatus())) {
                 flag = false;
                 purchaseItem.setStatus(item.getStatus());
-            } else if (PurchaseItemStatusEnum.FINISH.getCode().equals(item.getStatus())) {
+            } else if (PurchaseItemStatusEnum.FINISH.getValue().equals(item.getStatus())) {
                 purchaseItem.setStatus(item.getStatus());
                 successPurchaseDetailCodes.add(item.getPurchaseDetailCode());
             }
@@ -290,7 +290,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         // 4、改变采购单状态
         Purchase purchase = new Purchase();
         purchase.setPurchaseCode(purchaseCode);
-        purchase.setStatus(flag ? PurchaseStatusEnum.FINISH.getCode() : PurchaseStatusEnum.HASERROR.getCode());
+        purchase.setStatus(flag ? PurchaseStatusEnum.FINISH.getValue() : PurchaseStatusEnum.HASERROR.getValue());
         purchaseDao.updateInfoByPurchaseCode(purchase);
 
         return true;

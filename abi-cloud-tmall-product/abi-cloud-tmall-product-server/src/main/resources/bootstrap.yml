@@ -7,14 +7,17 @@ server:
 spring:
   application:
     name: abi-cloud-tmall-product # 应用名称，注册中心中使用
+  profiles:
+    active: local
   cloud:
     nacos: # nacos注册中心配置
-      discovery: # 服务注册发现
+      discovery: # 服务注册
         server-addr: 127.0.0.1:8848
-      config: # 服务注册配置
+        namespace: a3b9a724-9de9-4601-b7c0-5d091bb0e070
+      config: # 服务配置
         server-addr: 127.0.0.1:8848
-        namespace: 5a5b41bd-09d0-4731-940c-69b01c163196
-        group: dev
+        namespace: a3b9a724-9de9-4601-b7c0-5d091bb0e070
+        file-extension: yml
   main:
     allow-bean-definition-overriding: true
   servlet:

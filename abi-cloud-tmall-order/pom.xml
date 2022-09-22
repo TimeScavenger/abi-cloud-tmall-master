@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.12.RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>abi.cloud.tmall.order</groupId>
+    <artifactId>abi-cloud-tmall-order</artifactId>
+    <version>${revision}</version>
+    <name>abi-cloud-tmall-order</name>
+    <description>abi-cloud-tmall-order</description>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>abi-cloud-tmall-order-client</module>
+        <module>abi-cloud-tmall-order-common</module>
+        <module>abi-cloud-tmall-order-server</module>
+        <module>abi-cloud-tmall-order-dao</module>
+    </modules>
+
+    <properties>
+        <!-- 服务版本号 -->
+        <revision>1.0-SNAPSHOT</revision>
+
+        <!-- 基础依赖 -->
+        <java.version>1.8</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- 业务依赖 -->
+        <abi-cloud-middle-platform-infrastructure.version>1.0-SNAPSHOT</abi-cloud-middle-platform-infrastructure.version>
+        <abi-cloud-tmall-product-client.version>1.0-SNAPSHOT</abi-cloud-tmall-product-client.version>
+
+        <!-- 拓展依赖 -->
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.7.RELEASE</spring-cloud-alibaba.version>
+        <spring-web.version>5.2.12.RELEASE</spring-web.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 仓库服务依赖 - client -->
+            <dependency>
+                <groupId>abi.cloud.tmall.order</groupId>
+                <artifactId>abi-cloud-tmall-order-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 仓库服务依赖 - common -->
+            <dependency>
+                <groupId>abi.cloud.tmall.order</groupId>
+                <artifactId>abi-cloud-tmall-order-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 仓库服务依赖 - dao -->
+            <dependency>
+                <groupId>abi.cloud.tmall.order</groupId>
+                <artifactId>abi-cloud-tmall-order-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 基础服务依赖 -->
+            <dependency>
+                <groupId>abi.cloud.middle.platform.infrastructure</groupId>
+                <artifactId>abi-cloud-middle-platform-infrastructure-web</artifactId>
+                <version>${abi-cloud-middle-platform-infrastructure.version}</version>
+            </dependency>
+
+            <!-- 商品服务依赖 - client -->
+            <dependency>
+                <groupId>abi.cloud.tmall.product</groupId>
+                <artifactId>abi-cloud-tmall-product-client</artifactId>
+                <version>${abi-cloud-tmall-product-client.version}</version>
+            </dependency>
+
+
+            <!-- spring-cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- spring-cloud-alibaba -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- spring web相关的组件-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring-web.version}</version>
+            </dependency>
+
+            <!-- lombok 代码工具-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.16</version>
+            </dependency>
+
+            <!-- swagger 接口文档 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
+            <!-- knife4j 接口文档UI -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-springdoc-ui</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+
+            <!-- mariadb jdbc驱动 -->
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>2.7.5</version>
+            </dependency>
+
+            <!-- sharding 分布式数据库解决方案 -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>4.1.1</version>
+            </dependency>
+
+            <!-- mybatis-plus 数据库持久化-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.4.3</version>
+            </dependency>
+
+            <!-- hibernate 参数验证 -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.2.2.Final</version>
+            </dependency>
+
+            <!-- redisson 使用redisson作为分布式锁，分布式对象等功能框架 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>3.16.6</version>
+            </dependency>
+
+            <!-- common 工具包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.10</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- lombok 代码工具-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- swagger 接口文档-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
